@@ -7,6 +7,7 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
+    transform-origin: top left; /* Ensures proper scaling */
 }
 
 #setup-page {
@@ -28,7 +29,7 @@ body {
 #header {
     display: flex;
     justify-content: space-between;
-    width: 50%;
+    width: 80%;
     margin-bottom: 20px;
 }
 
@@ -38,7 +39,7 @@ body {
 
 #game-container {
     display: flex;
-    gap: 50px; /* Adding space between cards */
+    gap: 50px;
     justify-content: center;
     align-items: center;
 }
@@ -70,4 +71,12 @@ body {
 
 .symbol:hover {
     background-color: #c0c0c0;
+}
+
+/* Zoom out for smaller screens */
+@media (max-width: 768px) {
+    body {
+        transform: scale(0.8); /* Adjust the scale factor as needed */
+        transform-origin: top left; /* Ensures proper scaling */
+    }
 }
