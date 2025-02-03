@@ -12,26 +12,26 @@
       margin: 0;
     }
     .card {
-  width: 10vw;  /* Responsive size */
-  height: 10vw; /* Responsive size */
-  background-color: lightgray;
-  display: inline-block;
-  margin: 0vw;  /* Reduced margin */
-  text-align: center;
-  cursor: pointer;
-  background-image: url('facedown.png');
-  background-size: cover;
+      width: 10vw;  /* Responsive size */
+      height: 10vw; /* Responsive size */
+      background-color: lightgray;
+      display: inline-block;
+      margin: 0vw;  /* Reduced margin */
+      text-align: center;
+      cursor: pointer;
+      background-image: url('facedown.png');
+      background-size: cover;
     }
-
 
     .matched {
       background-color: lightgreen;
     }
+
     #game-board {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);  /* Responsive columns */
-  grid-gap: 1vw;  /* Reduced gap */
-  width: 40vw;    /* Responsive width */
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);  /* Responsive columns */
+      grid-gap: 1vw;  /* Reduced gap */
+      width: 40vw;    /* Responsive width */
     }   
   </style>
 </head>
@@ -44,6 +44,25 @@
     let firstCard = null;
     let secondCard = null;
     let matches = 0;
+
+    function preloadImages(images, callback) {
+      let loadedImages = 0;
+      const totalImages = images.length;
+
+      images.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+          loadedImages += 1;
+          if (loadedImages === totalImages) {
+            callback();
+          }
+        };
+        img.onerror = () => {
+          console.error(`Failed to load image: ${src}`);
+        };
+      });
+    }
 
     function createCard(value) {
       const card = document.createElement('div');
@@ -105,7 +124,9 @@
       });
     }
 
-    initializeGame();
+    const imagesToPreload = cardsArray.map(value => `${imagePath}img${value + 1}.png`).concat(`${imagePath}${faceDownImage}`);
+
+    preloadImages(imagesToPreload, initializeGame);
   </script>
 </body>
 </html>
