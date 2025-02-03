@@ -13,57 +13,57 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 1.85vh; /* 20px / 1080px */
     background-color: #fff;
-    border: 2px solid #000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 0.185vh solid #000; /* 2px / 1080px */
+    box-shadow: 0 0.37vh 0.74vh rgba(0, 0, 0, 0.1); /* 4px / 1080px and 8px / 1080px */
 }
 
 #setup-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.925vh; /* 10px / 1080px */
 }
 
 #header {
     display: flex;
     justify-content: space-between;
-    width: 50%;
-    margin-bottom: 20px;
+    width: 50vw; /* Same as 50% */
+    margin-bottom: 1.85vh; /* 20px / 1080px */
 }
 
 #timer, #correct-counter {
-    font-size: 24px;
+    font-size: 1.25vw; /* 24px / 1920px */
 }
 
 #game-container {
     display: flex;
-    gap: 50px; /* Adding space between cards */
+    gap: 2.6vw; /* 50px / 1920px */
     justify-content: center;
     align-items: center;
 }
 
 .card-frame {
-    border: 5px solid #000;
-    padding: 10px;
+    border: 0.26vw solid #000; /* 5px / 1920px */
+    padding: 0.52vw; /* 10px / 1920px */
     background-color: #fff;
 }
 
 .card {
     display: grid;
-    grid-template-columns: repeat(3, 200px);
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(3, 10.4vw); /* 200px / 1920px */
+    gap: 1.04vw; /* 20px / 1920px */
+    padding: 1.04vw; /* 20px / 1920px */
 }
 
 .symbol {
-    width: 200px;
-    height: 200px;
+    width: 10.4vw; /* 200px / 1920px */
+    height: 18.52vh; /* 200px / 1080px */
     background-color: #e0e0e0;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 48px;
+    font-size: 4.44vh; /* 48px / 1080px */
     cursor: pointer;
     transition: background-color 0.3s;
 }
