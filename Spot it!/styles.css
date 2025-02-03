@@ -13,80 +13,61 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2%;
+    padding: 20px;
     background-color: #fff;
-    border: 0.2vw solid #000;
-    box-shadow: 0 0.4vw 0.8vw rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #setup-form {
     display: flex;
     flex-direction: column;
-    gap: 1%;
+    gap: 10px;
 }
 
 #header {
     display: flex;
     justify-content: space-between;
-    width: 80%;
-    margin-bottom: 2%;
+    width: 50%;
+    margin-bottom: 20px;
 }
 
 #timer, #correct-counter {
-    font-size: 2.4vw;
+    font-size: 24px;
 }
 
 #game-container {
     display: flex;
-    gap: 5%;
+    gap: 50px; /* Adding space between cards */
     justify-content: center;
     align-items: center;
 }
 
 .card-frame {
-    border: 0.5vw solid #000;
-    padding: 1%;
+    border: 5px solid #000;
+    padding: 10px;
     background-color: #fff;
 }
 
 .card {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Grid layout with three columns */
-    gap: 2%;
-    padding: 2%;
+    grid-template-columns: repeat(3, 200px);
+    gap: 20px;
+    padding: 20px;
 }
 
 .symbol {
-    width: 20vw;
-    height: 20vw;
+    width: 200px;
+    height: 200px;
     background-color: #e0e0e0;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 4.8vw;
+    font-size: 48px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .symbol:hover {
     background-color: #c0c0c0;
-}
-
-/* Responsive design for screens smaller than 768px */
-@media (max-width: 768px) {
-    #header {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
-    #game-container {
-        gap: 3%;
-    }
-
-    .symbol {
-        width: 30vw; /* Adjusted size for smaller screens */
-        height: 30vw; /* Adjusted size for smaller screens */
-        font-size: 5vw; /* Adjusted font size for smaller screens */
-    }
 }
