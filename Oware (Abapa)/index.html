@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oware (Abapa) Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+
+        #current-turn {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #board-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-rows: repeat(2, 80px);
+            grid-template-columns: repeat(6, 80px);
+            gap: 10px;
+            background-image: url('https://images.pexels.com/photos/164005/pexels-photo-164005.jpeg');
+            background-size: cover;
+            padding: 20px;
+            border: 8px solid #8B4513;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hole {
+            width: 70px;
+            height: 70px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            background-color: #fff;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .player1-holes {
+            background-color: #add8e6;
+        }
+
+        .player2-holes {
+            background-color: #ffcccb;
+        }
+
+        .seed {
+            width: 10px;
+            height: 10px;
+            background-color: #8B4513;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        #stores {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        #stores p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- [Same HTML structure as before] -->
+    <div id="current-turn">Player 1's Turn</div>
+    <div id="board-container">
+        <div id="game-board">
+            <!-- Player 2's holes (Top row, right to left for counter-clockwise) -->
+            <div class="hole player2-holes" id="hole11"></div>
+            <div class="hole player2-holes" id="hole10"></div>
+            <div class="hole player2-holes" id="hole9"></div>
+            <div class="hole player2-holes" id="hole8"></div>
+            <div class="hole player2-holes" id="hole7"></div>
+            <div class="hole player2-holes" id="hole6"></div>
+            <!-- Player 1's holes (Bottom row, left to right) -->
+            <div class="hole player1-holes" id="hole0"></div>
+            <div class="hole player1-holes" id="hole1"></div>
+            <div class="hole player1-holes" id="hole2"></div>
+            <div class="hole player1-holes" id="hole3"></div>
+            <div class="hole player1-holes" id="hole4"></div>
+            <div class="hole player1-holes" id="hole5"></div>
+        </div>
+    </div>
+    <div id="stores">
+        <p>Player 1 Store: <span id="store1">0</span></p>
+        <p>Player 2 Store: <span id="store2">0</span></p>
+    </div>
+    <script>
+        let currentPlayer = 'player1';
+        const board = {
+            holes: [4, 4, 4, 4, 4, 4,  // Player 1's holes (indexes 0-5)
+                    4, 4, 4, 4, 4, 4], // Player 2's holes (indexes 6-11)
+            store1: 0,
+            store2: 0
+        };
+
+        function updateBoard() {
+            for (let i = 0; i < 12; i++) {
+                const holeElement = document.getElementById(`hole${i}`);
+                holeElement.innerHTML = '';
+                const seedCount = board.holes[i];
+
+                // Position seeds in concentric circles
+                const centerX = 35; // Half of hole width
+                const centerY = 35; // Half of hole height
+                let radiusStep = 6; // Distance between circles
+                let seedsPlaced = 0;
+
+                // Calculate the number of layers needed
+                let layers = Math.ceil((Math.sqrt(seedCount)));
+                let seedsPerLayer = [];
+
+                // Distribute seeds among layers
+                let remainingSeeds = seedCount;
+                for (let layer = 1; remainingSeeds > 0; layer++) {
+                    let seedsInLayer = layer * 6;
+                    if (layer === 1) seedsInLayer = 1; // Center seed
+                    if (remainingSeeds < seedsInLayer) seedsInLayer = remainingSeeds;
+
+                    seedsPerLayer.push({layer: layer, count: seedsInLayer});
+                    remainingSeeds -= seedsInLayer;
+                }
+
+                // Place seeds layer by layer
+                seedsPerLayer.forEach(item => {
+                    const layer = item.layer;
+                    const count = item.count;
+
+                    if (layer === 1 && count === 1) {
+                        // Place the single seed at the center
+                        const seedElement = document.createElement('div');
+                        seedElement.classList.add('seed');
+                        seedElement.style.left = `${centerX - 5}px`;
+                        seedElement.style.top = `${centerY - 5}px`;
+                        holeElement.appendChild(seedElement);
+                    } else {
+                        const angleStep = (Math.PI * 2) / count;
+                        const radius = radiusStep * (layer - 1) + 10; // Increase radius for each layer
+
+                        for (let s = 0; s < count; s++) {
+                            const angle = s * angleStep;
+                            const x = centerX + radius * Math.cos(angle) - 5; // Adjust for seed size
+                            const y = centerY + radius * Math.sin(angle) - 5;
+                            const seedElement = document.createElement('div');
+                            seedElement.classList.add('seed');
+                            seedElement.style.left = `${x}px`;
+                            seedElement.style.top = `${y}px`;
+                            holeElement.appendChild(seedElement);
+                        }
+                    }
+                });
+            }
+            document.getElementById('store1').textContent = board.store1;
+            document.getElementById('store2').textContent = board.store2;
+
+            // Update the current turn text and color
+            const currentTurnElement = document.getElementById('current-turn');
+            if (currentPlayer === 'player1') {
+                currentTurnElement.textContent = "Player 1's Turn";
+                currentTurnElement.style.color = "#0000FF"; // Blue
+            } else {
+                currentTurnElement.textContent = "Player 2's Turn";
+                currentTurnElement.style.color = "#FF0000"; // Red
+            }
+        }
+
+        // [Rest of the script remains the same]
+
+        function isOwnHole(player, index) {
+            return (player === 'player1' && index >= 0 && index <= 5) ||
+                   (player === 'player2' && index >= 6 && index <= 11);
+        }
+
+        function oppositePlayer(player) {
+            return player === 'player1' ? 'player2' : 'player1';
+        }
+
+        function captureSeeds(player, index) {
+            let seedsCaptured = 0;
+            // Continue capturing as long as the conditions are met
+            while (true) {
+                const holeSeeds = board.holes[index];
+                if (!isOwnHole(player, index) && (holeSeeds === 2 || holeSeeds === 3)) {
+                    seedsCaptured += holeSeeds;
+                    board.holes[index] = 0;
+                    index = (index - 1 + 12) % 12; // Move to previous hole
+                } else {
+                    break;
+                }
+            }
+            if (seedsCaptured > 0) {
+                if (player === 'player1') {
+                    board.store1 += seedsCaptured;
+                } else {
+                    board.store2 += seedsCaptured;
+                }
+            }
+        }
+
+        async function moveSeeds(player, holeIndex) {
+            let seeds = board.holes[holeIndex];
+            board.holes[holeIndex] = 0;
+            updateBoard();
+
+            let index = holeIndex;
+            while (seeds > 0) {
+                await new Promise(resolve => setTimeout(resolve, 300));
+                index = (index + 1) % 12; // Move to next hole counter-clockwise
+                if (index === holeIndex) {
+                    continue; // Skip original hole
+                }
+                board.holes[index]++;
+                updateBoard();
+                seeds--;
+            }
+
+            // After sowing, check for captures
+            captureSeeds(player, index);
+            updateBoard();
+
+            // Switch turns
+            currentPlayer = oppositePlayer(currentPlayer);
+            updateBoard();
+        }
+
+        document.querySelectorAll('.hole').forEach(hole => {
+            hole.addEventListener('click', () => {
+                const holeId = hole.id;
+                const holeIndex = parseInt(holeId.replace('hole', ''));
+
+                if (!isOwnHole(currentPlayer, holeIndex)) {
+                    alert("You can't select your opponent's hole!");
+                    return;
+                }
+
+                if (board.holes[holeIndex] === 0) {
+                    alert("You can't select an empty hole!");
+                    return;
+                }
+
+                moveSeeds(currentPlayer, holeIndex);
+            });
+        });
+
+        updateBoard();
+    </script>
+</body>
+</html>

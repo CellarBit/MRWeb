@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(9, 80px);
+            grid-template-rows: repeat(9, 80px);
+            gap: 0;
+            border: 2px solid #000;
+        }
+        .cell {
+            width: 80px;
+            height: 80px;
+            text-align: center;
+            font-size: 26px;
+            border: 1px solid #000; /* Set default border to 1px */
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .cell input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 26px;
+            background-color: transparent;
+            box-sizing: border-box; /* Ensure the input respects the box model */
+        }
+        .cell input:focus {
+            outline: none;
+        }
+        .cell input[readonly] {
+            background-color: #e6e6e6;
+        }
+        .cell:nth-child(3n+1) {
+            border-left: 2px solid #000;
+        }
+        .cell:nth-child(n+1):nth-of-type(-n+9) {
+            border-top: 2px solid #000;
+        }
+        .cell:nth-child(3n) {
+            border-right: 2px solid #000;
+        }
+        .cell:nth-child(n+19):nth-of-type(-n+27),
+        .cell:nth-child(n+46):nth-of-type(-n+54),
+        .cell:nth-child(n+73):nth-of-type(-n+81) {
+            border-bottom: 3px solid #000;
+        }
+        .controls {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sudoku Game</h1>
+    <div class="grid" id="sudokuGrid"></div>
+    <div class="controls">
+        <label for="filledCells">Number of filled cells:</label>
+        <select id="filledCells">
+            <option value="17">17</option>
+            <option value="23" selected>23</option>
+            <option value="30">30</option>
+            <option value="80">50</option>
+        </select>
+        <br><br>
+        <button onclick="generatePuzzle()">Generate Puzzle</button>
+        <button onclick="validatePuzzle()">Validate Puzzle</button>
+    </div>
+
+    <script>
+        function isValid(board, row, col, num) {
+            for (let i = 0; i < 9; i++) {
+                if ((board[row][i] === num && i !== col) || (board[i][col] === num && i !== row)) {
+                    return false;
+                }
+            }
+            const startRow = 3 * Math.floor(row / 3);
+            const startCol = 3 * Math.floor(col / 3);
+            for (let i = startRow; i < startRow + 3; i++) {
+                for (let j = startCol; j < startCol + 3; j++) {
+                    if (board[i][j] === num && (i !== row || j !== col)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function fillGrid(board) {
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    if (board[i][j] === 0) {
+                        const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+                        numbers.sort(() => Math.random() - 0.5);
+                        for (const num of numbers) {
+                            if (isValid(board, i, j, num)) {
+                                board[i][j] = num;
+                                if (fillGrid(board)) {
+                                    return true;
+                                }
+                                board[i][j] = 0;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function removeNumbers(board, numHoles) {
+            let count = numHoles;
+            while (count > 0) {
+                const row = Math.floor(Math.random() * 9);
+                const col = Math.floor(Math.random() * 9);
+                if (board[row][col] != 0) {
+                    board[row][col] = 0;
+                    count--;
+                }
+            }
+        }
+
+        function generatePuzzle() {
+            const sudokuBoard = Array.from({ length: 9 }, () => Array(9).fill(0));
+            fillGrid(sudokuBoard);
+
+            const numHoles = parseInt(document.getElementById('filledCells').value);
+            removeNumbers(sudokuBoard, 81 - numHoles);
+
+            const grid = document.getElementById('sudokuGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 1; // Only allows one character
+                    input.pattern = "[1-9]"; // Restrict input to digits 1-9
+                    input.value = sudokuBoard[i][j] ? sudokuBoard[i][j] : '';
+                    if (sudokuBoard[i][j]) {
+                        input.readOnly = true;
+                        input.style.backgroundColor = '#e6e6e6';
+                    }
+                    input.title = `Row ${i + 1}, Column ${j + 1}`;
+                    input.placeholder = '';
+                    cell.appendChild(input);
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function validatePuzzle() {
+            const grid = document.getElementById('sudokuGrid');
+            const cells = grid.getElementsByTagName('input');
+            const board = Array.from({ length: 9 }, () => Array(9).fill(0));
+            let valid = true;
+
+            for (let i = 0; i < 81; i++) {
+                const row = Math.floor(i / 9);
+                const col = i % 9;
+                const value = cells[i].value ? parseInt(cells[i].value) : 0;
+                if (value !== 0) {
+                    board[row][col] = 0; // Temporarily set to 0 to avoid self-validation issue
+                    if (!isValid(board, row, col, value)) {
+                        valid = false;
+                        cells[i].style.backgroundColor = 'red';
+                    } else {
+                        cells[i].style.backgroundColor = '';
+                    }
+                    board[row][col] = value; // Restore the original value
+                }
+            }
+
+            if (valid) {
+                alert('Congratulations! The puzzle is correctly solved.');
+            } else {
+                alert('There are errors in the puzzle. Please correct them.');
+            }
+        }
+    </script>
+</body>
+</html>
