@@ -186,6 +186,9 @@
                 const row = Math.floor(i / 9);
                 const col = i % 9;
                 const value = cells[i].value ? parseInt(cells[i].value) : 0;
+                if (value==0){
+                    valid = false;
+                }
                 if (value !== 0) {
                     board[row][col] = 0; // Temporarily set to 0 to avoid self-validation issue
                     if (!isValid(board, row, col, value)) {
