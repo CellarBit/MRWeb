@@ -139,11 +139,19 @@
                 const row = Math.floor(Math.random() * 9);
                 const col = Math.floor(Math.random() * 9);
                 if (board[row][col] != 0) {
+                    const temp = board[row][col];
                     board[row][col] = 0;
-                    count--;
+
+                    // Check if the puzzle still has a unique solution
+                    if (countSolutions(board) !== 1) {
+                        board[row][col] = temp;
+                    } else {
+                        count--;
+                    }
                 }
             }
         }
+
 
  
         function validatePuzzle() {
