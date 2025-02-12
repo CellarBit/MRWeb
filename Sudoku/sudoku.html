@@ -83,16 +83,63 @@
     <h1>Sudoku Game</h1>
     <div class="grid" id="sudokuGrid"></div>
     <div class="controls">
-        <label for="filledCells">Number of filled cells (max 2 digits):</label>
-        <input type="number" id="filledCells" min="1" max="81" value="23">
+        <label for="filledCells">Number of filled cells (from 25 to 80):</label>
+        <input type="number" id="filledCells" min="25" max="80" value="26">
         <br><br>
         <button onclick="generatePuzzle()">Generate Puzzle</button>
         <button onclick="validatePuzzle()">Validate Puzzle</button>
+        <button onclick="FilledSeventeen()">17 filled cell</button>
         <br><br>
         <label for="solutionCount">Number of possible solutions:</label>
         <span id="solutionCount">0</span>
     </div>
     <script>
+        const sudokuPuzzles = [
+
+        [
+            [0, 0, 0, 0, 0, 0, 0, 1, 2],
+            [0, 0, 0, 0, 3, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 4, 0, 9],
+            [1, 0, 0, 0, 0, 0, 6, 0, 0],
+            [0, 0, 0, 5, 0, 0, 0, 0, 8],
+            [0, 0, 0, 0, 0, 8, 0, 0, 7],
+            [9, 0, 4, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 6, 0],
+            [3, 6, 0, 1, 0, 0, 0, 0, 0]
+        ]
+
+
+    ];
+        function FilledSeventeen() {
+            const randomIndex = Math.floor(Math.random() * sudokuPuzzles.length);
+            const selectedPuzzle = sudokuPuzzles[randomIndex];
+            const grid = document.getElementById('sudokuGrid');
+            grid.innerHTML = '';
+
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 6;
+                    input.pattern = "[1-9]";
+                    input.value = selectedPuzzle[i][j] ? selectedPuzzle[i][j] : '';
+                    input.oninput = adjustFontSize;
+                    if (selectedPuzzle[i][j]) {
+                        input.readOnly = true;
+                        input.style.backgroundColor = '#e6e6e6';
+                    }
+                    input.title = `Row ${i + 1}, Column ${j + 1}`;
+                    input.placeholder = '';
+                    cell.appendChild(input);
+                    grid.appendChild(cell);
+                }
+            }
+
+            // Clear the solution count display for predefined puzzles
+            document.getElementById('solutionCount').textContent = '';
+        }
                function isValid(board, row, col, num) {
             for (let i = 0; i < 9; i++) {
                 if ((board[row][i] === num && i !== col) || (board[i][col] === num && i !== row)) {
