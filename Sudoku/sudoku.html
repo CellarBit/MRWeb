@@ -77,6 +77,26 @@
             margin-bottom: 20px;
             text-align: center;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            text-align: center; /* Center the text */
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
     </style>
 </head>
 <body>
@@ -99,6 +119,7 @@
                 <tr>
                     <th>Given Cells</th>
                     <th>Time</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody id="statisticsBody">
@@ -106,6 +127,7 @@
             </tbody>
         </table>
     </div>
+    
     
     
     <script>
@@ -302,7 +324,7 @@
                 const solvedGames = JSON.parse(localStorage.getItem('solvedGames')) || [];
                 solvedGames.push({
                     filledCells: filledCellsCount,
-                    time: `${minutes} minutes, ${seconds} seconds`
+                    time: `${minutes} min, ${seconds} sec`
                 });
                 localStorage.setItem('solvedGames', JSON.stringify(solvedGames));
                 
@@ -361,18 +383,38 @@
                 const row = document.createElement('tr');
                 const givenCellsCell = document.createElement('td');
                 const timeCell = document.createElement('td');
-                
+                const deleteCell = document.createElement('td');
+
                 givenCellsCell.textContent = game.filledCells;
                 timeCell.textContent = game.time;
 
+                // Create delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'x';
+                deleteButton.className = 'deleteButton';
+                deleteButton.addEventListener('click', function() {
+                    deleteStatistic(index);
+                });
+
+                deleteCell.appendChild(deleteButton);
+
                 row.appendChild(givenCellsCell);
                 row.appendChild(timeCell);
+                row.appendChild(deleteCell);
                 statisticsBody.appendChild(row);
             });
         }
 
-// Call displayStatistics on page load to show previous results
-displayStatistics();
+         // Function to delete a specific statistic
+        function deleteStatistic(index) {
+            const solvedGames = JSON.parse(localStorage.getItem('solvedGames')) || [];
+            solvedGames.splice(index, 1); // Remove the item at the specified index
+            localStorage.setItem('solvedGames', JSON.stringify(solvedGames)); // Update local storage
+            displayStatistics(); // Refresh the statistics display
+        }
+
+        // Call displayStatistics on page load to show previous results
+        displayStatistics();
 
 
     </script>
