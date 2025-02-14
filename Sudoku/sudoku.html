@@ -176,21 +176,38 @@
 
         function adjustFontSize(event) {
             const input = event.target;
-            const maxFontSize = 1.5; // Maximum font size in rem
-            const minFontSize = 0.3; // Minimum font size in rem
+            const maxFontSize = 2.0; // Maximum font size in rem
+            const minFontSize = 0.5; // Minimum font size in rem
             const maxLength = 6; // Maximum character count for maximum font size
             const characterCount = input.value.length;
 
-            // Calculate the font size based on the character count
+            // Calculate the font size
             let fontSize = maxFontSize - (characterCount / maxLength) * (maxFontSize - minFontSize);
-
-            // Ensure the font size doesn't go below the minimum font size
-            if (fontSize < minFontSize) {
-                fontSize = minFontSize;
-            }
+            fontSize = Math.max(fontSize, minFontSize); // Ensure font size is not below min
 
             input.style.fontSize = `calc(${fontSize}rem + ${fontSize / maxFontSize}vw)`; // Adjust font size based on viewport
         }
+
+
+
+
+        // function adjustFontSize(event) {
+        //     const input = event.target;
+        //     const maxFontSize = 1.5; // Maximum font size in rem
+        //     const minFontSize = 0.5; // Minimum font size in rem
+        //     const maxLength = 6; // Maximum character count for maximum font size
+        //     const characterCount = input.value.length;
+
+        //     // Calculate the font size based on the character count
+        //     let fontSize = maxFontSize - (characterCount / maxLength) * (maxFontSize - minFontSize);
+
+        //     // Ensure the font size doesn't go below the minimum font size
+        //     if (fontSize < minFontSize) {
+        //         fontSize = minFontSize;
+        //     }
+
+        //     input.style.fontSize = `calc(${fontSize}rem + ${fontSize / maxFontSize}vw)`; // Adjust font size based on viewport
+        // }
 
         function validateInput(event) {
             const input = event.target;
