@@ -93,6 +93,21 @@
         <label for="solutionCount">Number of possible solutions:</label>
         <span id="solutionCount">0</span>
     </div>
+    <div id="playerStatistics">
+        <table>
+            <thead>
+                <tr>
+                    <th>Given Cells</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="statisticsBody">
+                <!-- Player statistics will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+    
+    
     <script>
         const sudokuPuzzles = [
 
@@ -191,24 +206,6 @@
 
 
 
-        // function adjustFontSize(event) {
-        //     const input = event.target;
-        //     const maxFontSize = 1.5; // Maximum font size in rem
-        //     const minFontSize = 0.5; // Minimum font size in rem
-        //     const maxLength = 6; // Maximum character count for maximum font size
-        //     const characterCount = input.value.length;
-
-        //     // Calculate the font size based on the character count
-        //     let fontSize = maxFontSize - (characterCount / maxLength) * (maxFontSize - minFontSize);
-
-        //     // Ensure the font size doesn't go below the minimum font size
-        //     if (fontSize < minFontSize) {
-        //         fontSize = minFontSize;
-        //     }
-
-        //     input.style.fontSize = `calc(${fontSize}rem + ${fontSize / maxFontSize}vw)`; // Adjust font size based on viewport
-        // }
-
         function validateInput(event) {
             const input = event.target;
             input.value = input.value.replace(/[^1-9]/g, ''); // Allow only digits from 1 to 9
@@ -284,7 +281,6 @@
                 const col = i % 9;
                 const value = cells[i].value ? parseInt(cells[i].value) : 0;
 
-                // Check if the cell contains more than one digit
                 if (cells[i].value.length > 1 || value === 0 || !isValid(board, row, col, value)) {
                     valid = false;
                     cells[i].style.backgroundColor = 'red';
@@ -292,16 +288,31 @@
                     cells[i].style.backgroundColor = '';
                 }
 
-                board[row][col] = value; // Restore the original value
+                board[row][col] = value;
             }
 
             if (valid) {
                 const { minutes, seconds } = stopTimer();
                 alert(`Solved in ${minutes} minutes and ${seconds} seconds`);
+
+                // Get the number of filled cells from the input element
+                const filledCellsCount = parseInt(document.getElementById('filledCells').value);
+
+                // Store statistics in local storage
+                const solvedGames = JSON.parse(localStorage.getItem('solvedGames')) || [];
+                solvedGames.push({
+                    filledCells: filledCellsCount,
+                    time: `${minutes} minutes, ${seconds} seconds`
+                });
+                localStorage.setItem('solvedGames', JSON.stringify(solvedGames));
+                
+                // Update statistics display
+                displayStatistics();
             } else {
                 alert('There are errors in the puzzle. Please correct them.');
             }
         }
+
 
         function countSolutions(board) {
             let solutionCount = 0;
@@ -340,6 +351,29 @@
             const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60)); // Fixed calculation
             return {minutes, seconds};
         }
+
+        function displayStatistics() {
+            const solvedGames = JSON.parse(localStorage.getItem('solvedGames')) || [];
+            const statisticsBody = document.getElementById('statisticsBody');
+            statisticsBody.innerHTML = ''; // Clear previous statistics
+
+            solvedGames.forEach((game, index) => {
+                const row = document.createElement('tr');
+                const givenCellsCell = document.createElement('td');
+                const timeCell = document.createElement('td');
+                
+                givenCellsCell.textContent = game.filledCells;
+                timeCell.textContent = game.time;
+
+                row.appendChild(givenCellsCell);
+                row.appendChild(timeCell);
+                statisticsBody.appendChild(row);
+            });
+        }
+
+// Call displayStatistics on page load to show previous results
+displayStatistics();
+
 
     </script>
 </body>
