@@ -107,7 +107,7 @@
             [0, 0, 0, 0, 0, 0, 0, 6, 0],
             [3, 6, 0, 1, 0, 0, 0, 0, 0]
         ]
-
+           //can add more puzzles here     
 
         ];
         document.getElementById('solutionCount').textContent = '';
@@ -155,7 +155,7 @@
 
         function createInputElement(value, readOnly) {
             const input = document.createElement('input');
-            input.type = 'text';
+            input.type = 'tel';
             input.maxLength = 4; // Max length 1 to allow only single digit numbers
             input.pattern = "[1-9]";
             input.inputmode = "numeric"; // Ensure numeric keyboard on mobile devices
