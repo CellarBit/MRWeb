@@ -50,7 +50,7 @@
             background-color: transparent;
             box-sizing: border-box;
             transition: font-size 0.2s ease;
-            font-size: calc(1.5rem + 2vw); /* Default font size based on viewport */
+            font-size:  calc(1.5rem + 1.4vw); /* Default font size based on viewport */
         }
         .cell input:focus {
             outline: none;
@@ -176,16 +176,16 @@
 
         function adjustFontSize(event) {
             const input = event.target;
-            const maxFontSize = 1.7; // Maximum font size in rem
+            const maxFontSize = 1.5; // Maximum font size in rem
             const minFontSize = 0.2; // Minimum font size in rem
-            const maxLength = 6; // Maximum character count for maximum font size
+            const maxLength = 5; // Maximum character count for maximum font size
             const characterCount = input.value.length;
 
             // Calculate the font size
             let fontSize = maxFontSize - (characterCount / maxLength) * (maxFontSize - minFontSize);
             fontSize = Math.max(fontSize, minFontSize); // Ensure font size is not below min
 
-            input.style.fontSize = `calc(${fontSize}rem + ${2 * fontSize / maxFontSize}vw)`; // Adjust font size based on viewport
+            input.style.fontSize = `calc(${fontSize}rem + ${2*fontSize / maxFontSize}vw)`; // Adjust font size based on viewport
         }
 
 
