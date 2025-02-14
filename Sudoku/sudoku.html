@@ -107,7 +107,7 @@
         <input type="number" id="filledCells" min="25" max="80" value="26">
         <br><br>
         <button onclick="generatePuzzle(); startTimer();">Generate Puzzle</button>
-        <button onclick="validatePuzzle()">Validate Puzzle</button>
+        <button id="validateButton" onclick="validatePuzzle()">Validate Puzzle</button>
         <button onclick="FilledSeventeen(); startTimer()">17 filled cell</button>
         <br><br>
         <label for="solutionCount">Number of possible solutions:</label>
@@ -150,6 +150,9 @@
         document.getElementById('solutionCount').textContent = '';
 
         function generatePuzzle() {
+            // Re-enable the validate button
+            document.getElementById('validateButton').disabled = false;
+
             const sudokuBoard = Array.from({ length: 9 }, () => Array(9).fill(0));
             fillGrid(sudokuBoard);
 
@@ -174,6 +177,8 @@
         }
 
         function FilledSeventeen() {
+            // Re-enable the validate button
+            document.getElementById('validateButton').disabled = false;
             const randomIndex = Math.floor(Math.random() * sudokuPuzzles.length);
             const selectedPuzzle = sudokuPuzzles[randomIndex];
             const grid = document.getElementById('sudokuGrid');
@@ -314,6 +319,8 @@
             }
 
             if (valid) {
+                // Disable the validate button
+                document.getElementById('validateButton').disabled = true;
                 const { minutes, seconds } = stopTimer();
                 alert(`Solved in ${minutes} minutes and ${seconds} seconds`);
 
