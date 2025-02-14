@@ -86,9 +86,9 @@
         <label for="filledCells">Number of filled cells (from 25 to 80):</label>
         <input type="number" id="filledCells" min="25" max="80" value="26">
         <br><br>
-        <button onclick="generatePuzzle()">Generate Puzzle</button>
+        <button onclick="generatePuzzle(); startTimer();">Generate Puzzle</button>
         <button onclick="validatePuzzle()">Validate Puzzle</button>
-        <button onclick="FilledSeventeen()">17 filled cell</button>
+        <button onclick="FilledSeventeen(); startTimer()">17 filled cell</button>
         <br><br>
         <label for="solutionCount">Number of possible solutions:</label>
         <span id="solutionCount">0</span>
@@ -109,7 +109,33 @@
         ]
 
 
-    ];
+        ];
+        document.getElementById('solutionCount').textContent = '';
+
+        function generatePuzzle() {
+            const sudokuBoard = Array.from({ length: 9 }, () => Array(9).fill(0));
+            fillGrid(sudokuBoard);
+
+            const numHoles = 81 - parseInt(document.getElementById('filledCells').value);
+            removeNumbers(sudokuBoard, numHoles);
+
+            const grid = document.getElementById('sudokuGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    const input = createInputElement(sudokuBoard[i][j], sudokuBoard[i][j]);
+                    cell.appendChild(input);
+                    grid.appendChild(cell);
+                }
+            }
+
+            // Count and display the number of possible solutions
+            const solutionCount = countSolutions(sudokuBoard);
+            document.getElementById('solutionCount').textContent = solutionCount;
+        }
+
         function FilledSeventeen() {
             const randomIndex = Math.floor(Math.random() * sudokuPuzzles.length);
             const selectedPuzzle = sudokuPuzzles[randomIndex];
@@ -120,27 +146,58 @@
                 for (let j = 0; j < 9; j++) {
                     const cell = document.createElement('div');
                     cell.className = 'cell';
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.maxLength = 6;
-                    input.pattern = "[1-9]";
-                    input.value = selectedPuzzle[i][j] ? selectedPuzzle[i][j] : '';
-                    input.oninput = adjustFontSize;
-                    if (selectedPuzzle[i][j]) {
-                        input.readOnly = true;
-                        input.style.backgroundColor = '#e6e6e6';
-                    }
-                    input.title = `Row ${i + 1}, Column ${j + 1}`;
-                    input.placeholder = '';
+                    const input = createInputElement(selectedPuzzle[i][j], selectedPuzzle[i][j]);
                     cell.appendChild(input);
                     grid.appendChild(cell);
                 }
             }
-
-            // Clear the solution count display for predefined puzzles
-            document.getElementById('solutionCount').textContent = '';
         }
-               function isValid(board, row, col, num) {
+
+        function createInputElement(value, readOnly) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 4; // Max length 1 to allow only single digit numbers
+            input.pattern = "[1-9]";
+            input.inputmode = "numeric"; // Ensure numeric keyboard on mobile devices
+            input.value = value ? value : '';
+            input.oninput = combinedOnInput;
+            if (readOnly) {
+                input.readOnly = true;
+                input.style.backgroundColor = '#e6e6e6';
+            }
+            input.placeholder = '';
+            return input;
+        }
+
+        function combinedOnInput(event) {
+            adjustFontSize(event);
+            validateInput(event);
+        }
+
+        function adjustFontSize(event) {
+            const input = event.target;
+            const maxFontSize = 1.5; // Maximum font size in rem
+            const minFontSize = 0.5; // Minimum font size in rem
+            const maxLength = 6; // Maximum character count for maximum font size
+            const characterCount = input.value.length;
+
+            // Calculate the font size based on the character count
+            let fontSize = maxFontSize - (characterCount / maxLength) * (maxFontSize - minFontSize);
+
+            // Ensure the font size doesn't go below the minimum font size
+            if (fontSize < minFontSize) {
+                fontSize = minFontSize;
+            }
+
+            input.style.fontSize = `calc(${fontSize}rem + ${fontSize / maxFontSize}vw)`; // Adjust font size based on viewport
+        }
+
+        function validateInput(event) {
+            const input = event.target;
+            input.value = input.value.replace(/[^1-9]/g, ''); // Allow only digits from 1 to 9
+        }
+
+        function isValid(board, row, col, num) {
             for (let i = 0; i < 9; i++) {
                 if ((board[row][i] === num && i !== col) || (board[i][col] === num && i !== row)) {
                     return false;
@@ -199,8 +256,6 @@
             }
         }
 
-
- 
         function validatePuzzle() {
             const grid = document.getElementById('sudokuGrid');
             const cells = grid.getElementsByTagName('input');
@@ -224,28 +279,11 @@
             }
 
             if (valid) {
-                alert('Congratulations! The puzzle is correctly solved.');
+                const { minutes, seconds } = stopTimer();
+                alert(`Solved in ${minutes} minutes and ${seconds} seconds`);
             } else {
                 alert('There are errors in the puzzle. Please correct them.');
             }
-        }
-
-        function adjustFontSize() {
-            const input = this;
-            const maxFontSize = 1.5; // Maximum font size in rem
-            const minFontSize = 0.5; // Minimum font size in rem
-            const maxLength = 10; // Maximum character count for maximum font size
-            const characterCount = input.value.length;
-
-            // Calculate the font size based on the character count
-            let fontSize = maxFontSize - (characterCount / maxLength) * (maxFontSize - minFontSize);
-
-            // Ensure the font size doesn't go below the minimum font size
-            if (fontSize < minFontSize) {
-                fontSize = minFontSize;
-            }
-
-            input.style.fontSize = `calc(${fontSize}rem + ${fontSize / maxFontSize}vw)`; // Adjust font size based on viewport
         }
 
         function countSolutions(board) {
@@ -271,40 +309,21 @@
             return solutionCount;
         }
 
-        function generatePuzzle() {
-            const sudokuBoard = Array.from({ length: 9 }, () => Array(9).fill(0));
-            fillGrid(sudokuBoard);
+        let startTime;
+        let endTime;
 
-            const numHoles = 81 - parseInt(document.getElementById('filledCells').value);
-            removeNumbers(sudokuBoard, numHoles);
-
-            const grid = document.getElementById('sudokuGrid');
-            grid.innerHTML = '';
-            for (let i = 0; i < 9; i++) {
-                for (let j = 0; j < 9; j++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.maxLength = 6;
-                    input.pattern = "[1-9]";
-                    input.value = sudokuBoard[i][j] ? sudokuBoard[i][j] : '';
-                    input.oninput = adjustFontSize;
-                    if (sudokuBoard[i][j]) {
-                        input.readOnly = true;
-                        input.style.backgroundColor = '#e6e6e6';
-                    }
-                    input.title = `Row ${i + 1}, Column ${j + 1}`;
-                    input.placeholder = '';
-                    cell.appendChild(input);
-                    grid.appendChild(cell);
-                }
-            }
-
-            // Count and display the number of possible solutions
-            const solutionCount = countSolutions(sudokuBoard);
-            document.getElementById('solutionCount').textContent = solutionCount;
+        function startTimer() {
+            startTime = new Date();
         }
+
+        function stopTimer() {
+            endTime = new Date();
+            const timeDiff = endTime - startTime; // in ms
+            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60)); // Fixed calculation
+            return {minutes, seconds};
+        }
+
     </script>
 </body>
 </html>
