@@ -38,6 +38,7 @@
             justify-content: center;
             align-items: center;
             box-sizing: border-box;
+            font-size: calc(1.5rem + 1.4vw); /* Ensure the font size is consistent */
         }
         .cell input {
             position: absolute;
@@ -50,7 +51,7 @@
             background-color: transparent;
             box-sizing: border-box;
             transition: font-size 0.2s ease;
-            font-size:  calc(1.5rem + 1.4vw); /* Default font size based on viewport */
+            font-size: inherit; /* Use the inherited font size from the parent .cell */
         }
         .cell input:focus {
             outline: none;
@@ -95,6 +96,19 @@
 
         tr:nth-child(even) {
             background-color: #f9f9f9;
+        }
+
+        .deleteButton {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 2px 5px;
+            margin-left: 10px;
+        }
+
+        .deleteButton:hover {
+            background-color: darkred;
         }
 
     </style>
