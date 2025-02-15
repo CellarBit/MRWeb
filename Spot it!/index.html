@@ -4,14 +4,333 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spot It!</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #header {
+            display: flex;
+            justify-content: space-between;
+            width: 50vw; /* Same as 50% */
+            margin-bottom: 20px;
+        }
+
+        #timer, #correct-counter {
+            font-size: 24px;
+        }
+
+        #game-container {
+            display: flex;
+            gap: 50px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-frame {
+            position: relative;
+            width: 600px; /* Adjusted size */
+            height: 600px; /* Adjusted size */
+            margin: 10px;
+            border: 5px solid #c70404;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+        }
+
+        .card {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 100%;
+            height: 100%;
+            /*background-color: lightblue;*/
+        }
+
+        .symbol {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            overflow: hidden; /* Ensure any overflow is hidden */
+            padding: 5px; /* Add some padding */
+        }
+
+        .symbol img {
+            width: 100%; /* Adjust the percentage to ensure the image fits within the cell */
+            height: auto; /* Maintain the aspect ratio */
+            max-width: 100%; /* Ensure the image does not exceed the cell size */
+            max-height: 100%; /* Ensure the image does not exceed the cell size */
+        }
+        .symbol.highlighted {
+            background-color: yellow;
+        }
+
+        .symbol.correct {
+            background-color: green;
+        }
+
+        .symbol.incorrect {
+            background-color: red;
+        }
+
+        /* Left of the middle cell */
+        .left-of-middle {
+            position: relative;
+            right: -60px; /* Adjust this value to position the cell closer to the middle */
+        }
+
+        /* Right of the middle cell */
+        .right-of-middle {
+            position: relative;
+            left: -60px; /* Adjust this value to position the cell closer to the middle */
+ 
+        }
+    </style>
 </head>
 <body>
     <div id="header">
-        <div id="timer">Time Left: 60s</div>
+        <div id="timer">Time Left: </div>
         <div id="correct-counter">Correct: 0</div>
     </div>
     <div id="game-container"></div>
-    <script src="script.js"></script>
+    <script>
+
+// Function to generate the deck
+function generateSpotItDeck(n) {
+    const numSymbols = n ** 2 + n + 1;
+    const deck = [];
+
+    for (let i = 0; i < n + 1; i++) {
+        const card = [];
+        card.push(0); // Add a common symbol for all cards
+        for (let j = 0; j < n; j++) {
+            card.push(i * n + j + 1);
+        }
+        deck.push(card);
+    }
+
+    // Generate the remaining cards
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            const card = [];
+            card.push(i + 1); // Add a common symbol for this set of cards
+            for (let k = 0; k < n; k++) {
+                card.push(n + 1 + k * n + (k * i + j) % n);
+            }
+            deck.push(card);
+        }
+    }
+
+
+    // Verify the deck
+    let noCommonSymbolCount = 0;
+    let multipleCommonSymbolsCount = 0;
+    for (let i = 0; i < deck.length; i++) {
+        for (let j = i + 1; j < deck.length; j++) {
+            const commonSymbols = deck[i].filter(symbol => deck[j].includes(symbol));
+            if (commonSymbols.length === 0) {
+                noCommonSymbolCount++;
+            } else if (commonSymbols.length > 1) {
+                multipleCommonSymbolsCount++;
+            }
+        }
+    }
+
+    console.log(`Total number of cards created: ${deck.length}`);
+    console.log(`Total number of card pairs without any common symbol: ${noCommonSymbolCount}`);
+    console.log(`Total number of card pairs with more than one common symbol: ${multipleCommonSymbolsCount}`);
+
+    return deck;
+}
+
+
+function renderCard(cardSymbols, containerId) {
+    const container = document.getElementById(containerId);
+    const frameDiv = document.createElement('div');
+    frameDiv.className = 'card-frame';
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'card';
+
+    // Randomly distribute symbols in 8 different cells of the 3x3 grid, excluding the middle cell (2, 2)
+    const usedCells = new Set(['2-2']); // Pre-fill the set with '2-2' to exclude the middle cell
+    for (let i = 0; i < cardSymbols.length; i++) {
+        let row, col;
+        do {
+            row = Math.floor(Math.random() * 3) + 1;
+            col = Math.floor(Math.random() * 3) + 1;
+        } while (usedCells.has(`${row}-${col}`));
+        usedCells.add(`${row}-${col}`);
+
+        const symbolDiv = document.createElement('div');
+        symbolDiv.className = 'symbol';
+        symbolDiv.style.gridRow = row;
+        symbolDiv.style.gridColumn = col;
+
+        // Add custom classes based on cell positions
+        if (row === 2 && col === 1) {
+            symbolDiv.classList.add('left-of-middle');
+        } else if (row === 2 && col === 3) {
+            symbolDiv.classList.add('right-of-middle');
+        }
+
+        const img = document.createElement('img');
+        img.src = `images/symbol${cardSymbols[i]}.png`;
+        img.alt = `symbol${cardSymbols[i]}`;
+        symbolDiv.appendChild(img);
+
+        symbolDiv.addEventListener('click', () => handleSymbolClick(cardSymbols[i], symbolDiv));
+        cardDiv.appendChild(symbolDiv);
+    }
+
+    frameDiv.appendChild(cardDiv);
+    container.appendChild(frameDiv);
+}
+
+        // Function to display a new set of two cards
+        function displayNewCards() {
+            const gameContainer = document.getElementById('game-container');
+            gameContainer.innerHTML = ''; // Clear previous cards
+
+            const randomIndices = [];
+            while (randomIndices.length < 2) {
+                const index = Math.floor(Math.random() * deck.length);
+                if (!randomIndices.includes(index)) randomIndices.push(index);
+            }
+
+            renderCard(deck[randomIndices[0]], 'game-container');
+            renderCard(deck[randomIndices[1]], 'game-container');
+        }
+
+        // Sound for correct and incorrect answers
+        const correctSound = new Audio('correct.mp3'); // Place the correct sound file in the same directory
+        const incorrectSound = new Audio('incorrect.mp3'); // Place the incorrect sound file in the same directory
+
+        let selectedSymbols = [];
+        let correctCount = 0;
+        let timer;
+
+        function handleSymbolClick(symbol, symbolDiv) {
+            const cardFrame = symbolDiv.closest('.card-frame'); // Get the parent card frame
+            const isSameCard = selectedSymbols.length > 0 && selectedSymbols[0].symbolDiv.closest('.card-frame') === cardFrame;
+
+            // If selected symbol is on the same card, change the highlighted symbol
+            if (isSameCard) {
+                selectedSymbols[0].symbolDiv.classList.remove('highlighted'); // Remove highlight from previously selected symbol
+                selectedSymbols = [{ symbol, symbolDiv }]; // Update selected symbol on the same card
+                symbolDiv.classList.add('highlighted'); // Highlight the new selected symbol
+            } else {
+                selectedSymbols.push({ symbol, symbolDiv });
+                symbolDiv.classList.add('highlighted'); // Highlight the clicked symbol
+
+                if (selectedSymbols.length === 2) {
+                    checkMatch();
+                }
+            }
+        }
+
+        function checkMatch() {
+        const [{ symbol: symbol1, symbolDiv: div1 }, { symbol: symbol2, symbolDiv: div2 }] = selectedSymbols;
+
+        if (symbol1 === symbol2) {
+            correctCount++;
+            correctSound.play();
+            div1.classList.add('correct');
+            div2.classList.add('correct');
+            div1.classList.remove('highlighted');
+            div2.classList.remove('highlighted');
+            document.getElementById('correct-counter').textContent = `Correct: ${correctCount}`;
+            setTimeout(() => {
+                displayNewCards();
+            }, 1000);
+        } else {
+            incorrectSound.play();
+            div1.classList.add('incorrect');
+            div2.classList.add('incorrect');
+            div1.classList.remove('highlighted');
+            div2.classList.remove('highlighted');
+
+            // Show the correct pair
+            const correctPair = findCorrectPair(symbol1, symbol2);
+            if (correctPair) {
+                const { correctDiv1, correctDiv2 } = correctPair;
+                correctDiv1.classList.add('correct');
+                correctDiv2.classList.add('correct');
+            }
+
+            setTimeout(() => {
+                displayNewCards();
+            }, 2000); // Wait for 2 seconds before displaying new cards
+        }
+
+        selectedSymbols = [];
+    }
+
+    function findCorrectPair(symbol1, symbol2) {
+        // Find the matching symbol and its divs from the two cards
+        const cardFrames = document.querySelectorAll('.card-frame');
+        for (let i = 0; i < cardFrames.length; i++) {
+            const symbols1 = cardFrames[i].querySelectorAll('.symbol');
+            for (let j = i + 1; j < cardFrames.length; j++) {
+                const symbols2 = cardFrames[j].querySelectorAll('.symbol');
+                for (let k = 0; k < symbols1.length; k++) {
+                    for (let l = 0; l < symbols2.length; l++) {
+                        if (symbols1[k].innerHTML === symbols2[l].innerHTML) {
+                            return {
+                                correctDiv1: symbols1[k],
+                                correctDiv2: symbols2[l]
+                            };
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+        // Start the game timer
+        function startTimer() {
+            let timeLeft = 300; // 1 minute
+            const timerElement = document.getElementById('timer');
+            timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    alert(`Time's up! You correctly matched ${correctCount} pairs.`);
+                    location.reload();
+                } else {
+                    timerElement.textContent = `Time Left: ${timeLeft}s`;
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        // Main function to initiate the game
+        function initializeGame() {
+            // Ensure only one correct counter exists
+            const correctCounter = document.getElementById('correct-counter');
+            correctCounter.textContent = 'Correct: 0';
+        }
+
+        // Initialize the game
+        const deck = generateSpotItDeck(7); // Generate the deck with order 8
+        // Ensure the deck is generated correctly
+
+        initializeGame();
+        displayNewCards(); // Render the initial set of two cards
+        startTimer(); // Start the 1-minute timer
+    </script>
 </body>
 </html>
