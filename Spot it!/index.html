@@ -5,99 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spot It!</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
 
-        #header {
-            display: flex;
-            justify-content: space-between;
-            width: 50vw; /* Same as 50% */
-            margin-bottom: 20px;
-        }
+#header {
+    display: flex;
+    justify-content: space-between;
+    width: 50vw; /* Same as 50% */
+    margin-bottom: 20px;
+}
 
-        #timer, #correct-counter {
-            font-size: 24px;
-        }
+#timer, #correct-counter {
+    font-size: 24px;
+}
 
-        #game-container {
-            display: flex;
-            gap: 50px;
-            justify-content: center;
-            align-items: center;
-        }
+#game-container {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
+}
 
-        .card-frame {
-            position: relative;
-            width: 600px; /* Adjusted size */
-            height: 600px; /* Adjusted size */
-            margin: 10px;
-            border: 5px solid #c70404;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #fff;
-        }
+/* Default layout: Cards side by side with larger size for computers */
+.card-frame {
+    position: relative;
+    width: 600px; /* Original size */
+    height: 600px; /* Original size */
+    margin: 10px;
+    border: 5px solid #c70404;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+}
 
-        .card {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            width: 100%;
-            height: 100%;
-            /*background-color: lightblue;*/
-        }
+/* Portrait mode: Cards stacked and smaller size for phones */
+@media screen and (max-width: 600px) and (orientation: portrait) {
+    #game-container {
+        flex-direction: column;
+    }
+    .card-frame {
+        width: 300px; /* Adjusted size for better phone display */
+        height: 300px; /* Adjusted size for better phone display */
+    }
+}
 
-        .symbol {
-            width: 90%;
-            height: 90%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            overflow: hidden; /* Ensure any overflow is hidden */
-            padding: 5px; /* Add some padding */
-        }
+/* Landscape mode: Cards side by side and smaller size for phones */
+@media screen and (max-width: 600px) and (orientation: landscape) {
+    #game-container {
+        flex-direction: row;
+    }
+    .card-frame {
+        width: 300px; /* Adjusted size for better phone display */
+        height: 300px; /* Adjusted size for better phone display */
+    }
+}
 
-        .symbol img {
-            width: 100%; /* Adjust the percentage to ensure the image fits within the cell */
-            height: auto; /* Maintain the aspect ratio */
-            max-width: 100%; /* Ensure the image does not exceed the cell size */
-            max-height: 100%; /* Ensure the image does not exceed the cell size */
-        }
-        .symbol.highlighted {
-            background-color: yellow;
-        }
+.card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+    /* background-color: lightblue; */
+}
 
-        .symbol.correct {
-            background-color: green;
-        }
+.symbol {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    overflow: hidden; /* Ensure any overflow is hidden */
+    padding: 5px; /* Add some padding */
+}
 
-        .symbol.incorrect {
-            background-color: red;
-        }
+.symbol img {
+    width: 100%; /* Adjust the percentage to ensure the image fits within the cell */
+    height: auto; /* Maintain the aspect ratio */
+    max-width: 100%; /* Ensure the image does not exceed the cell size */
+    max-height: 100%; /* Ensure the image does not exceed the cell size */
+}
 
-        /* Left of the middle cell */
-        .left-of-middle {
-            position: relative;
-            right: -60px; /* Adjust this value to position the cell closer to the middle */
-        }
+.symbol.highlighted {
+    background-color: yellow;
+}
 
-        /* Right of the middle cell */
-        .right-of-middle {
-            position: relative;
-            left: -60px; /* Adjust this value to position the cell closer to the middle */
- 
-        }
+.symbol.correct {
+    background-color: green;
+}
+
+.symbol.incorrect {
+    background-color: red;
+}
+
+/* Left of the middle cell */
+.left-of-middle {
+    position: relative;
+    right: -60px; /* Adjust this value to position the cell closer to the middle */
+}
+
+/* Right of the middle cell */
+.right-of-middle {
+    position: relative;
+    left: -60px; /* Adjust this value to position the cell closer to the middle */
+}
+
     </style>
 </head>
 <body>
