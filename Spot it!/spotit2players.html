@@ -19,13 +19,13 @@
         #header {
             display: flex;
             justify-content: space-between;
-            width: 40vw; /* Same as 50% */
+            width: 40vw;
             margin-bottom: 20px;
         }
 
         #game-container {
             display: flex;
-            flex-direction: column; /* Ensure cards are displayed in a column */
+            flex-direction: column;
             gap: 10px;
             justify-content: center;
             align-items: center;
@@ -33,8 +33,8 @@
 
         .card-frame {
             position: relative;
-            width: 300px; /* Original size */
-            height: 300px; /* Original size */
+            width: 300px;
+            height: 300px;
             margin: 5px;
             border: 7px solid #559c03;
             border-radius: 15px;
@@ -46,7 +46,7 @@
         }
 
         .rotate {
-            transform: rotate(180deg); /* Rotate card by 180 degrees */
+            transform: rotate(180deg);
         }
 
         .card {
@@ -65,19 +65,15 @@
             justify-content: center;
             cursor: pointer;
             transition: background-color 0.3s;
-            overflow: hidden; /* Ensure any overflow is hidden */
-            padding: 5px; /* Add some padding */
+            overflow: hidden;
+            padding: 5px;
         }
 
         .symbol img {
-            width: 100%; /* Adjust the percentage to ensure the image fits within the cell */
-            height: auto; /* Maintain the aspect ratio */
-            max-width: 100%; /* Ensure the image does not exceed the cell size */
-            max-height: 100%; /* Ensure the image does not exceed the cell size */
-        }
-
-        .symbol.highlighted {
-            background-color: yellow;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
         }
 
         .symbol.correct {
@@ -90,14 +86,14 @@
 
         .score-counter {
             position: absolute;
-            top: -30px; /* Positioned above the card frame */
+            top: -30px;
             right: 0;
             background-color: white;
             border: 1px solid #333;
             border-radius: 5px;
             padding: 2px 5px;
             font-size: 14px;
-            z-index: 1; /* Ensure the counter stays on top */
+            z-index: 1;
         }
     </style>
 </head>
@@ -111,7 +107,7 @@
 
             for (let i = 0; i < n + 1; i++) {
                 const card = [];
-                card.push(0); 
+                card.push(0);
                 for (let j = 0; j < n; j++) {
                     card.push(i * n + j + 1);
                 }
@@ -121,7 +117,7 @@
             for (let i = 0; i < n; i++) {
                 for (let j = 0; j < n; j++) {
                     const card = [];
-                    card.push(i + 1); 
+                    card.push(i + 1);
                     for (let k = 0; k < n; k++) {
                         card.push(n + 1 + k * n + (k * i + j) % n);
                     }
@@ -182,13 +178,12 @@
 
         function displayNewCards() {
             const gameContainer = document.getElementById('game-container');
-            gameContainer.innerHTML = ''; // Clear previous cards
+            gameContainer.innerHTML = '';
 
             const player1Container = document.createElement('div');
             player1Container.id = 'player1-container';
             gameContainer.appendChild(player1Container);
             
-
             const player2Container = document.createElement('div');
             player2Container.id = 'player2-container';
             gameContainer.appendChild(player2Container);
@@ -211,7 +206,6 @@
                 player1CardFrame.classList.add('rotate');
             }
 
-            // Reset selected symbols
             selectedSymbols = [];
             lockGame = false;
         }
@@ -220,8 +214,7 @@
         let lockGame = false;
         let player1Score = 0;
         let player2Score = 0;
-        let player1LastTap = 0;
-        let player2LastTap = 0;
+        let firstTapTime = 0;
 
         function handleSymbolClick(symbol, symbolDiv, commonSymbol, player) {
             if (lockGame) return;
@@ -230,29 +223,22 @@
 
             if (symbol === commonSymbol) {
                 symbolDiv.classList.add('correct');
-                if (player === 1) {
-                    player1LastTap = tapTime;
-                } else {
-                    player2LastTap = tapTime;
-                }
                 
-                if (player1LastTap && player2LastTap) {
-                    if (player1LastTap < player2LastTap) {
-                        updateScore(1);
-                    } else {
-                        updateScore(2);
-                    }
-                } else {
+                if (!firstTapTime || tapTime < firstTapTime) {
+                    firstTapTime = tapTime;
                     updateScore(player);
                 }
                 
-                setTimeout(displayNewCards, 3000); // Wait for 3 seconds before displaying new cards
+                setTimeout(() => {
+                    firstTapTime = 0;
+                    displayNewCards();
+                }, 3000);
             } else {
                 symbolDiv.classList.add('incorrect');
                 setTimeout(() => {
                     symbolDiv.classList.remove('incorrect', 'highlighted');
                     lockGame = false;
-                }, 1000); // Wait for 1 second before removing highlight
+                }, 1000);
             }
             lockGame = true;
         }
