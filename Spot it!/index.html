@@ -52,10 +52,13 @@ body {
 @media screen and (max-width: 600px) and (orientation: portrait) {
     #game-container {
         flex-direction: column;
+        align-items: center; /* Center the cards */
+        gap: 1px; /* Adjust the gap between cards */
     }
     .card-frame {
         width: 300px; /* Adjusted size for better phone display */
         height: 300px; /* Adjusted size for better phone display */
+        margin-bottom: 5px; 
     }
 }
 
@@ -63,10 +66,11 @@ body {
 @media screen and (max-width: 600px) and (orientation: landscape) {
     #game-container {
         flex-direction: row;
+        gap: 10px; /* Adjust the gap between cards */
     }
     .card-frame {
-        width: 200px; /* Further adjusted size for better landscape display */
-        height: 200px; /* Further adjusted size for better landscape display */
+        width: 150px; /* Further adjusted size for better landscape display */
+        height: 150px; /* Further adjusted size for better landscape display */
     }
 }
 
