@@ -141,7 +141,7 @@
             const scoreCounter = document.createElement('div');
             scoreCounter.className = 'score-counter';
             scoreCounter.id = `player${player}-score`;
-            scoreCounter.textContent = `0/10`;
+            scoreCounter.textContent = `${player === 1 ? player1Score : player2Score}/10`;
             frameDiv.appendChild(scoreCounter);
 
             const usedCells = new Set(['2-2']);
@@ -187,6 +187,7 @@
             const player1Container = document.createElement('div');
             player1Container.id = 'player1-container';
             gameContainer.appendChild(player1Container);
+            
 
             const player2Container = document.createElement('div');
             player2Container.id = 'player2-container';
@@ -219,13 +220,32 @@
         let lockGame = false;
         let player1Score = 0;
         let player2Score = 0;
+        let player1LastTap = 0;
+        let player2LastTap = 0;
 
         function handleSymbolClick(symbol, symbolDiv, commonSymbol, player) {
             if (lockGame) return;
 
+            const tapTime = Date.now();
+
             if (symbol === commonSymbol) {
                 symbolDiv.classList.add('correct');
-                updateScore(player);
+                if (player === 1) {
+                    player1LastTap = tapTime;
+                } else {
+                    player2LastTap = tapTime;
+                }
+                
+                if (player1LastTap && player2LastTap) {
+                    if (player1LastTap < player2LastTap) {
+                        updateScore(1);
+                    } else {
+                        updateScore(2);
+                    }
+                } else {
+                    updateScore(player);
+                }
+                
                 setTimeout(displayNewCards, 3000); // Wait for 3 seconds before displaying new cards
             } else {
                 symbolDiv.classList.add('incorrect');
