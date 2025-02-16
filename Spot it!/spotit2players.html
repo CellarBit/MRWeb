@@ -58,6 +58,11 @@
         .rotate {
             transform: rotate(180deg);
         }
+        @media (orientation: landscape) {
+            .rotate {
+                transform: none;
+            }
+        }
 
         .card {
             display: grid;
