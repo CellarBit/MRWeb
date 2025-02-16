@@ -118,6 +118,31 @@
             cursor: pointer;
         }
 
+        /* Left of the middle cell */
+        .left-of-middle {
+            position: relative;
+            right: -20%; /* Adjust this value to position the cell closer to the middle */
+        }
+
+        /* Right of the middle cell */
+        .right-of-middle {
+            position: relative;
+            left: -20%; /* Adjust this value to position the cell closer to the middle */
+        }
+
+          /* Left of the middle cell */
+          .up-of-middle {
+            position: relative;
+            bottom: -20%; /* Adjust this value to position the cell closer to the middle */
+        }
+
+        /* Right of the middle cell */
+        .down-of-middle {
+            position: relative;
+            top: -20%; /* Adjust this value to position the cell closer to the middle */
+        }
+
+
     </style>
 </head>
 <body>
@@ -178,7 +203,16 @@
                 symbolDiv.className = 'symbol';
                 symbolDiv.style.gridRow = row;
                 symbolDiv.style.gridColumn = col;
-
+                // Add custom classes based on cell positions
+                if (row === 2 && col === 1) {
+                    symbolDiv.classList.add('left-of-middle');
+                } else if (row === 2 && col === 3) {
+                    symbolDiv.classList.add('right-of-middle');
+                } else if (row === 1 && col === 2) {
+                    symbolDiv.classList.add('up-of-middle');
+                } else if (row === 3 && col === 2) {
+                    symbolDiv.classList.add('down-of-middle');
+                }
                 const img = document.createElement('img');
                 img.src = `images/symbol${cardSymbols[i]}.png`;
                 img.alt = `symbol${cardSymbols[i]}`;
