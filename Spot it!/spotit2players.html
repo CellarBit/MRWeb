@@ -19,21 +19,31 @@
         #header {
             display: flex;
             justify-content: space-between;
-            width: 40vw;
+            width: 40vw; 
             margin-bottom: 20px;
         }
 
         #game-container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* Align side by side for larger screens */
+            flex-wrap: wrap; /* Wrap into column for smaller screens */
             gap: 10px;
             justify-content: center;
             align-items: center;
+            width: 100%;
+        }
+
+        .player-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
         }
 
         .card-frame {
             position: relative;
-            width: 300px;
+            width: 90vw; /* Adjust for mobile */
+            max-width: 300px; /* Limit maximum width */
             height: 300px;
             margin: 5px;
             border: 7px solid #559c03;
@@ -159,7 +169,7 @@
                 img.alt = `symbol${cardSymbols[i]}`;
                 symbolDiv.appendChild(img);
 
-                symbolDiv.addEventListener('click', () => handleSymbolClick(cardSymbols[i], symbolDiv, commonSymbol, player));
+                symbolDiv.addEventListener('click', (event) => handleSymbolClick(cardSymbols[i], symbolDiv, commonSymbol, player, event));
                 cardDiv.appendChild(symbolDiv);
             }
 
@@ -181,10 +191,12 @@
             gameContainer.innerHTML = '';
 
             const player1Container = document.createElement('div');
+            player1Container.className = 'player-container';
             player1Container.id = 'player1-container';
             gameContainer.appendChild(player1Container);
             
             const player2Container = document.createElement('div');
+            player2Container.className = 'player-container';
             player2Container.id = 'player2-container';
             gameContainer.appendChild(player2Container);
 
@@ -216,10 +228,10 @@
         let player2Score = 0;
         let firstTapTime = 0;
 
-        function handleSymbolClick(symbol, symbolDiv, commonSymbol, player) {
+        function handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event) {
             if (lockGame) return;
 
-            const tapTime = Date.now();
+            const tapTime = event.timeStamp;
 
             if (symbol === commonSymbol) {
                 symbolDiv.classList.add('correct');
