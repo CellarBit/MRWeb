@@ -41,12 +41,12 @@
             width: 600px; /* Original size */
             height: 600px; /* Original size */
             margin: 10px;
-            border: 5px solid #c70404;
+            border: 7px solid #559c03;
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #fff;
+            background-color: #ffffff;
         }
 
         /* Portrait mode: Cards stacked and smaller size for phones */
@@ -119,13 +119,13 @@
         /* Left of the middle cell */
         .left-of-middle {
             position: relative;
-            right: -30%; /* Adjust this value to position the cell closer to the middle */
+            right: -20%; /* Adjust this value to position the cell closer to the middle */
         }
 
         /* Right of the middle cell */
         .right-of-middle {
             position: relative;
-            left: -30%; /* Adjust this value to position the cell closer to the middle */
+            left: -20%; /* Adjust this value to position the cell closer to the middle */
         }
 
           /* Left of the middle cell */
@@ -349,7 +349,7 @@ function renderCard(cardSymbols, containerId) {
 
         // Start the game timer
         function startTimer() {
-            let timeLeft = 300; // 1 minute
+            let timeLeft = 100; // 1 minute
             const timerElement = document.getElementById('timer');
             timer = setInterval(() => {
                 if (timeLeft <= 0) {
