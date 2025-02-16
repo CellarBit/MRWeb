@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spot It! - Two Player Mode</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #header {
+            display: flex;
+            justify-content: space-between;
+            width: 40vw; /* Same as 50% */
+            margin-bottom: 20px;
+        }
+
+        #game-container {
+            display: flex;
+            flex-direction: column; /* Ensure cards are displayed in a column */
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-frame {
+            position: relative;
+            width: 300px; /* Original size */
+            height: 300px; /* Original size */
+            margin: 5px;
+            border: 7px solid #559c03;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            flex-direction: column;
+        }
+
+        .rotate {
+            transform: rotate(180deg); /* Rotate card by 180 degrees */
+        }
+
+        .card {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 100%;
+            height: 100%;
+        }
+
+        .symbol {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            overflow: hidden; /* Ensure any overflow is hidden */
+            padding: 5px; /* Add some padding */
+        }
+
+        .symbol img {
+            width: 100%; /* Adjust the percentage to ensure the image fits within the cell */
+            height: auto; /* Maintain the aspect ratio */
+            max-width: 100%; /* Ensure the image does not exceed the cell size */
+            max-height: 100%; /* Ensure the image does not exceed the cell size */
+        }
+
+        .symbol.highlighted {
+            background-color: yellow;
+        }
+
+        .symbol.correct {
+            background-color: green;
+        }
+
+        .symbol.incorrect {
+            background-color: red;
+        }
+
+        .score-counter {
+            position: absolute;
+            top: -30px; /* Positioned above the card frame */
+            right: 0;
+            background-color: white;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 2px 5px;
+            font-size: 14px;
+            z-index: 1; /* Ensure the counter stays on top */
+        }
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+    <div id="game-container"></div>
+    <script>
+        function generateSpotItDeck(n) {
+            const numSymbols = n ** 2 + n + 1;
+            const deck = [];
+
+            for (let i = 0; i < n + 1; i++) {
+                const card = [];
+                card.push(0); 
+                for (let j = 0; j < n; j++) {
+                    card.push(i * n + j + 1);
+                }
+                deck.push(card);
+            }
+            
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < n; j++) {
+                    const card = [];
+                    card.push(i + 1); 
+                    for (let k = 0; k < n; k++) {
+                        card.push(n + 1 + k * n + (k * i + j) % n);
+                    }
+                    deck.push(card);
+                }
+            }
+            return deck;
+        }
+
+        function renderCard(cardSymbols, containerId, commonSymbol, player) {
+            const container = document.getElementById(containerId);
+            const frameDiv = document.createElement('div');
+            frameDiv.className = 'card-frame';
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+
+            const scoreCounter = document.createElement('div');
+            scoreCounter.className = 'score-counter';
+            scoreCounter.id = `player${player}-score`;
+            scoreCounter.textContent = `0/10`;
+            frameDiv.appendChild(scoreCounter);
+
+            const usedCells = new Set(['2-2']);
+            for (let i = 0; i < cardSymbols.length; i++) {
+                let row, col;
+                do {
+                    row = Math.floor(Math.random() * 3) + 1;
+                    col = Math.floor(Math.random() * 3) + 1;
+                } while (usedCells.has(`${row}-${col}`));
+                usedCells.add(`${row}-${col}`);
+
+                const symbolDiv = document.createElement('div');
+                symbolDiv.className = 'symbol';
+                symbolDiv.style.gridRow = row;
+                symbolDiv.style.gridColumn = col;
+
+                const img = document.createElement('img');
+                img.src = `images/symbol${cardSymbols[i]}.png`;
+                img.alt = `symbol${cardSymbols[i]}`;
+                symbolDiv.appendChild(img);
+
+                symbolDiv.addEventListener('click', () => handleSymbolClick(cardSymbols[i], symbolDiv, commonSymbol, player));
+                cardDiv.appendChild(symbolDiv);
+            }
+
+            frameDiv.appendChild(cardDiv);
+            container.appendChild(frameDiv);
+        }
+
+        function findCommonSymbol(card1, card2) {
+            for (let symbol of card1) {
+                if (card2.includes(symbol)) {
+                    return symbol;
+                }
+            }
+            return null;
+        }
+
+        function displayNewCards() {
+            const gameContainer = document.getElementById('game-container');
+            gameContainer.innerHTML = ''; // Clear previous cards
+
+            const player1Container = document.createElement('div');
+            player1Container.id = 'player1-container';
+            gameContainer.appendChild(player1Container);
+
+            const player2Container = document.createElement('div');
+            player2Container.id = 'player2-container';
+            gameContainer.appendChild(player2Container);
+
+            const randomIndices = [];
+            while (randomIndices.length < 2) {
+                const index = Math.floor(Math.random() * deck.length);
+                if (!randomIndices.includes(index)) randomIndices.push(index);
+            }
+
+            const card1 = deck[randomIndices[0]];
+            const card2 = deck[randomIndices[1]];
+            const commonSymbol = findCommonSymbol(card1, card2);
+
+            renderCard(card1, 'player1-container', commonSymbol, 1);
+            renderCard(card2, 'player2-container', commonSymbol, 2);
+
+            const player1CardFrame = player1Container.querySelector('.card-frame');
+            if (player1CardFrame) {
+                player1CardFrame.classList.add('rotate');
+            }
+
+            // Reset selected symbols
+            selectedSymbols = [];
+            lockGame = false;
+        }
+
+        let selectedSymbols = [];
+        let lockGame = false;
+        let player1Score = 0;
+        let player2Score = 0;
+
+        function handleSymbolClick(symbol, symbolDiv, commonSymbol, player) {
+            if (lockGame) return;
+
+            if (symbol === commonSymbol) {
+                symbolDiv.classList.add('correct');
+                updateScore(player);
+                setTimeout(displayNewCards, 3000); // Wait for 3 seconds before displaying new cards
+            } else {
+                symbolDiv.classList.add('incorrect');
+                setTimeout(() => {
+                    symbolDiv.classList.remove('incorrect', 'highlighted');
+                    lockGame = false;
+                }, 1000); // Wait for 1 second before removing highlight
+            }
+            lockGame = true;
+        }
+
+        function updateScore(player) {
+            if (player === 1) {
+                player1Score++;
+                document.getElementById('player1-score').textContent = `${player1Score}/10`;
+                if (player1Score === 10) {
+                    alert('Player 1 wins!');
+                    location.reload();
+                }
+            } else {
+                player2Score++;
+                document.getElementById('player2-score').textContent = `${player2Score}/10`;
+                if (player2Score === 10) {
+                    alert('Player 2 wins!');
+                    location.reload();
+                }
+            }
+        }
+
+        const deck = generateSpotItDeck(7);
+        displayNewCards();
+    </script>
+</body>
+</html>
