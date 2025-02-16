@@ -49,6 +49,12 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
+
+        .screen-size {
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -61,5 +67,17 @@
             <li><a href="Sudoku/sudoku.html">Sudoku</a></li>
         </ul>
     </div>
+
+    <!-- Element to display screen size -->
+    <div class="screen-size" id="screen-size"></div>
+
+    <!-- JavaScript to check screen size -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let screenWidth = window.screen.width;
+            let screenHeight = window.screen.height;
+            document.getElementById('screen-size').textContent = `Width: ${screenWidth}px, Height: ${screenHeight}px`;
+        });
+    </script>
 </body>
 </html>
