@@ -106,7 +106,8 @@
           secondCard = null;
           matches += 1;
           if (matches === cardsArray.length / 2) {
-            setTimeout(() => alert('You won!'), 500);
+            setTimeout(() => alert('You won!'));
+            location.reload();
           }
         } else {
           setTimeout(() => {
