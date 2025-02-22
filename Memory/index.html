@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Memory Game</title>
   <style>
     body {
@@ -21,6 +22,7 @@
       cursor: pointer;
       background-image: url('facedown.png');
       background-size: cover;
+      
     }
 
     .matched {
@@ -32,7 +34,18 @@
       grid-template-columns: repeat(4, 1fr);  /* Responsive columns */
       grid-gap: 1vw;  /* Reduced gap */
       width: 40vw;    /* Responsive width */
-    }   
+    }
+    
+    @media screen and (max-width: 600px) and (orientation:portrait) {
+      .card {
+        width: 20vw;
+        height: 20vw;
+      }
+
+      #game-board {
+        width: 85vw;
+      }
+    }
   </style>
 </head>
 <body>
