@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Game of PIG</title>
+    <style>
+        /* Basic body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Container for the entire game content */
+        .wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Main container for the game elements */
+        .score-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Row for each player's progress bar */
+        .progress-row {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* Container for the progress bars */
+        .progress-container {
+            flex: 1;
+            height: 30px;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            position: relative;
+            margin-left: 10px;
+            
+        }
+
+        /* Progress bar styling */
+        .progress-bar {
+            height: 100%;
+            background-color: #151791;
+            width: 0%; /* Initially 0% */
+        }
+
+        /* Player label styling */
+        .player-label {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        /* Turn indicator styling */
+        .turn-indicator {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            
+        }
+
+        /* Display the progress bar value */
+        .progress-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            position: absolute;
+            right: -20px; /* Adjust as needed */
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Container for the buttons */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* Container for the turn total */
+        .turn-total-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+        /* Styling for the turn total text */
+        .turn-total {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Styling for the turn total number */
+        .turn-total-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        /* Button styling */
+        .button {
+            width: 200px; /* Adjust the width as needed */
+            height: auto;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0px;
+            width: 120px; /* Set a fixed width based on your image size */
+            height: 120px; /* Set a fixed height based on your image size */
+            flex: none; /* Prevent the container from shrinking or expanding */
+        }
+
+        #dice-image {
+            max-width: 100%; /* Ensure the image doesn't exceed the container's width */
+            max-height: 100%; /* Ensure the image doesn't exceed the container's height */
+            object-fit: contain; /* Scale the image to fit within the container */
+        }
+/* Responsive styles for screens smaller than 500px */
+@media screen and (max-width: 500px) {
+    body {
+        padding: 5px; /* Reduce padding for smaller screens */
+    }
+
+    .progress-container {
+        height: 30px; /* Make the progress bar thinner */
+    }
+
+    .progress-row {
+        width: 70%; 
+    }
+    .progress-value {
+        font-size: 2em; /* Reduce font size for the progress value */
+        right: -25px; /* Move the value closer to the edge */
+    }
+
+    .player-label {
+        font-size: 1.5em; /* Reduce font size for player labels */
+    }
+
+    .button {
+        width: 100px; /* Make buttons smaller */
+    }
+
+    #dice-image {
+        width: 100px; /* Reduce dice image size */
+    }
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+
+    .progress-row {
+        width: 48%; /* Half width for progress rows */
+        margin: 1%; /* Add some spacing between rows */
+    }
+
+    .buttons-container {
+        width: 60%; /* Full width for buttons container */
+        justify-content: space-around; /* Distribute buttons evenly */
+    }
+
+    .dice-container {
+            
+            width: 100px; /* Set a fixed width based on your image size */
+            height: 100px; /* Set a fixed height based on your image size */
+            flex: none; /* Prevent the container from shrinking or expanding */
+        }
+    .button {
+        width: 80px; /* Make buttons smaller */
+    }
+
+    #dice-image {
+        width: 80px; /* Reduce dice image size */
+    }
+
+    #dice-image {
+            max-width: 80%; /* Ensure the image doesn't exceed the container's width */
+            max-height: 80%; /* Ensure the image doesn't exceed the container's height */
+            object-fit: contain; /* Scale the image to fit within the container */
+        }
+}
+       
+    </style>
+</head>
+<body>
+    <div class="score-container">
+        <div class="progress-row" id="player1-row">
+            <img src="Flecha.PNG" alt="Turn Indicator" class="turn-indicator" id="turn-indicator">
+            <span class="player-label">P1</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar-p1"></div>
+                <span class="progress-value" id="progress-value-p1">0</span>
+            </div>
+        </div>
+        <div class="progress-row" id="player2-row">
+            <span class="player-label">P2</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar-p2"></div>
+                <span class="progress-value" id="progress-value-p2">0</span>
+            </div>
+        </div>
+        <div id="dice-container" class="dice-container">
+            <img src="rolling-dice.gif" alt="Rolling Dice" id="dice-image" style="display: none;">
+        </div>
+        <div class="buttons-container">
+            <img src="roll-button.png" alt="Roll" class="button" id="roll-button">
+            <div class="turn-total-container">
+                <div class="turn-total">Turn Total</div>
+                <div class="turn-total-number" id="turn-total-number">0</div>
+            </div>
+            <img src="hold-button.png" alt="Hold" class="button" id="hold-button">
+        </div>
+    </div>
+    <script>
+        let currentPlayer = 1;
+        let turnTotal = 0;
+        const playerScores = [0, 0]; // Player 1 and Player 2 scores
+        const targetScore = 50;
+
+        // JavaScript to control the turn indicator and update progress values
+        const turnIndicator = document.getElementById('turn-indicator');
+        const player1Row = document.getElementById('player1-row');
+        const player2Row = document.getElementById('player2-row');
+
+        function setTurn(player) {
+            if (player === 1) {
+                player1Row.prepend(turnIndicator); // Move the indicator to Player 1
+                turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
+            } else {
+                player2Row.prepend(turnIndicator); // Move the indicator to Player 2
+                turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
+            }
+        }
+
+        // Example usage: set turn to player 1
+        setTurn(1);
+
+        function updateProgress(player, value) {
+            const progressBarElement = document.getElementById(`progress-bar-p${player}`);
+            const progressValueElement = document.getElementById(`progress-value-p${player}`);
+            const widthPercentage = (value / targetScore) * 100;
+            progressBarElement.style.width = `${widthPercentage}%`;
+            progressValueElement.textContent = value;
+        }
+
+
+        function updateTurnTotal(value) {
+            const turnTotalNumberElement = document.getElementById('turn-total-number');
+            turnTotalNumberElement.textContent = value;
+        }
+
+        function rollDice() {
+            const diceImage = document.getElementById('dice-image');
+            const diceSound = new Audio('diceSound.wav');
+            diceImage.src = 'rolling-dice.gif';
+            diceImage.style.display = 'block';
+            diceImage.style.width = '150px'; // Ensure the width is set here
+            diceImage.style.height = 'auto';
+
+            // Disable buttons
+            document.getElementById('roll-button').style.pointerEvents = 'none';
+            document.getElementById('hold-button').style.pointerEvents = 'none';
+
+            diceSound.play();
+
+            setTimeout(() => {
+                const randomDiceValue = Math.floor(Math.random() * 6) + 1;
+                const lowtone = new Audio('lowtone.wav');
+                diceImage.src = `dice${randomDiceValue}.png`;
+                diceImage.style.width = '100px'; // Keep the same width for PNG images
+                diceImage.style.height = 'auto';
+                // Disable buttons
+                document.getElementById('roll-button').style.pointerEvents = 'auto';
+                document.getElementById('hold-button').style.pointerEvents = 'auto';
+
+                if (randomDiceValue === 1) {
+                    lowtone.play();
+                    turnTotal = 0;
+                    updateTurnTotal(turnTotal);
+                    switchTurn();
+                } else {
+                    turnTotal += randomDiceValue;
+                    updateTurnTotal(turnTotal);
+                }
+
+            }, 1000);
+        }
+
+        function holdScore() {
+            const holdScore = new Audio('holdScore.wav');
+            playerScores[currentPlayer - 1] += turnTotal;
+            updateProgress(currentPlayer, playerScores[currentPlayer - 1]);
+        
+            holdScore.play();
+            if (playerScores[currentPlayer - 1] >= targetScore) {
+                alert(`Player ${currentPlayer} wins!`);
+                resetGame();
+                return;
+            }
+
+            turnTotal = 0;
+            updateTurnTotal(turnTotal);
+            switchTurn();
+        }
+
+        function switchTurn() {
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+            setTurn(currentPlayer);
+        }
+
+        function resetGame() {
+            playerScores[0] = 0;
+            playerScores[1] = 0;
+            updateProgress(1, 0);
+            updateProgress(2, 0);
+            turnTotal = 0;
+            updateTurnTotal(turnTotal);
+            setTurn(1);
+        }
+
+        document.getElementById('roll-button').addEventListener('click', rollDice);
+        document.getElementById('hold-button').addEventListener('click', holdScore);
+
+        // Initialize game
+        resetGame();
+    </script>
+</body>
+</html>
