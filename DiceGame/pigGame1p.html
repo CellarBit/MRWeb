@@ -81,7 +81,7 @@
             font-size: 1.2em;
             font-weight: bold;
             position: absolute;
-            right: -20px; /* Adjust as needed */
+            right: -30px; /* Adjust as needed */
             top: 50%;
             transform: translateY(-50%);
         }
@@ -213,14 +213,14 @@
     <div class="score-container">
         <div class="progress-row" id="player1-row">
             <img src="Flecha.PNG" alt="Turn Indicator" class="turn-indicator" id="turn-indicator">
-            <span class="player-label">P1</span>
+            <span class="player-label">Player</span>
             <div class="progress-container">
                 <div class="progress-bar" id="progress-bar-p1"></div>
                 <span class="progress-value" id="progress-value-p1">0</span>
             </div>
         </div>
         <div class="progress-row" id="player2-row">
-            <span class="player-label">P2</span>
+            <span class="player-label"> COMP</span>
             <div class="progress-container">
                 <div class="progress-bar" id="progress-bar-p2"></div>
                 <span class="progress-value" id="progress-value-p2">0</span>
@@ -242,7 +242,7 @@
         let currentPlayer = 1;
         let turnTotal = 0;
         const playerScores = [0, 0]; // Player 1 and Player 2 scores
-        const targetScore = 10;
+        const targetScore = 100;
 
         // JavaScript to control the turn indicator and update progress values
         const turnIndicator = document.getElementById('turn-indicator');
@@ -253,14 +253,38 @@
             if (player === 1) {
                 player1Row.prepend(turnIndicator); // Move the indicator to Player 1
                 turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
+                document.getElementById('roll-button').style.pointerEvents = 'auto';
+                document.getElementById('hold-button').style.pointerEvents = 'auto369.3*6';
             } else {
                 player2Row.prepend(turnIndicator); // Move the indicator to Player 2
                 turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
+                player2Turn();
             }
         }
 
-        // Example usage: set turn to player 1
-        //setTurn(1);
+        function player2Turn() {
+            //player2Row.prepend(turnIndicator); // Move the indicator to Player 2
+            //turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
+            document.getElementById('roll-button').style.pointerEvents = 'none';
+            document.getElementById('hold-button').style.pointerEvents = 'none';
+
+            function continueRolling() {
+                if (currentPlayer !== 2) return;
+                console.log(`Player ${currentPlayer} is rolling...`);
+                rollDice();
+                if (turnTotal >= 21) {
+                holdScore();
+                
+                } else {
+                // Use setTimeout to avoid blocking the browser and allow for UI updates
+                setTimeout(continueRolling, 2000); // Adjust the delay as needed
+                }
+            }
+
+            continueRolling(); // Start rolling
+        }
+
+
 
         function updateProgress(player, value) {
             const progressBarElement = document.getElementById(`progress-bar-p${player}`);
@@ -277,6 +301,7 @@
         }
 
         function rollDice() {
+            console.log(`Player ${currentPlayer} is rolling the dice`);
             const diceImage = document.getElementById('dice-image');
             const diceSound = new Audio('diceSound.wav');
             diceImage.src = 'rolling-dice.gif';
@@ -296,49 +321,74 @@
                 diceImage.src = `dice${randomDiceValue}.png`;
                 diceImage.style.width = '100px'; // Keep the same width for PNG images
                 diceImage.style.height = 'auto';
-                // Disable buttons
+                console.log(`Player ${currentPlayer} got a ${randomDiceValue}`);
                 document.getElementById('roll-button').style.pointerEvents = 'auto';
                 document.getElementById('hold-button').style.pointerEvents = 'auto';
 
                 if (randomDiceValue === 1) {
                     lowtone.play();
-                    turnTotal = 0;
-                    updateTurnTotal(turnTotal);
-                    switchTurn();
+                    lowtone.onended = () => {
+                        turnTotal = 0;
+                        updateTurnTotal(turnTotal);
+                        switchTurn();
+                    }; 
+                    
+                     
                 } else {
                     turnTotal += randomDiceValue;
                     updateTurnTotal(turnTotal);
                     checkScore(turnTotal);
-                    
+                    return turnTotal;
                 }
 
             }, 1000);
+            // Enable buttons
+            
+
         }
 
         function checkScore(turnTotal) {
             const finish = new Audio('finish.wav');
+            const cry = new Audio('cry.wav');
             if (playerScores[currentPlayer - 1] + turnTotal >= targetScore) {
                 updateProgress(currentPlayer, targetScore);
+                if (currentPlayer == 1){
                     finish.play();
                     finish.onended = () => {
-                        alert(`Player ${currentPlayer} wins!`);
+                        alert(`THE WINNER!`);
                         location.reload();
-                    };           
+                    };   
+                } else{
+                    cry.play();
+                    cry.onended = () => {
+                        alert('THE LOSER!')
+                        location.reload();
+                    }
+                }
+                    
+                            
             }
         }
 
         function holdScore() {
+            document.getElementById('roll-button').style.pointerEvents = 'none';
+            document.getElementById('hold-button').style.pointerEvents = 'none';
             const holdScore = new Audio('holdScore.wav');
             playerScores[currentPlayer - 1] += turnTotal;
             updateProgress(currentPlayer, playerScores[currentPlayer - 1]);
             holdScore.play();
-            turnTotal = 0;
-            updateTurnTotal(turnTotal);
-            switchTurn();
+            holdScore.onended = () => {             
+                turnTotal = 0;
+                updateTurnTotal(turnTotal);
+                switchTurn();
+                document.getElementById('roll-button').style.pointerEvents = 'auto';
+                document.getElementById('hold-button').style.pointerEvents = 'auto';
+            };
         }
 
         function switchTurn() {
             currentPlayer = currentPlayer === 1 ? 2 : 1;
+            console.log(`Switching to Player ${currentPlayer}`);
             setTurn(currentPlayer);
         }
 
@@ -357,6 +407,7 @@
 
         // Initialize game
         resetGame();
+        
     </script>
 </body>
 </html>
