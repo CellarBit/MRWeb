@@ -407,6 +407,51 @@
             updateTurnTotal(turnTotal);
             setTurn(1);
         }
+            // Add the event listener for the fullscreen button
+            document.getElementById('fullscreen-button').addEventListener('click', () => {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        });
+
+        // Add the event listener for the fullscreen change
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.getElementById('fullscreen-button').style.display = 'none';
+            } else {
+                document.getElementById('fullscreen-button').style.display = 'block';
+            }
+        });
+
+        document.addEventListener('mozfullscreenchange', () => { // Firefox
+            if (document.mozFullScreenElement) {
+                document.getElementById('fullscreen-button').style.display = 'none';
+            } else {
+                document.getElementById('fullscreen-button').style.display = 'block';
+            }
+        });
+
+        document.addEventListener('webkitfullscreenchange', () => { // Chrome, Safari, and Opera
+            if (document.webkitFullscreenElement) {
+                document.getElementById('fullscreen-button').style.display = 'none';
+            } else {
+                document.getElementById('fullscreen-button').style.display = 'block';
+            }
+        });
+
+        document.addEventListener('msfullscreenchange', () => { // IE/Edge
+            if (document.msFullscreenElement) {
+                document.getElementById('fullscreen-button').style.display = 'none';
+            } else {
+                document.getElementById('fullscreen-button').style.display = 'block';
+            }
+        });
 
         document.getElementById('roll-button').addEventListener('click', rollDice);
         document.getElementById('hold-button').addEventListener('click', holdScore);
