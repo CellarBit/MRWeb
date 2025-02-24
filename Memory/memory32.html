@@ -34,7 +34,7 @@
     #game-board {
       display: grid;
       grid-template-rows: repeat(4, 1fr); /*  rows */
-      grid-template-columns: repeat(6, 1fr);  /*  columns */
+      grid-template-columns: repeat(8, 1fr);  /*  columns */
       gap: 0;  /* Reduced gap */
       box-sizing: border-box; 
       overflow: hidden;  /* Prevent overflow */
@@ -51,7 +51,7 @@
 
       #game-board {
         grid-template-columns: repeat(4, 1fr);  /* 4 columns */
-        grid-template-rows: repeat(6, 1fr); /* 6 rows */
+        grid-template-rows: repeat(8, 1fr); /* 6 rows */
         width: 84vw;
       }
     }
@@ -78,7 +78,7 @@
   <script>
     const imagePath = 'images/';
     const faceDownImage = 'facedown.png';
-    const cardsArray = [...Array(12).keys()].flatMap(x => [x, x]);
+    const cardsArray = [...Array(16).keys()].flatMap(x => [x, x]);
     let firstCard = null;
     let secondCard = null;
     let matches = 0;
