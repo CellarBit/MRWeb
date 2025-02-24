@@ -73,6 +73,7 @@
             width: 40px;
             height: 40px;
             position: absolute;
+            transform: translateX(23px);
             
         }
 
@@ -143,69 +144,72 @@
             max-height: 100%; /* Ensure the image doesn't exceed the container's height */
             object-fit: contain; /* Scale the image to fit within the container */
         }
-/* Responsive styles for screens smaller than 500px */
-@media screen and (max-width: 500px) {
-    body {
-        padding: 5px; /* Reduce padding for smaller screens */
-    }
+        /* Responsive styles for screens smaller than 500px */
+        @media screen and (max-width: 500px) {
+            body {
+                padding: 5px; /* Reduce padding for smaller screens */
+            }
 
-    .progress-container {
-        height: 30px; /* Make the progress bar thinner */
-    }
+            .progress-container {
+                height: 30px; /* Make the progress bar thinner */
+            }
 
-    .progress-row {
-        width: 70%; 
-    }
-    .progress-value {
-        font-size: 2em; /* Reduce font size for the progress value */
-        right: -25px; /* Move the value closer to the edge */
-    }
+            .progress-row {
+                width: 75%; 
+            }
+            .progress-value {
+                font-size: 1.7em; /* Reduce font size for the progress value */
+                right: -35px; /* Move the value closer to the edge */
+            }
 
-    .player-label {
-        font-size: 1.5em; /* Reduce font size for player labels */
-    }
+            .player-label {
+                font-size: 1.5em; /* Reduce font size for player labels */
+            }
 
-    .button {
-        width: 100px; /* Make buttons smaller */
-    }
+            .button {
+                width: 120px; /* Make buttons smaller */
+            }
 
-    #dice-image {
-        width: 100px; /* Reduce dice image size */
-    }
-}
-
-@media screen and (max-height: 500px) and (orientation: landscape) {
-
-    .progress-row {
-        width: 48%; /* Half width for progress rows */
-        margin: 1%; /* Add some spacing between rows */
-    }
-
-    .buttons-container {
-        width: 60%; /* Full width for buttons container */
-        justify-content: space-around; /* Distribute buttons evenly */
-    }
-
-    .dice-container {
-            
-            width: 100px; /* Set a fixed width based on your image size */
-            height: 100px; /* Set a fixed height based on your image size */
-            flex: none; /* Prevent the container from shrinking or expanding */
+            #dice-image {
+                width: 100px; /* Reduce dice image size */
+            }
         }
-    .button {
-        width: 80px; /* Make buttons smaller */
-    }
 
-    #dice-image {
-        width: 80px; /* Reduce dice image size */
-    }
+        @media screen and (max-height: 500px) and (orientation: landscape) {
 
-    #dice-image {
-            max-width: 80%; /* Ensure the image doesn't exceed the container's width */
-            max-height: 80%; /* Ensure the image doesn't exceed the container's height */
-            object-fit: contain; /* Scale the image to fit within the container */
+            .progress-row {
+                width: 80%; /* Half width for progress rows */
+                margin: 1%; /* Add some spacing between rows */
+                transform: translateY(20%);
+            }
+
+            .buttons-container {
+                width: 70%; /* Full width for buttons container */
+                justify-content: space-around; /* Distribute buttons evenly */
+                transform: translateY(-40%);
+            }
+
+            .dice-container {
+                    
+                    width: 100px; /* Set a fixed width based on your image size */
+                    height: 100px; /* Set a fixed height based on your image size */
+                    flex: none; /* Prevent the container from shrinking or expanding */
+                    transform: translateY(-18%);
+                }
+            .button {
+                width: 100px; /* Make buttons smaller */
+            }
+
+            #dice-image {
+                width: 80px; /* Reduce dice image size */
+            }
+
+            #dice-image {
+                    max-width: 80%; /* Ensure the image doesn't exceed the container's width */
+                    max-height: 80%; /* Ensure the image doesn't exceed the container's height */
+                    object-fit: contain; /* Scale the image to fit within the container */
+                }
         }
-}
        
     </style>
 </head>
