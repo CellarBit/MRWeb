@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memory Game</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      width: 10vw;  /* Responsive size */
+      height: 10vw; /* Responsive size */
+      background-color: lightgray;
+      display: inline-block;
+      margin: 0vw;  /* Reduced margin */
+      text-align: center;
+      cursor: pointer;
+      background-image: url('facedown.png');
+      background-size: cover;
+      
+    }
+
+    .matched {
+      background-color: lightgreen;
+    }
+
+    #game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);  /* Responsive columns */
+      grid: 0vw;  /* Reduced gap */
+      width: 40vw;    /* Responsive width */
+      box-sizing: border-box; 
+      overflow: hidden;  /* Prevent overflow */
+    }
+
+    .card.grid-item {
+      margin: 0;  /* Ensure no unwanted margins */
+      padding: 0;  /* Ensure no unwanted paddings */
+      background-color: #ddd; /* Optional: Add some background color for visibility */
+    }
+
+    @media screen and (max-width: 600px) and (orientation:portrait) {
+      .card {
+        width: 21vw;
+        height: 21vw;
+       
+      }
+
+      #game-board {
+        width: 84vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="game-board"></div>
+  <script>
+    const imagePath = 'images/';
+    const faceDownImage = 'facedown.png';
+    const cardsArray = [...Array(8).keys()].flatMap(x => [x, x]);
+    let firstCard = null;
+    let secondCard = null;
+    let matches = 0;
+
+    function preloadImages(images, callback) {
+      let loadedImages = 0;
+      const totalImages = images.length;
+
+      images.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+          loadedImages += 1;
+          if (loadedImages === totalImages) {
+            callback();
+          }
+        };
+        img.onerror = () => {
+          console.error(`Failed to load image: ${src}`);
+        };
+      });
+    }
+
+    function createCard(value) {
+      const card = document.createElement('div');
+      card.className = 'card grid-item';
+      card.dataset.value = value;
+      card.dataset.flipped = 'false';
+      card.style.backgroundImage = `url(${imagePath}${faceDownImage})`;
+      card.addEventListener('click', handleCardClick);
+      return card;
+    }
+
+    function handleCardClick(event) {
+      const card = event.target;
+      const finish = new Audio('finish.wav');
+      if (firstCard && secondCard) return;
+      if (card.dataset.flipped === 'true') return;
+
+      if (!firstCard) {
+        firstCard = card;
+        flipCard(card);
+      } else if (card !== firstCard && !secondCard) {
+        secondCard = card;
+        flipCard(card);
+
+        if (firstCard.dataset.value === secondCard.dataset.value) {
+          firstCard.classList.add('matched');
+          secondCard.classList.add('matched');
+          firstCard = null;
+          secondCard = null;
+          matches += 1;
+          if (matches === cardsArray.length / 2) {
+            
+            setTimeout(() => {
+              finish.play();
+              finish.onended = () => {
+                alert('You won!');
+                location.reload();
+              };
+            }, 2000);
+          }
+        } else {
+          setTimeout(() => {
+            unflipCard(firstCard);
+            unflipCard(secondCard);
+            firstCard = null;
+            secondCard = null;
+          }, 1000);
+        }
+      }
+    }
+
+
+    function flipCard(card) {
+      card.dataset.flipped = 'true';
+      card.style.backgroundImage = `url(${imagePath}img${parseInt(card.dataset.value) + 1}.png)`;
+    }
+
+    function unflipCard(card) {
+      card.dataset.flipped = 'false';
+      card.style.backgroundImage = `url(${imagePath}${faceDownImage})`;
+    }
+
+    function initializeGame() {
+      const gameBoard = document.getElementById('game-board');
+      const shuffledArray = cardsArray.sort(() => 0.5 - Math.random());
+      shuffledArray.forEach(value => {
+        gameBoard.appendChild(createCard(value));
+      });
+    }
+
+    const imagesToPreload = cardsArray.map(value => `${imagePath}img${value + 1}.png`).concat(`${imagePath}${faceDownImage}`);
+
+    preloadImages(imagesToPreload, initializeGame);
+  </script>
+</body>
+</html>

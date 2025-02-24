@@ -13,15 +13,17 @@
       margin: 0;
     }
     .card {
-      width: 10vw;  /* Responsive size */
-      height: 10vw; /* Responsive size */
-      background-color: lightgray;
-      display: inline-block;
-      margin: 0vw;  /* Reduced margin */
-      text-align: center;
-      cursor: pointer;
-      background-image: url('facedown.png');
-      background-size: cover;
+        width: 11vw;  /* Responsive size using percentage */
+        height: 11vw; /* Responsive size using percentage */
+        background-color: lightgray;
+        display: inline-block;
+        margin: 0;  /* Ensure no unwanted margins */
+        text-align: center;
+        cursor: pointer;
+        background-image: url('facedown.png');
+        background-size: cover;
+        /* max-width: 100px; 
+        max-height: 100px;  */
       
     }
 
@@ -31,19 +33,26 @@
 
     #game-board {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);  /* Responsive columns */
-      grid-gap: 0vw;  /* Reduced gap */
-      width: 40vw;    /* Responsive width */
+      grid-template-rows: repeat(4, 1fr); /*  rows */
+      grid-template-columns: repeat(6, 1fr);  /*  columns */
+      gap: 0;  /* Reduced gap */
+      box-sizing: border-box; 
+      overflow: hidden;  /* Prevent overflow */
+      
     }
-    
+
+
     @media screen and (max-width: 600px) and (orientation:portrait) {
       .card {
-        width: 20vw;
-        height: 20vw;
+        width: 21vw;
+        height: 21vw;
+       
       }
 
       #game-board {
-        width: 85vw;
+        grid-template-columns: repeat(4, 1fr);  /* 4 columns */
+        grid-template-rows: repeat(6, 1fr); /* 6 rows */
+        width: 84vw;
       }
     }
   </style>
@@ -53,7 +62,7 @@
   <script>
     const imagePath = 'images/';
     const faceDownImage = 'facedown.png';
-    const cardsArray = [...Array(8).keys()].flatMap(x => [x, x]);
+    const cardsArray = [...Array(12).keys()].flatMap(x => [x, x]);
     let firstCard = null;
     let secondCard = null;
     let matches = 0;
@@ -89,6 +98,7 @@
 
     function handleCardClick(event) {
       const card = event.target;
+      const finish = new Audio('finish.wav');
       if (firstCard && secondCard) return;
       if (card.dataset.flipped === 'true') return;
 
@@ -106,8 +116,14 @@
           secondCard = null;
           matches += 1;
           if (matches === cardsArray.length / 2) {
-            alert('You won!');
-            location.reload();
+            
+            setTimeout(() => {
+              finish.play();
+              finish.onended = () => {
+                alert('You won!');
+                location.reload();
+              };
+            }, 2000);
           }
         } else {
           setTimeout(() => {
@@ -119,6 +135,7 @@
         }
       }
     }
+
 
     function flipCard(card) {
       card.dataset.flipped = 'true';
