@@ -318,51 +318,46 @@
         }
 
         function rollDice() {
-            console.log(`Player ${currentPlayer} is rolling the dice`);
-            const diceImage = document.getElementById('dice-image');
-            const diceSound = new Audio('diceSound.wav');
-            diceImage.src = 'rolling-dice.gif';
-            diceImage.style.display = 'block';
-            diceImage.style.width = '150px'; // Ensure the width is set here
-            diceImage.style.height = 'auto';
+    console.log(`Player ${currentPlayer} is rolling the dice`);
+    const diceImage = document.getElementById('dice-image');
+    const diceSound = new Audio('diceSound.wav');
+    diceImage.src = 'rolling-dice.gif';
+    diceImage.style.display = 'block';
+    diceImage.style.width = '150px'; // Ensure the width is set here
+    diceImage.style.height = 'auto';
 
-            // Disable buttons
-            document.getElementById('roll-button').style.pointerEvents = 'none';
-            document.getElementById('hold-button').style.pointerEvents = 'none';
+    // Disable buttons
+    document.getElementById('roll-button').style.pointerEvents = 'none';
+    document.getElementById('hold-button').style.pointerEvents = 'none';
 
-            diceSound.play();
+    diceSound.play();
 
-            setTimeout(() => {
-                const randomDiceValue = Math.floor(Math.random() * 6) + 1;
-                const lowtone = new Audio('lowtone.wav');
-                diceImage.src = `dice${randomDiceValue}.png`;
-                diceImage.style.width = '100px'; // Keep the same width for PNG images
-                diceImage.style.height = 'auto';
-                console.log(`Player ${currentPlayer} got a ${randomDiceValue}`);
-                document.getElementById('roll-button').style.pointerEvents = 'auto';
-                document.getElementById('hold-button').style.pointerEvents = 'auto';
+    setTimeout(() => {
+        const randomDiceValue = Math.floor(Math.random() * 6) + 1;
+        const lowtone = new Audio('lowtone.wav');
+        diceImage.src = `dice${randomDiceValue}.png`;
+        diceImage.style.width = '100px'; // Keep the same width for PNG images
+        diceImage.style.height = 'auto';
+        console.log(`Player ${currentPlayer} got a ${randomDiceValue}`);
+        document.getElementById('roll-button').style.pointerEvents = 'auto';
+        document.getElementById('hold-button').style.pointerEvents = 'auto';
 
-                if (randomDiceValue === 1) {
-                    lowtone.play();
-                    lowtone.onended = () => {
-                        turnTotal = 0;
-                        updateTurnTotal(turnTotal);
-                        switchTurn();
-                    }; 
-                    
-                     
-                } else {
-                    turnTotal += randomDiceValue;
-                    updateTurnTotal(turnTotal);
-                    checkScore(turnTotal);
-                    return turnTotal;
-                }
-
-            }, 1000);
-            // Enable buttons
-            
-
+        if (randomDiceValue === 1) {
+            lowtone.play();
+            lowtone.onended = () => {
+                turnTotal = 0;
+                updateTurnTotal(turnTotal);
+                switchTurn();
+            };
+        } else {
+            turnTotal += randomDiceValue;
+            updateTurnTotal(turnTotal);
+            checkScore(turnTotal);
+            return turnTotal;
         }
+
+    }, 1000);
+}
 
         function checkScore(turnTotal) {
             const finish = new Audio('finish.wav');
