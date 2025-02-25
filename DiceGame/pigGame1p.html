@@ -283,27 +283,23 @@
         }
 
         function player2Turn() {
-            //player2Row.prepend(turnIndicator); // Move the indicator to Player 2
-            //turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
-            document.getElementById('roll-button').style.pointerEvents = 'none';
-            document.getElementById('hold-button').style.pointerEvents = 'none';
+    document.getElementById('roll-button').style.pointerEvents = 'none';
+    document.getElementById('hold-button').style.pointerEvents = 'none';
 
-            function continueRolling() {
-                if (currentPlayer !== 2) return;
-                console.log(`Player ${currentPlayer} is rolling...`);
-                rollDice();
-                if (turnTotal >= 21) {
-                holdScore();
-return;
-                
-                } else {
-                // Use setTimeout to avoid blocking the browser and allow for UI updates
-                setTimeout(continueRolling, 2000); // Adjust the delay as needed
-                }
-            }
-
-            continueRolling(); // Start rolling
+    function continueRolling() {
+        if (currentPlayer !== 2) return;
+        if (turnTotal >= 21) {
+            holdScore();
+            return;
         }
+        console.log(`Player ${currentPlayer} is rolling...`);
+        rollDice();
+        // Use setTimeout to avoid blocking the browser and allow for UI updates
+        setTimeout(continueRolling, 2000); // Adjust the delay as needed
+    }
+
+    continueRolling(); // Start rolling
+}
 
 
 
