@@ -64,6 +64,13 @@
                 transform: none;
                 
             }
+
+            .player-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex: 1;
+        }
         }
 
         .card {
@@ -154,7 +161,11 @@
 </head>
 <body>
     <div id="header"></div>
-    <div id="game-container"></div>
+
+    <div id="game-container">
+        <div id="player1-container" class="player-container"></div>
+        <div id="player2-container" class="player-container"></div>
+    </div>
     <button id="fullscreen-button">Enter Fullscreen</button>
 
     <script>
