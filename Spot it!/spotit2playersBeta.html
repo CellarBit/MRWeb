@@ -412,6 +412,34 @@ function handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event) {
         }, 3000);
     }
 }
+
+// Throttle function to limit the rate of touch events
+function throttle(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function (...args) {
+        if (!lastRan) {
+            func.apply(this, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(() => {
+                if (Date.now() - lastRan >= limit) {
+                    func.apply(this, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    };
+}
+
+// Throttled touch handlers
+const handlePlayer1Touch = throttle((event) => handleTouch(event, 1), 300); // 300ms throttle
+const handlePlayer2Touch = throttle((event) => handleTouch(event, 2), 300); // 300ms throttle
+
+// Add throttled touch event listeners
+player1Container.addEventListener('touchstart', handlePlayer1Touch);
+player2Container.addEventListener('touchstart', handlePlayer2Touch);
         // Fullscreen functionality
         document.getElementById('fullscreen-button').addEventListener('click', () => {
             if (document.documentElement.requestFullscreen) {
