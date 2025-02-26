@@ -25,20 +25,34 @@
 
         #game-container {
             display: flex;
-            flex-direction: row; /* Align side by side for larger screens */
-            flex-wrap: wrap; /* Wrap into column for smaller screens */
-            gap: 10px;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column; /* Stack vertically in portrait mode */
             width: 100%;
+            height: 100%;
             transform: translateY(-5%);
+        }
+
+        @media (orientation: landscape) {
+            #game-container {
+                flex-direction: row; /* Side by side in landscape mode */
+                
+            }
         }
 
         .player-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 1;
+            justify-content: center;
+            width: 100%;
+            height: 50%; /* Each player takes half the screen in portrait mode */
+            position: relative;
+        }
+
+        @media (orientation: landscape) {
+            .player-container {
+                width: 50%; /* Each player takes half the screen in landscape mode */
+                height: 100%;
+            }
         }
 
         .card-frame {
@@ -56,21 +70,10 @@
             flex-direction: column;
         }
 
-        .rotate {
-            transform: rotate(180deg);
-        }
-        @media (orientation: landscape) {
-            .rotate {
-                transform: none;
-                
+        @media (orientation: portrait) {
+            .rotate-upper .card-frame {
+                transform: rotate(180deg); /* Rotate the upper deck in portrait mode */
             }
-
-            .player-container {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            flex: 1;
-        }
         }
 
         .card {
@@ -108,6 +111,10 @@
             background-color: red;
         }
 
+        .symbol.highlight {
+            background-color: lightblue; /* Highlight color for the correct symbol */
+        }
+
         .score-counter {
             position: absolute;
             top: -30px;
@@ -119,6 +126,7 @@
             font-size: 14px;
             z-index: 1;
         }
+
         #fullscreen-button {
             position: fixed;
             bottom: 10px;
@@ -132,36 +140,33 @@
             cursor: pointer;
         }
 
-        /* Left of the middle cell */
         .left-of-middle {
             position: relative;
-            right: -20%; /* Adjust this value to position the cell closer to the middle */
+            right: -20%;
         }
 
-        /* Right of the middle cell */
         .right-of-middle {
             position: relative;
-            left: -20%; /* Adjust this value to position the cell closer to the middle */
+            left: -20%;
         }
 
-          /* Left of the middle cell */
-          .up-of-middle {
+        .up-of-middle {
             position: relative;
-            bottom: -20%; /* Adjust this value to position the cell closer to the middle */
+            bottom: -20%;
         }
 
-        /* Right of the middle cell */
         .down-of-middle {
             position: relative;
-            top: -20%; /* Adjust this value to position the cell closer to the middle */
+            top: -20%;
         }
 
-
+        .block-touches {
+            pointer-events: none; /* Disable touches */
+        }
     </style>
 </head>
 <body>
     <div id="header"></div>
-
     <div id="game-container">
         <div id="player1-container" class="player-container"></div>
         <div id="player2-container" class="player-container"></div>
@@ -169,213 +174,205 @@
     <button id="fullscreen-button">Enter Fullscreen</button>
 
     <script>
-let selectedSymbols = [];
-let player1Score = 0;
-let player2Score = 0;
-let firstTapTime = 0;
-const playerLocks = {1: false, 2: false};
+        let selectedSymbols = [];
+        let player1Score = 0;
+        let player2Score = 0;
+        let firstTapTime = 0;
+        const playerLocks = {1: false, 2: false};
 
-// Divide the screen into two halves
-const player1Area = document.createElement('div');
-player1Area.className = 'player-area';
-player1Area.id = 'player1-area';
-document.body.appendChild(player1Area);
+        function generateSpotItDeck(n) {
+            const numSymbols = n ** 2 + n + 1;
+            const deck = [];
 
-const player2Area = document.createElement('div');
-player2Area.className = 'player-area';
-player2Area.id = 'player2-area';
-document.body.appendChild(player2Area);
-
-player1Area.addEventListener('touchstart', (event) => handleTouchStart(event, 1));
-player2Area.addEventListener('touchstart', (event) => handleTouchStart(event, 2));
-
-function generateSpotItDeck(n) {
-    const numSymbols = n ** 2 + n + 1;
-    const deck = [];
-
-    for (let i = 0; i < n + 1; i++) {
-        const card = [];
-        card.push(0);
-        for (let j = 0; j < n; j++) {
-            card.push(i * n + j + 1);
-        }
-        deck.push(card);
-    }
-    
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
-            const card = [];
-            card.push(i + 1);
-            for (let k = 0; k < n; k++) {
-                card.push(n + 1 + k * n + (k * i + j) % n);
+            for (let i = 0; i < n + 1; i++) {
+                const card = [];
+                card.push(0);
+                for (let j = 0; j < n; j++) {
+                    card.push(i * n + j + 1);
+                }
+                deck.push(card);
             }
-            deck.push(card);
+            
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < n; j++) {
+                    const card = [];
+                    card.push(i + 1);
+                    for (let k = 0; k < n; k++) {
+                        card.push(n + 1 + k * n + (k * i + j) % n);
+                    }
+                    deck.push(card);
+                }
+            }
+            return deck;
         }
-    }
-    return deck;
-}
 
-function renderCard(cardSymbols, containerId, commonSymbol, player) {
-    const container = document.getElementById(containerId);
-    const frameDiv = document.createElement('div');
-    frameDiv.className = 'card-frame';
-    const cardDiv = document.createElement('div');
-    cardDiv.className = 'card';
+        function renderCard(cardSymbols, containerId, commonSymbol, player) {
+            const container = document.getElementById(containerId);
+            const frameDiv = document.createElement('div');
+            frameDiv.className = 'card-frame';
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
 
-    const scoreCounter = document.createElement('div');
-    scoreCounter.className = 'score-counter';
-    scoreCounter.id = `player${player}-score`;
-    scoreCounter.textContent = `${player === 1 ? player1Score : player2Score}/10`;
-    frameDiv.appendChild(scoreCounter);
+            const scoreCounter = document.createElement('div');
+            scoreCounter.className = 'score-counter';
+            scoreCounter.id = `player${player}-score`;
+            scoreCounter.textContent = `${player === 1 ? player1Score : player2Score}/10`;
+            frameDiv.appendChild(scoreCounter);
 
-    const usedCells = new Set(['2-2']);
-    for (let i = 0; i < cardSymbols.length; i++) {
-        let row, col;
-        do {
-            row = Math.floor(Math.random() * 3) + 1;
-            col = Math.floor(Math.random() * 3) + 1;
-        } while (usedCells.has(`${row}-${col}`));
-        usedCells.add(`${row}-${col}`);
+            const usedCells = new Set(['2-2']);
+            for (let i = 0; i < cardSymbols.length; i++) {
+                let row, col;
+                do {
+                    row = Math.floor(Math.random() * 3) + 1;
+                    col = Math.floor(Math.random() * 3) + 1;
+                } while (usedCells.has(`${row}-${col}`));
+                usedCells.add(`${row}-${col}`);
 
-        const symbolDiv = document.createElement('div');
-        symbolDiv.className = 'symbol';
-        symbolDiv.style.gridRow = row;
-        symbolDiv.style.gridColumn = col;
-        // Add custom classes based on cell positions
-        if (row === 2 && col === 1) {
-            symbolDiv.classList.add('left-of-middle');
-        } else if (row === 2 && col === 3) {
-            symbolDiv.classList.add('right-of-middle');
-        } else if (row === 1 && col === 2) {
-            symbolDiv.classList.add('up-of-middle');
-        } else if (row === 3 && col === 2) {
-            symbolDiv.classList.add('down-of-middle');
+                const symbolDiv = document.createElement('div');
+                symbolDiv.className = 'symbol';
+                symbolDiv.style.gridRow = row;
+                symbolDiv.style.gridColumn = col;
+                // Add custom classes based on cell positions
+                if (row === 2 && col === 1) {
+                    symbolDiv.classList.add('left-of-middle');
+                } else if (row === 2 && col === 3) {
+                    symbolDiv.classList.add('right-of-middle');
+                } else if (row === 1 && col === 2) {
+                    symbolDiv.classList.add('up-of-middle');
+                } else if (row === 3 && col === 2) {
+                    symbolDiv.classList.add('down-of-middle');
+                }
+                const img = document.createElement('img');
+                img.src = `images/symbol${cardSymbols[i]}.png`;
+                img.alt = `symbol${cardSymbols[i]}`;
+                symbolDiv.appendChild(img);
+
+                symbolDiv.addEventListener('click', (event) => handleSymbolClick(cardSymbols[i], symbolDiv, commonSymbol, player, event));
+                cardDiv.appendChild(symbolDiv);
+            }
+
+            frameDiv.appendChild(cardDiv);
+            container.appendChild(frameDiv);
         }
-        const img = document.createElement('img');
-        img.src = `images/symbol${cardSymbols[i]}.png`;
-        img.alt = `symbol${cardSymbols[i]}`;
-        symbolDiv.appendChild(img);
 
-        symbolDiv.addEventListener('click', (event) => handleSymbolClick(cardSymbols[i], symbolDiv, commonSymbol, player, event));
-        cardDiv.appendChild(symbolDiv);
-    }
-
-    frameDiv.appendChild(cardDiv);
-    container.appendChild(frameDiv);
-}
-
-function findCommonSymbol(card1, card2) {
-    for (let symbol of card1) {
-        if (card2.includes(symbol)) {
-            return symbol;
+        function findCommonSymbol(card1, card2) {
+            for (let symbol of card1) {
+                if (card2.includes(symbol)) {
+                    return symbol;
+                }
+            }
+            return null;
         }
-    }
-    return null;
-}
 
-function displayNewCards() {
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.innerHTML = '';
+        function displayNewCards() {
+            const gameContainer = document.getElementById('game-container');
+            gameContainer.innerHTML = '';
 
-    const player1Container = document.createElement('div');
-    player1Container.className = 'player-container';
-    player1Container.id = 'player1-container';
-    gameContainer.appendChild(player1Container);
-    
-    const player2Container = document.createElement('div');
-    player2Container.className = 'player-container';
-    player2Container.id = 'player2-container';
-    gameContainer.appendChild(player2Container);
+            const player1Container = document.createElement('div');
+            player1Container.className = 'player-container';
+            player1Container.id = 'player1-container';
+            gameContainer.appendChild(player1Container);
+            
+            const player2Container = document.createElement('div');
+            player2Container.className = 'player-container';
+            player2Container.id = 'player2-container';
+            gameContainer.appendChild(player2Container);
 
-    const randomIndices = [];
-    while (randomIndices.length < 2) {
-        const index = Math.floor(Math.random() * deck.length);
-        if (!randomIndices.includes(index)) randomIndices.push(index);
-    }
+            const randomIndices = [];
+            while (randomIndices.length < 2) {
+                const index = Math.floor(Math.random() * deck.length);
+                if (!randomIndices.includes(index)) randomIndices.push(index);
+            }
 
-    const card1 = deck[randomIndices[0]];
-    const card2 = deck[randomIndices[1]];
-    const commonSymbol = findCommonSymbol(card1, card2);
+            const card1 = deck[randomIndices[0]];
+            const card2 = deck[randomIndices[1]];
+            const commonSymbol = findCommonSymbol(card1, card2);
 
-    renderCard(card1, 'player1-container', commonSymbol, 1);
-    renderCard(card2, 'player2-container', commonSymbol, 2);
+            renderCard(card1, 'player1-container', commonSymbol, 1);
+            renderCard(card2, 'player2-container', commonSymbol, 2);
 
-    const player1CardFrame = player1Container.querySelector('.card-frame');
-    if (player1CardFrame) {
-        player1CardFrame.classList.add('rotate');
-    }
-
-    selectedSymbols = [];
-    playerLocks[1] = false;
-    playerLocks[2] = false;
-}
-
-function handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event) {
-    if (playerLocks[player]) return;
-
-    const tapTime = event.timeStamp;
-
-    if (symbol === commonSymbol) {
-        symbolDiv.classList.add('correct');
-        
-        if (!firstTapTime || tapTime < firstTapTime) {
-            firstTapTime = tapTime;
-            updateScore(player);
+            applyRotationToUpperDeck(); // Apply rotation to the upper deck
+            selectedSymbols = [];
+            playerLocks[1] = false;
+            playerLocks[2] = false;
         }
-        
-        setTimeout(() => {
-            firstTapTime = 0;
-            displayNewCards();
-        }, 3000);
-    } else {
-        symbolDiv.classList.add('incorrect');
-        setTimeout(() => {
-            symbolDiv.classList.remove('incorrect', 'highlighted');
-            playerLocks[player] = false;
-        }, 3000);
-    }
-    playerLocks[player] = true;
-}
 
-function handleTouchStart(event, player) {
-    event.preventDefault();
-    const touch = event.touches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (target && target.classList.contains('symbol')) {
-        const symbolDiv = target;
-        const symbol = parseInt(symbolDiv.querySelector('img').alt.replace('symbol', ''));
-        const commonSymbol = findCommonSymbol(
-            Array.from(document.querySelectorAll('#player1-container .symbol')).map(el => parseInt(el.querySelector('img').alt.replace('symbol', ''))),
-            Array.from(document.querySelectorAll('#player2-container .symbol')).map(el => parseInt(el.querySelector('img').alt.replace('symbol', '')))
-        );
-        handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event);
-    }
-}
+        function applyRotationToUpperDeck() {
+            const gameContainer = document.getElementById('game-container');
+            const playerContainers = gameContainer.querySelectorAll('.player-container');
 
-function updateScore(player) {
-    if (player === 1) {
-        player1Score++;
-        document.getElementById('player1-score').textContent = `${player1Score}/10`;
-        if (player1Score === 10) {
-            alert('Player 1 wins!');
-            location.reload();
+            // Remove rotation classes from both players
+            playerContainers.forEach(container => {
+                container.classList.remove('rotate-upper');
+            });
+
+            // Apply rotation to the upper deck in portrait mode
+            if (window.matchMedia("(orientation: portrait)").matches) {
+                playerContainers[0].classList.add('rotate-upper'); // First container is the upper deck
+            }
         }
-    } else {
-        player2Score++;
-        document.getElementById('player2-score').textContent = `${player2Score}/10`;
-        if (player2Score === 10) {
-            alert('Player 2 wins!');
-            location.reload();
+
+        function highlightCorrectSymbol(commonSymbol, player) {
+            const otherPlayerContainer = player === 1 ? document.getElementById('player2-container') : document.getElementById('player1-container');
+            const symbols = otherPlayerContainer.querySelectorAll('.symbol');
+            symbols.forEach(symbolDiv => {
+                const symbol = parseInt(symbolDiv.querySelector('img').alt.replace('symbol', ''));
+                if (symbol === commonSymbol) {
+                    symbolDiv.classList.add('highlight');
+                }
+            });
         }
-    }
-}
 
+        function handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event) {
+            if (playerLocks[player]) return;
 
+            const tapTime = event.timeStamp;
 
+            if (symbol === commonSymbol) {
+                symbolDiv.classList.add('correct');
+                highlightCorrectSymbol(commonSymbol, player); // Highlight the correct symbol in the other player's deck
+                
+                if (!firstTapTime || tapTime < firstTapTime) {
+                    firstTapTime = tapTime;
+                    updateScore(player);
+                }
+                
+                setTimeout(() => {
+                    firstTapTime = 0;
+                    displayNewCards();
+                }, 3000);
+            } else {
+                symbolDiv.classList.add('incorrect');
+                const playerContainer = document.getElementById(`player${player}-container`);
+                playerContainer.classList.add('block-touches'); // Block touches for this player
+                setTimeout(() => {
+                    symbolDiv.classList.remove('incorrect', 'highlighted');
+                    playerContainer.classList.remove('block-touches'); // Re-enable touches
+                    playerLocks[player] = false;
+                }, 3000);
+            }
+            playerLocks[player] = true;
+        }
 
+        function updateScore(player) {
+            if (player === 1) {
+                player1Score++;
+                document.getElementById('player1-score').textContent = `${player1Score}/10`;
+                if (player1Score === 10) {
+                    alert('Player 1 wins!');
+                    location.reload();
+                }
+            } else {
+                player2Score++;
+                document.getElementById('player2-score').textContent = `${player2Score}/10`;
+                if (player2Score === 10) {
+                    alert('Player 2 wins!');
+                    location.reload();
+                }
+            }
+        }
 
-
-                // Add the event listener for the fullscreen button
+        // Fullscreen functionality
         document.getElementById('fullscreen-button').addEventListener('click', () => {
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
@@ -388,7 +385,7 @@ function updateScore(player) {
             }
         });
 
-        // Add the event listener for the fullscreen change
+        // Handle fullscreen change
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 document.getElementById('fullscreen-button').style.display = 'none';
@@ -397,33 +394,11 @@ function updateScore(player) {
             }
         });
 
-        document.addEventListener('mozfullscreenchange', () => { // Firefox
-            if (document.mozFullScreenElement) {
-                document.getElementById('fullscreen-button').style.display = 'none';
-            } else {
-                document.getElementById('fullscreen-button').style.display = 'block';
-            }
-        });
-
-        document.addEventListener('webkitfullscreenchange', () => { // Chrome, Safari, and Opera
-            if (document.webkitFullscreenElement) {
-                document.getElementById('fullscreen-button').style.display = 'none';
-            } else {
-                document.getElementById('fullscreen-button').style.display = 'block';
-            }
-        });
-
-        document.addEventListener('msfullscreenchange', () => { // IE/Edge
-            if (document.msFullscreenElement) {
-                document.getElementById('fullscreen-button').style.display = 'none';
-            } else {
-                document.getElementById('fullscreen-button').style.display = 'block';
-            }
-        });
-
-
         const deck = generateSpotItDeck(7);
         displayNewCards();
+
+        // Apply rotation on orientation change
+        window.addEventListener('resize', applyRotationToUpperDeck);
     </script>
 </body>
 </html>
