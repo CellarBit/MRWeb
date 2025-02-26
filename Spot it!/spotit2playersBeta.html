@@ -162,7 +162,7 @@ let selectedSymbols = [];
 let player1Score = 0;
 let player2Score = 0;
 let firstTapTime = 0;
-const playerLocks = {};
+const playerLocks = {1: false, 2: false};
 
 // Divide the screen into two halves
 const player1Area = document.createElement('div');
@@ -358,6 +358,9 @@ function updateScore(player) {
         }
     }
 }
+
+
+
 
 
 
