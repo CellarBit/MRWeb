@@ -379,26 +379,39 @@ const player2Container = document.getElementById('player2-container');
 player1Container.addEventListener('touchstart', (event) => handleTouch(event, 1));
 player2Container.addEventListener('touchstart', (event) => handleTouch(event, 2));
 
-function handleTouch(event, player) {
-    event.preventDefault(); // Prevent default behavior (e.g., scrolling)
-    const touches = event.touches;
+function handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event) {
+    if (playerLocks[player]) return; // Skip if the player is already locked
 
-    for (let i = 0; i < touches.length; i++) {
-        const touch = touches[i];
-        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+    const tapTime = event.timeStamp;
 
-        if (target && target.classList.contains('symbol')) {
-            const symbolDiv = target;
-            const symbol = parseInt(symbolDiv.querySelector('img').alt.replace('symbol', ''));
-            const commonSymbol = findCommonSymbol(
-                Array.from(document.querySelectorAll('#player1-container .symbol')).map(el => parseInt(el.querySelector('img').alt.replace('symbol', ''))),
-                Array.from(document.querySelectorAll('#player2-container .symbol')).map(el => parseInt(el.querySelector('img').alt.replace('symbol', '')))
-            );
-            handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event);
+    if (symbol === commonSymbol) {
+        symbolDiv.classList.add('correct');
+        highlightCorrectSymbol(commonSymbol, player); // Highlight the correct symbol in the other player's deck
+
+        if (!firstTapTime || tapTime < firstTapTime) {
+            firstTapTime = tapTime;
+            updateScore(player);
         }
+
+        setTimeout(() => {
+            firstTapTime = 0;
+            displayNewCards();
+        }, 3000);
+    } else {
+        symbolDiv.classList.add('incorrect');
+        const playerContainer = document.getElementById(`player${player}-container`);
+
+        // Block touches for this player immediately
+        playerContainer.style.pointerEvents = 'none'; // Disable all touches in the container
+        playerLocks[player] = true;
+
+        setTimeout(() => {
+            symbolDiv.classList.remove('incorrect', 'highlighted');
+            playerContainer.style.pointerEvents = 'auto'; // Re-enable touches after the delay
+            playerLocks[player] = false;
+        }, 3000);
     }
 }
-
         // Fullscreen functionality
         document.getElementById('fullscreen-button').addEventListener('click', () => {
             if (document.documentElement.requestFullscreen) {
