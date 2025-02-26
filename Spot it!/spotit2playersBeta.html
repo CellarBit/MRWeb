@@ -164,6 +164,20 @@ let player2Score = 0;
 let firstTapTime = 0;
 const playerLocks = {};
 
+// Divide the screen into two halves
+const player1Area = document.createElement('div');
+player1Area.className = 'player-area';
+player1Area.id = 'player1-area';
+document.body.appendChild(player1Area);
+
+const player2Area = document.createElement('div');
+player2Area.className = 'player-area';
+player2Area.id = 'player2-area';
+document.body.appendChild(player2Area);
+
+player1Area.addEventListener('touchstart', (event) => handleTouchStart(event, 1));
+player2Area.addEventListener('touchstart', (event) => handleTouchStart(event, 2));
+
 function generateSpotItDeck(n) {
     const numSymbols = n ** 2 + n + 1;
     const deck = [];
@@ -312,6 +326,21 @@ function handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event) {
     playerLocks[player] = true;
 }
 
+function handleTouchStart(event, player) {
+    event.preventDefault();
+    const touch = event.touches[0];
+    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (target && target.classList.contains('symbol')) {
+        const symbolDiv = target;
+        const symbol = parseInt(symbolDiv.querySelector('img').alt.replace('symbol', ''));
+        const commonSymbol = findCommonSymbol(
+            Array.from(document.querySelectorAll('#player1-container .symbol')).map(el => parseInt(el.querySelector('img').alt.replace('symbol', ''))),
+            Array.from(document.querySelectorAll('#player2-container .symbol')).map(el => parseInt(el.querySelector('img').alt.replace('symbol', '')))
+        );
+        handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event);
+    }
+}
+
 function updateScore(player) {
     if (player === 1) {
         player1Score++;
@@ -329,6 +358,8 @@ function updateScore(player) {
         }
     }
 }
+
+
 
                 // Add the event listener for the fullscreen button
         document.getElementById('fullscreen-button').addEventListener('click', () => {
