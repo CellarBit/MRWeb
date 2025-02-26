@@ -46,6 +46,7 @@
             width: 100%;
             height: 50%; /* Each player takes half the screen in portrait mode */
             position: relative;
+            touch-action: none; /* Disable default touch behaviors like scrolling */
         }
 
         @media (orientation: landscape) {
@@ -371,6 +372,32 @@
                 }
             }
         }
+        // Add touch event listeners for both players
+const player1Container = document.getElementById('player1-container');
+const player2Container = document.getElementById('player2-container');
+
+player1Container.addEventListener('touchstart', (event) => handleTouch(event, 1));
+player2Container.addEventListener('touchstart', (event) => handleTouch(event, 2));
+
+function handleTouch(event, player) {
+    event.preventDefault(); // Prevent default behavior (e.g., scrolling)
+    const touches = event.touches;
+
+    for (let i = 0; i < touches.length; i++) {
+        const touch = touches[i];
+        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+
+        if (target && target.classList.contains('symbol')) {
+            const symbolDiv = target;
+            const symbol = parseInt(symbolDiv.querySelector('img').alt.replace('symbol', ''));
+            const commonSymbol = findCommonSymbol(
+                Array.from(document.querySelectorAll('#player1-container .symbol')).map(el => parseInt(el.querySelector('img').alt.replace('symbol', ''))),
+                Array.from(document.querySelectorAll('#player2-container .symbol')).map(el => parseInt(el.querySelector('img').alt.replace('symbol', '')))
+            );
+            handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event);
+        }
+    }
+}
 
         // Fullscreen functionality
         document.getElementById('fullscreen-button').addEventListener('click', () => {
