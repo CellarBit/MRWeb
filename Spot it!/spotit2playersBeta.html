@@ -321,7 +321,7 @@ function handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event) {
         setTimeout(() => {
             symbolDiv.classList.remove('incorrect', 'highlighted');
             playerLocks[player] = false;
-        }, 1000);
+        }, 3000);
     }
     playerLocks[player] = true;
 }
