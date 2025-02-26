@@ -287,15 +287,13 @@
             document.getElementById('hold-button').style.pointerEvents = 'none';
 
             function continueRolling() {
-                const randomDiceValue = rollDice();
+                
                 if (currentPlayer !== 2) return;
                 if (turnTotal >= 21) {
                     holdScore();
                     return;
                 }
-                if (randomDiceValue === 1){
-                    return;
-                }
+               
                 console.log(`Player 2 is rolling...`);
                 rollDice();
                 // Use setTimeout to avoid blocking the browser and allow for UI updates
@@ -354,6 +352,7 @@
                         turnTotal = 0;
                         updateTurnTotal(turnTotal);
                         
+                        
                     };
                 } else {
                     turnTotal += randomDiceValue;
@@ -362,9 +361,9 @@
                     return turnTotal;
                 }
 
-            }, 1000);
+            }, 1500);
 
-            return randomDiceValue;
+            
         }
 
         function checkScore(turnTotal) {
