@@ -434,8 +434,8 @@ function throttle(func, limit) {
 }
 
 // Throttled touch handlers
-const handlePlayer1Touch = throttle((event) => handleTouch(event, 1), 1300); // 300ms throttle
-const handlePlayer2Touch = throttle((event) => handleTouch(event, 2), 1300); // 300ms throttle
+const handlePlayer1Touch = throttle((event) => handleTouch(event, 1), 100); // 300ms throttle
+const handlePlayer2Touch = throttle((event) => handleTouch(event, 2), 100); // 300ms throttle
 
 // Add throttled touch event listeners
 player1Container.addEventListener('touchstart', handlePlayer1Touch);
