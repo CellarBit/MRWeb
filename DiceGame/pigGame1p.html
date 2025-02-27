@@ -52,7 +52,6 @@
             border: 1px solid #ccc;
             position: relative;
             margin-left: 10px;
-            
         }
 
         /* Progress bar styling */
@@ -74,7 +73,7 @@
             height: 40px;
             position: absolute;
             transform: translateX(23px);
-            
+            display: none;
         }
 
         /* Display the progress bar value */
@@ -144,6 +143,26 @@
             max-height: 100%; /* Ensure the image doesn't exceed the container's height */
             object-fit: contain; /* Scale the image to fit within the container */
         }
+
+        /* Start message styling */
+        .start-message {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            color: #151791;
+            background-color: #f3f3f3;
+            padding: 10px;
+            border: 2px solid #151791;
+            border-radius: 10px;
+            display: block; /* Initially visible */
+        }
+
+        .start-message:hover {
+            background-color: #151791;
+            color: white;
+        }
+
         /* Responsive styles for screens smaller than 500px */
         @media screen and (max-width: 500px) {
             body {
@@ -176,7 +195,6 @@
         }
 
         @media screen and (max-height: 500px) and (orientation: landscape) {
-
             .progress-row {
                 width: 80%; /* Half width for progress rows */
                 margin: 1%; /* Add some spacing between rows */
@@ -190,12 +208,11 @@
             }
 
             .dice-container {
-                    
-                    width: 100px; /* Set a fixed width based on your image size */
-                    height: 100px; /* Set a fixed height based on your image size */
-                    flex: none; /* Prevent the container from shrinking or expanding */
-                    transform: translateY(-18%);
-                }
+                width: 100px; /* Set a fixed width based on your image size */
+                height: 100px; /* Set a fixed height based on your image size */
+                flex: none; /* Prevent the container from shrinking or expanding */
+                transform: translateY(-18%);
+            }
             .button {
                 width: 100px; /* Make buttons smaller */
             }
@@ -205,25 +222,24 @@
             }
 
             #dice-image {
-                    max-width: 80%; /* Ensure the image doesn't exceed the container's width */
-                    max-height: 80%; /* Ensure the image doesn't exceed the container's height */
-                    object-fit: contain; /* Scale the image to fit within the container */
-                }
+                max-width: 80%; /* Ensure the image doesn't exceed the container's width */
+                max-height: 80%; /* Ensure the image doesn't exceed the container's height */
+                object-fit: contain; /* Scale the image to fit within the container */
+            }
         }
 
-      #fullscreen-button {
-          position: fixed;
-          bottom: 10px;
-          right: 10px;
-          padding: 10px 15px;
-          font-size: 16px;
-          background-color: #559c03;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-      }
-       
+        #fullscreen-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #559c03;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -246,6 +262,7 @@
         <br>
         <br>
         <div id="dice-container" class="dice-container">
+            <div id="start-message" class="start-message">Click to Start</div>
             <img src="rolling-dice.gif" alt="Rolling Dice" id="dice-image" style="display: none;">
         </div>
         <div class="buttons-container">
@@ -256,200 +273,220 @@
             </div>
             <img src="hold-button.png" alt="Hold" class="button" id="hold-button">
         </div>
-  <button id="fullscreen-button">FullScreen</button>
+        <button id="fullscreen-button">FullScreen</button>
     </div>
     <script>
-let currentPlayer = 1;
-let turnTotal = 0;
-const playerScores = [0, 0]; // Player 1 and Player 2 scores
-const targetScore = 100;
-let isComputerTurn = false; // Flag to control the computer's turn
+        let currentPlayer = 1;
+        let turnTotal = 0;
+        const playerScores = [0, 0]; // Player 1 and Player 2 scores
+        const targetScore = 100;
+        let isComputerTurn = false; // Flag to control the computer's turn
 
-// JavaScript to control the turn indicator and update progress values
-const turnIndicator = document.getElementById('turn-indicator');
-const player1Row = document.getElementById('player1-row');
-const player2Row = document.getElementById('player2-row');
+        // JavaScript to control the turn indicator and update progress values
+        const turnIndicator = document.getElementById('turn-indicator');
+        const player1Row = document.getElementById('player1-row');
+        const player2Row = document.getElementById('player2-row');
 
-function setTurn(player) {
-    currentPlayer = player;
-    if (player === 1) {
-        player1Row.prepend(turnIndicator); // Move the indicator to Player 1
-        turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
-        document.getElementById('roll-button').style.pointerEvents = 'auto';
-        document.getElementById('hold-button').style.pointerEvents = 'auto';
-        isComputerTurn = false; // Stop the computer's turn
-    } else {
-        player2Row.prepend(turnIndicator); // Move the indicator to Player 2
-        turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
-        document.getElementById('roll-button').style.pointerEvents = 'none';
-        document.getElementById('hold-button').style.pointerEvents = 'none';
-        isComputerTurn = true; // Start the computer's turn
-        player2Turn();
-    }
-}
 
-function player2Turn() {
-    if (!isComputerTurn) return; // Stop if it's no longer the computer's turn
-
-    function continueRolling() {
-        if (!isComputerTurn) return; // Stop if it's no longer the computer's turn
-
-        if (turnTotal >= 21) {
-            holdScore();
-            return;
+        function setTurn(player) {
+            currentPlayer = player;
+            if (player === 1) {
+                player1Row.prepend(turnIndicator); // Move the indicator to Player 1
+                turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
+                document.getElementById('roll-button').style.pointerEvents = 'auto';
+                document.getElementById('hold-button').style.pointerEvents = 'auto';
+                isComputerTurn = false; // Stop the computer's turn
+            } else {
+                player2Row.prepend(turnIndicator); // Move the indicator to Player 2
+                turnIndicator.style.marginLeft = '-70px'; // Adjust the position if needed
+                document.getElementById('roll-button').style.pointerEvents = 'none';
+                document.getElementById('hold-button').style.pointerEvents = 'none';
+                isComputerTurn = true; // Start the computer's turn
+                player2Turn();
+            }
         }
 
-        console.log(`Player 2 is rolling...`);
-        rollDice();
+        function player2Turn() {
+            if (!isComputerTurn) return; // Stop if it's no longer the computer's turn
 
-        // Use setTimeout to avoid blocking the browser and allow for UI updates
-        setTimeout(() => {
-            if (isComputerTurn) {
-                continueRolling(); // Continue rolling only if it's still the computer's turn
+            function continueRolling() {
+                if (!isComputerTurn) return; // Stop if it's no longer the computer's turn
+
+                if (turnTotal >= 21) {
+                    holdScore();
+                    return;
+                }
+
+                console.log(`Player 2 is rolling...`);
+                rollDice();
+
+                // Use setTimeout to avoid blocking the browser and allow for UI updates
+                setTimeout(() => {
+                    if (isComputerTurn) {
+                        continueRolling(); // Continue rolling only if it's still the computer's turn
+                    }
+                }, 2000); // Adjust the delay as needed
             }
-        }, 2000); // Adjust the delay as needed
-    }
 
-    continueRolling(); // Start rolling
-}
+            continueRolling(); // Start rolling
+        }
 
-function updateProgress(player, value) {
-    const progressBarElement = document.getElementById(`progress-bar-p${player}`);
-    const progressValueElement = document.getElementById(`progress-value-p${player}`);
-    const widthPercentage = (value / targetScore) * 100;
-    progressBarElement.style.width = `${widthPercentage}%`;
-    progressValueElement.textContent = value;
-}
+        function updateProgress(player, value) {
+            const progressBarElement = document.getElementById(`progress-bar-p${player}`);
+            const progressValueElement = document.getElementById(`progress-value-p${player}`);
+            const widthPercentage = (value / targetScore) * 100;
+            progressBarElement.style.width = `${widthPercentage}%`;
+            progressValueElement.textContent = value;
+        }
 
-function updateTurnTotal(value) {
-    const turnTotalNumberElement = document.getElementById('turn-total-number');
-    turnTotalNumberElement.textContent = value;
-}
+        function updateTurnTotal(value) {
+            const turnTotalNumberElement = document.getElementById('turn-total-number');
+            turnTotalNumberElement.textContent = value;
+        }
 
-function rollDice() {
-    console.log(`Player ${currentPlayer} is rolling the dice`);
-    const diceImage = document.getElementById('dice-image');
-    const diceSound = new Audio('diceSound.wav');
-    const randomDiceValue = Math.floor(Math.random() * 6) + 1;
-    diceImage.src = 'rolling-dice.gif';
-    diceImage.style.display = 'block';
-    diceImage.style.width = '150px'; // Ensure the width is set here
-    diceImage.style.height = 'auto';
+        function rollDice() {
+            console.log(`Player ${currentPlayer} is rolling the dice`);
+            const diceImage = document.getElementById('dice-image');
+            const diceSound = new Audio('diceSound.wav');
+            const randomDiceValue = Math.floor(Math.random() * 6) + 1;
+            diceImage.src = 'rolling-dice.gif';
+            diceImage.style.display = 'block';
+            diceImage.style.width = '150px'; // Ensure the width is set here
+            diceImage.style.height = 'auto';
 
-    // Disable buttons
-    document.getElementById('roll-button').style.pointerEvents = 'none';
-    document.getElementById('hold-button').style.pointerEvents = 'none';
+            // Disable buttons
+            document.getElementById('roll-button').style.pointerEvents = 'none';
+            document.getElementById('hold-button').style.pointerEvents = 'none';
 
-    diceSound.play();
+            diceSound.play();
 
-    setTimeout(() => {
-        const lowtone = new Audio('lowtone.wav');
-        diceImage.src = `dice${randomDiceValue}.png`;
-        diceImage.style.width = '100px'; // Keep the same width for PNG images
-        diceImage.style.height = 'auto';
-        console.log(`Player ${currentPlayer} got a ${randomDiceValue}`);
+            setTimeout(() => {
+                const lowtone = new Audio('lowtone.wav');
+                diceImage.src = `dice${randomDiceValue}.png`;
+                diceImage.style.width = '100px'; // Keep the same width for PNG images
+                diceImage.style.height = 'auto';
+                console.log(`Player ${currentPlayer} got a ${randomDiceValue}`);
 
-        if (randomDiceValue === 1) {
-            isComputerTurn = false;
-            lowtone.play();
-            lowtone.onended = () => {
-                
-                switchTurn();
+                if (randomDiceValue === 1) {
+                    isComputerTurn = false;
+                    turnTotal = 0;
+                    updateTurnTotal(turnTotal);
+                    lowtone.play();
+                    lowtone.onended = () => {
+                        switchTurn();
+
+                    };
+                } else {
+                    turnTotal += randomDiceValue;
+                    updateTurnTotal(turnTotal);
+                    checkScore(turnTotal);
+                }
+
+                // Re-enable buttons only if it's Player 1's turn
+                if (currentPlayer === 1) {
+                    document.getElementById('roll-button').style.pointerEvents = 'auto';
+                    document.getElementById('hold-button').style.pointerEvents = 'auto';
+                }
+            }, 1500);
+        }
+
+        function checkScore(turnTotal) {
+            const finish = new Audio('finish.wav');
+            const cry = new Audio('cry.wav');
+            if (playerScores[currentPlayer - 1] + turnTotal >= targetScore) {
+                updateProgress(currentPlayer, targetScore);
+                if (currentPlayer === 1) {
+                    finish.play();
+                    finish.onended = () => {
+                        alert(`THE WINNER!`);
+                        location.reload();
+                    };
+                } else {
+                    cry.play();
+                    cry.onended = () => {
+                        alert('THE LOSER!');
+                        location.reload();
+                    };
+                }
+            }
+        }
+
+        function holdScore() {
+            document.getElementById('roll-button').style.pointerEvents = 'none';
+            document.getElementById('hold-button').style.pointerEvents = 'none';
+            const holdScore = new Audio('holdScore.wav');
+            playerScores[currentPlayer - 1] += turnTotal;
+            updateProgress(currentPlayer, playerScores[currentPlayer - 1]);
+            holdScore.play();
+            holdScore.onended = () => {
                 turnTotal = 0;
                 updateTurnTotal(turnTotal);
+                switchTurn();
             };
-        } else {
-            turnTotal += randomDiceValue;
+        }
+
+        function switchTurn() {
+            // Reset turnTotal to 0 (just in case)
+            turnTotal = 0;
             updateTurnTotal(turnTotal);
-            checkScore(turnTotal);
+
+            // Switch to the other player
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+
+            // Update the UI and set the turn
+            setTurn(currentPlayer);
         }
 
-        // Re-enable buttons only if it's Player 1's turn
-        if (currentPlayer === 1) {
-            document.getElementById('roll-button').style.pointerEvents = 'auto';
-            document.getElementById('hold-button').style.pointerEvents = 'auto';
+        function resetGame() {
+            document.getElementById('turn-indicator').style.display = 'block';
+            playerScores[0] = 0;
+            playerScores[1] = 0;
+            updateProgress(1, 0);
+            updateProgress(2, 0);
+            turnTotal = 0;
+            updateTurnTotal(turnTotal);
+            const whoStart = Math.floor(Math.random() * 2) + 1;
+            
+            if (whoStart === 2){
+                isComputerTurn = true;
+            }
+            setTurn(whoStart);
         }
-    }, 1500);
-}
 
-function checkScore(turnTotal) {
-    const finish = new Audio('finish.wav');
-    const cry = new Audio('cry.wav');
-    if (playerScores[currentPlayer - 1] + turnTotal >= targetScore) {
-        updateProgress(currentPlayer, targetScore);
-        if (currentPlayer == 1) {
-            finish.play();
-            finish.onended = () => {
-                alert(`THE WINNER!`);
-                location.reload();
-            };
-        } else {
-            cry.play();
-            cry.onended = () => {
-                alert('THE LOSER!');
-                location.reload();
-            };
-        }
-    }
-}
+        // Add an event listener to the start message
+        document.getElementById('start-message').addEventListener('click', () => {
+            // Hide the start message
+            document.getElementById('start-message').style.display = 'none';
+            // Show the dice image (if needed)
+            document.getElementById('dice-image').style.display = 'block';
+            // Start the game
+            resetGame();
+        });
 
-function holdScore() {
-    document.getElementById('roll-button').style.pointerEvents = 'none';
-    document.getElementById('hold-button').style.pointerEvents = 'none';
-    const holdScore = new Audio('holdScore.wav');
-    playerScores[currentPlayer - 1] += turnTotal;
-    updateProgress(currentPlayer, playerScores[currentPlayer - 1]);
-    holdScore.play();
-    holdScore.onended = () => {
-        turnTotal = 0;
-        updateTurnTotal(turnTotal);
-        switchTurn();
-    };
-}
+        // Add the event listener for the fullscreen button
+        document.getElementById('fullscreen-button').addEventListener('click', () => {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        });
 
-function switchTurn() {
-    currentPlayer = currentPlayer === 1 ? 2 : 1;
-
-    setTurn(currentPlayer);
-}
-
-function resetGame() {
-    playerScores[0] = 0;
-    playerScores[1] = 0;
-    updateProgress(1, 0);
-    updateProgress(2, 0);
-    turnTotal = 0;
-    updateTurnTotal(turnTotal);
-    setTurn(1);
-}
-
-// Add the event listener for the fullscreen button
-document.getElementById('fullscreen-button').addEventListener('click', () => {
-    if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-    } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-        document.documentElement.mozRequestFullScreen();
-    } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-        document.documentElement.webkitRequestFullscreen();
-    } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-        document.documentElement.msRequestFullscreen();
-    }
-});
-
-// Add the event listener for the fullscreen change
-document.addEventListener('fullscreenchange', () => {
-    if (document.fullscreenElement) {
-        document.getElementById('fullscreen-button').style.display = 'none';
-    } else {
-        document.getElementById('fullscreen-button').style.display = 'block';
-    }
-});
-
-document.getElementById('roll-button').addEventListener('click', rollDice);
-document.getElementById('hold-button').addEventListener('click', holdScore);
-
-// Initialize game
-resetGame();
+        // Add the event listener for the fullscreen change
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.getElementById('fullscreen-button').style.display = 'none';
+            } else {
+                document.getElementById('fullscreen-button').style.display = 'block';
+            }
+        });
+        
+        document.getElementById('roll-button').addEventListener('click', rollDice);
+        document.getElementById('hold-button').addEventListener('click', holdScore);
     </script>
 </body>
 </html>

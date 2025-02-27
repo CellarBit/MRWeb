@@ -15,8 +15,15 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
-        h1 {
+        .checkbox-container {
             margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        .checkbox-container label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
         }
         .grid {
             display: grid;
@@ -78,26 +85,21 @@
             margin-bottom: 20px;
             text-align: center;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
         }
-
         th, td {
             border: 1px solid #ddd;
             text-align: center; /* Center the text */
             padding: 8px;
         }
-
         th {
             background-color: #f2f2f2;
         }
-
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-
         .deleteButton {
             background-color: red;
             color: white;
@@ -106,23 +108,33 @@
             padding: 2px 5px;
             margin-left: 10px;
         }
-
         .deleteButton:hover {
             background-color: darkred;
         }
-
+/* Style for grey input numbers */
+.grey-input {
+    color: lightgrey; /* Light grey text color */
+}
     </style>
 </head>
 <body>
-    <h1>Sudoku Game</h1>
+    <!-- Checkbox and label -->
+    <div class="checkbox-container">
+        <label for="draftCheckbox">
+            <input type="checkbox" id="draftCheckbox"> Check for draft
+        </label>
+    </div>
+
+    <!-- Sudoku grid -->
     <div class="grid" id="sudokuGrid"></div>
+
+    <!-- Controls and statistics -->
     <div class="controls">
         <label for="filledCells">Number of filled cells (from 25 to 80):</label>
-        <input type="number" id="filledCells" min="25" max="80" value="26">
+        <input type="number" id="filledCells" min="25" max="80" value="30">
         <br><br>
         <button onclick="generatePuzzle(); startTimer();">Generate Puzzle</button>
         <button id="validateButton" onclick="validatePuzzle()">Validate Puzzle</button>
-        <button onclick="FilledSeventeen(); startTimer()">17 filled cell</button>
         <br><br>
         <label for="solutionCount">Number of possible solutions:</label>
         <span id="solutionCount">0</span>
@@ -141,10 +153,35 @@
             </tbody>
         </table>
     </div>
-    
-    
-    
+
     <script>
+// Get the checkbox and the grid container
+const draftCheckbox = document.getElementById('draftCheckbox');
+const gridContainer = document.getElementById('sudokuGrid');
+
+// Track whether the checkbox is checked
+let isDraftMode = false;
+
+// Add an event listener to the checkbox
+draftCheckbox.addEventListener('change', function() {
+    isDraftMode = draftCheckbox.checked;
+});
+
+// Add an event listener to the grid container to handle input events
+gridContainer.addEventListener('input', function(event) {
+    const input = event.target;
+
+    // Only apply styles to non-readonly inputs
+    if (!input.readOnly) {
+        if (isDraftMode) {
+            // If checkbox is checked, add the grey-input class
+            input.classList.add('grey-input');
+        } else {
+            // If checkbox is unchecked, remove the grey-input class
+            input.classList.remove('grey-input');
+        }
+    }
+});
         const sudokuPuzzles = [
 
         [
