@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spot it!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure the body takes full height */
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: white;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 90%; /* Adjust the max-width for responsiveness */
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%; /* Adjust the width to be responsive */
+            max-width: 600px; /* Set a maximum width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        /* Media Query for smaller screens */
+        @media (max-width: 600px) {
+            .image-container {
+                padding: 10px; /* Reduce padding for smaller screens */
+            }
+
+            .image-container img {
+                width: 100%; /* Ensure the image uses the full width of the container */
+                max-width: 100%; /* Remove the maximum width restriction for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Spot it!</h1>
+    </header>
+    <main>
+        <section>
+            <p>Spot it! is a game in which players have to find symbols in common between two cards. It was the UK’s best-selling game in 2018 and 2019. 
+
+                The game is sold as Dobble in Europe and Spot It! in the US. The name is a play on the word 'double'. 
+                The game uses a deck of 55 cards, each printed with eight different symbols. Any two cards always share one, and only one, matching symbol. <br><br>
+                The objective of the game is to be the first player to announce the common symbol between two given cards.
+            
+                In 1976, inspired by Kirkman's schoolgirl problem, French mathematics enthusiast Jacques Cottereau devised a game consisting of a set of 31 cards each with six images of insects, with exactly one image shared between each pair of them. <br><br>In 2008, journalist and game designer Denis Blanchot found a few of the cards from the "game of insects" and developed the idea to create Dobble.
+            </p>
+            <h2>Gameplay:</h2>
+            <p>
+             In 1 player version. Select the common image in both decks. In 2 player version, each player control 1 deck and choose the repeated image only in their deck, who tpuch it first, who win the round.
+            </p>
+            <h2>Mathematics</h2>
+            <p>The special way that symbols are arranged on Dobble cards can be understood using geometry. If each card is represented by a line, and each symbol by a point where two lines intersect, then the properties of Dobble are that:<br><br>
+
+                any two lines intersect at exactly one point, and<br>
+                any two points are joined by exactly one line.<br>
+                This geometric structure is an example of a finite projective plane.<br><br><br>
+            
+                In general, a finite projective plane of order n has n+1 points on each line, and n2+n+1 points and lines.<br><br> This implies that a finite projective plane of order n−1 has n points on each line, and n2−n+1 points and lines.<br><br>
+                If there are 3 points in each line this creates a structure known as the Fano plane. This represents a simpler version of Dobble with 3 symbols on each card, 7 cards and 7 symbols.</p>
+                <div class="image-container">
+                    <img src="Fano_plane_with_colored_lines.png" alt="Fano_plane_with_colored_lines">
+                </div>
+        </section>
+ 
+        <section>
+            <h2>References:</h2>
+            <p><a href="https://en.wikipedia.org/wiki/Dobble">Wikipedia: Dobble</a></p>
+            <p><a href="https://en.wikipedia.org/wiki/Kirkman%27s_schoolgirl_problem">Kirkman's schoolgirl problem</a></p>
+            <p><a href="https://upload.wikimedia.org/wikipedia/commons/8/88/Projective_plane_of_order_7.svg">Projective plane of order 7</a></p>
+        </section>
+    </main>
+</body>
+</html>

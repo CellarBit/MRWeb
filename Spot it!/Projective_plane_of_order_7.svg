@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="-50 -50 912 912">
+ <title>Projective plane of order 7</title>
+ <desc>A graph of the projective plane of order 7, having 57 points, 57 lines, 8 points on each line and 8 lines passing through each point, where each point is denoted by a rounded rectangle and each line by a combination of letter and number by CMG Lee. Any two points share exactly one combination of letter and number. Only lines with letter A and H are shown. In the Dobble game, any two points are removed, such as those crossed out. In the SVG file, hover over a line to highlight it.</desc>
+ <style type="text/css">
+text    { font-family:Courier,Courier New,monospace; font-weight:bold; text-anchor:middle; stroke:none; cursor:default; }
+.letter { font-size:28px; }
+.main   { font-size:20px; fill:#999999; stroke:none; }
+.a      { fill:#000000; marker-start:url(#marker_a); }
+.b      { fill:#9999ff; marker-start:url(#marker_b); }
+.c      { fill:#00cccc; marker-start:url(#marker_c); }
+.d      { fill:#ff66ff; marker-start:url(#marker_d); }
+.e      { fill:#ff6666; marker-start:url(#marker_e); }
+.f      { fill:#eecc00; marker-start:url(#marker_f); }
+.g      { fill:#00cc00; marker-start:url(#marker_g); }
+.h      { fill:#999999; marker-start:url(#marker_h); }
+.line0  { stroke-width:4; stroke-dasharray:8,8; }
+.line1  { stroke-width:4; stroke-dasharray:32,8,8,8; }
+.line2  { stroke-width:4; }
+.line3  { stroke-width:9; }
+.line4  { stroke-width:4; stroke-dasharray:32,8; }
+.line5  { stroke-width:9; stroke-dasharray:32,8; }
+.line6  { stroke-width:9; stroke-dasharray:8,8; }
+.line7  { stroke-width:9; stroke-dasharray:32,8,8,8; }
+.line8  { stroke-width:1; }
+.active:hover, .nofade { stroke-opacity:1; }
+ </style>
+ <defs>
+  <filter id="filter_shadow">
+   <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+   <feOffset dx="1" dy="2"/>
+   <feColorMatrix type="matrix" values="0,0,0,0,0 0,0,0,0,0 0,0,0,0,0 0,0,0,0.25,0"/>
+   <feBlend in="SourceGraphic"/>
+  </filter>
+  <pattern id="pattern" patternUnits="userSpaceOnUse" width="100" height="100">
+   <rect x="5" y="5" width="90" height="90" rx="5" ry="5" fill="#eeeeee" filter="url(#filter_shadow)"/>
+  </pattern>
+  <path id="anchor" d="M -3,-2 h 1"/>
+  <text id="number0" x="9" y="12">1</text>
+  <text id="number1" x="9" y="12">2</text>
+  <text id="number2" x="9" y="12">3</text>
+  <text id="number3" x="9" y="12">4</text>
+  <text id="number4" x="9" y="12">5</text>
+  <text id="number5" x="9" y="12">6</text>
+  <text id="number6" x="9" y="12">7</text>
+  <text id="number7" x="9" y="12">8</text>
+  <text id="number8" x="9" y="12">0</text>
+  <g id="sub0" transform="translate(20,20)"><use xlink:href="#anchor"/><use xlink:href="#number0"/></g>
+  <g id="sub1" transform="translate(20,50)"><use xlink:href="#anchor"/><use xlink:href="#number1"/></g>
+  <g id="sub2" transform="translate(20,80)"><use xlink:href="#anchor"/><use xlink:href="#number2"/></g>
+  <g id="sub3" transform="translate(50,35)"><use xlink:href="#anchor"/><use xlink:href="#number3"/></g>
+  <g id="sub4" transform="translate(50,65)"><use xlink:href="#anchor"/><use xlink:href="#number4"/></g>
+  <g id="sub5" transform="translate(80,20)"><use xlink:href="#anchor"/><use xlink:href="#number5"/></g>
+  <g id="sub6" transform="translate(80,50)"><use xlink:href="#anchor"/><use xlink:href="#number6"/></g>
+  <g id="sub7" transform="translate(80,80)"><use xlink:href="#anchor"/><use xlink:href="#number7"/></g>
+  <marker id="marker_a" markerWidth="18" markerHeight="18" refX="9" refY="9" markerUnits="strokeWidth" orient="0"><text class="letter" fill="#000000" x="9" y="9" dy="0.7ex">A</text></marker>
+  <marker id="marker_b" markerWidth="18" markerHeight="18" refX="9" refY="9" markerUnits="strokeWidth" orient="0"><text class="letter" fill="#9999ff" x="9" y="9" dy="0.7ex">B</text></marker>
+  <marker id="marker_c" markerWidth="18" markerHeight="18" refX="9" refY="9" markerUnits="strokeWidth" orient="0"><text class="letter" fill="#00cccc" x="9" y="9" dy="0.7ex">C</text></marker>
+  <marker id="marker_d" markerWidth="18" markerHeight="18" refX="9" refY="9" markerUnits="strokeWidth" orient="0"><text class="letter" fill="#ff66ff" x="9" y="9" dy="0.7ex">D</text></marker>
+  <marker id="marker_e" markerWidth="18" markerHeight="18" refX="9" refY="9" markerUnits="strokeWidth" orient="0"><text class="letter" fill="#ff6666" x="9" y="9" dy="0.7ex">E</text></marker>
+  <marker id="marker_f" markerWidth="18" markerHeight="18" refX="9" refY="9" markerUnits="strokeWidth" orient="0"><text class="letter" fill="#eecc00" x="9" y="9" dy="0.7ex">F</text></marker>
+  <marker id="marker_g" markerWidth="18" markerHeight="18" refX="9" refY="9" markerUnits="strokeWidth" orient="0"><text class="letter" fill="#00cc00" x="9" y="9" dy="0.7ex">G</text></marker>
+  <marker id="marker_h" markerWidth="18" markerHeight="18" refX="9" refY="9" markerUnits="strokeWidth" orient="0"><text class="letter" fill="#999999" x="9" y="9" dy="0.7ex">H</text></marker>
+  <g id="horizontal">
+   <use xlink:href="#sub0" x="0"   y="0"/>
+   <use xlink:href="#sub0" x="0"   y="100"/>
+   <use xlink:href="#sub0" x="0"   y="200"/>
+   <use xlink:href="#sub0" x="0"   y="300"/>
+   <use xlink:href="#sub0" x="0"   y="400"/>
+   <use xlink:href="#sub0" x="0"   y="500"/>
+   <use xlink:href="#sub0" x="0"   y="600"/>
+  </g>
+  <g id="vertical">
+   <use xlink:href="#sub1" x="0"   y="0"/>
+   <use xlink:href="#sub1" x="100" y="100"/>
+   <use xlink:href="#sub1" x="200" y="200"/>
+   <use xlink:href="#sub1" x="300" y="300"/>
+   <use xlink:href="#sub1" x="400" y="400"/>
+   <use xlink:href="#sub1" x="500" y="500"/>
+   <use xlink:href="#sub1" x="600" y="600"/>
+   <use xlink:href="#sub2" x="0"   y="0"/>
+   <use xlink:href="#sub2" x="200" y="100"/>
+   <use xlink:href="#sub2" x="400" y="200"/>
+   <use xlink:href="#sub2" x="600" y="300"/>
+   <use xlink:href="#sub2" x="100" y="400"/>
+   <use xlink:href="#sub2" x="300" y="500"/>
+   <use xlink:href="#sub2" x="500" y="600"/>
+   <use xlink:href="#sub3" x="0"   y="0"/>
+   <use xlink:href="#sub3" x="300" y="100"/>
+   <use xlink:href="#sub3" x="600" y="200"/>
+   <use xlink:href="#sub3" x="200" y="300"/>
+   <use xlink:href="#sub3" x="500" y="400"/>
+   <use xlink:href="#sub3" x="100" y="500"/>
+   <use xlink:href="#sub3" x="400" y="600"/>
+   <use xlink:href="#sub4" x="0"   y="0"/>
+   <use xlink:href="#sub4" x="400" y="100"/>
+   <use xlink:href="#sub4" x="100" y="200"/>
+   <use xlink:href="#sub4" x="500" y="300"/>
+   <use xlink:href="#sub4" x="200" y="400"/>
+   <use xlink:href="#sub4" x="600" y="500"/>
+   <use xlink:href="#sub4" x="300" y="600"/>
+   <use xlink:href="#sub5" x="0"   y="0"/>
+   <use xlink:href="#sub5" x="500" y="100"/>
+   <use xlink:href="#sub5" x="300" y="200"/>
+   <use xlink:href="#sub5" x="100" y="300"/>
+   <use xlink:href="#sub5" x="600" y="400"/>
+   <use xlink:href="#sub5" x="400" y="500"/>
+   <use xlink:href="#sub5" x="200" y="600"/>
+   <use xlink:href="#sub6" x="0"   y="0"/>
+   <use xlink:href="#sub6" x="600" y="100"/>
+   <use xlink:href="#sub6" x="500" y="200"/>
+   <use xlink:href="#sub6" x="400" y="300"/>
+   <use xlink:href="#sub6" x="300" y="400"/>
+   <use xlink:href="#sub6" x="200" y="500"/>
+   <use xlink:href="#sub6" x="100" y="600"/>
+   <use xlink:href="#sub7" x="0"   y="0"/>
+   <use xlink:href="#sub7" x="100" y="0"/>
+   <use xlink:href="#sub7" x="200" y="0"/>
+   <use xlink:href="#sub7" x="300" y="0"/>
+   <use xlink:href="#sub7" x="400" y="0"/>
+   <use xlink:href="#sub7" x="500" y="0"/>
+   <use xlink:href="#sub7" x="600" y="0"/>
+  </g>
+  <path id="card" d="M 0,0 H 100 V 100 H 0 Z" fill="url(#pattern)"/>
+  <path id="frame" d="M 0,0 H 700 V 700 H 0 Z"/>
+  <clipPath id="clip_frame"><use xlink:href="#frame"/></clipPath>
+ </defs>
+ <circle cx="0" cy="0" r="99999" fill="#ffffff"/>
+ <g class="main">
+  <g class="nofade">
+   <use xlink:href="#frame" fill="url(#pattern)"/>
+   <g clip-path="url(#clip_frame)">
+    <g id="icons">
+     <g class="a"><use xlink:href="#vertical" x="0" y="0"  /><use xlink:href="#horizontal" x="0"   y="0"/></g>
+     <g class="b"><use xlink:href="#vertical" x="0" y="100"/><use xlink:href="#horizontal" x="100" y="0"/></g>
+     <g class="c"><use xlink:href="#vertical" x="0" y="200"/><use xlink:href="#horizontal" x="200" y="0"/></g>
+     <g class="d"><use xlink:href="#vertical" x="0" y="300"/><use xlink:href="#horizontal" x="300" y="0"/></g>
+     <g class="e"><use xlink:href="#vertical" x="0" y="400"/><use xlink:href="#horizontal" x="400" y="0"/></g>
+     <g class="f"><use xlink:href="#vertical" x="0" y="500"/><use xlink:href="#horizontal" x="500" y="0"/></g>
+     <g class="g"><use xlink:href="#vertical" x="0" y="600"/><use xlink:href="#horizontal" x="600" y="0"/></g>
+    </g>
+    <use xlink:href="#icons" x="0" y="-700"/>
+   </g>
+   <g transform="translate(0,750)">
+    <use xlink:href="#card"/>
+    <g class="a" transform="translate(20,20)"><use xlink:href="#anchor"/><use xlink:href="#number0"/></g>
+    <g class="b" transform="translate(20,50)"><use xlink:href="#anchor"/><use xlink:href="#number0"/></g>
+    <g class="c" transform="translate(20,80)"><use xlink:href="#anchor"/><use xlink:href="#number0"/></g>
+    <g class="d" transform="translate(50,35)"><use xlink:href="#anchor"/><use xlink:href="#number0"/></g>
+    <g class="e" transform="translate(50,65)"><use xlink:href="#anchor"/><use xlink:href="#number0"/></g>
+    <g class="f" transform="translate(80,20)"><use xlink:href="#anchor"/><use xlink:href="#number0"/></g>
+    <g class="g" transform="translate(80,50)"><use xlink:href="#anchor"/><use xlink:href="#number0"/></g>
+    <g class="h" transform="translate(80,80)"><use xlink:href="#anchor"/><use xlink:href="#number8"/></g>
+   </g>
+   <g transform="translate(750,750)">
+    <use xlink:href="#card"/>
+    <g class="a" transform="translate(20,20)"><use xlink:href="#anchor"/><use xlink:href="#number1"/></g>
+    <g class="b" transform="translate(20,50)"><use xlink:href="#anchor"/><use xlink:href="#number1"/></g>
+    <g class="c" transform="translate(20,80)"><use xlink:href="#anchor"/><use xlink:href="#number1"/></g>
+    <g class="d" transform="translate(50,35)"><use xlink:href="#anchor"/><use xlink:href="#number1"/></g>
+    <g class="e" transform="translate(50,65)"><use xlink:href="#anchor"/><use xlink:href="#number1"/></g>
+    <g class="f" transform="translate(80,20)"><use xlink:href="#anchor"/><use xlink:href="#number1"/></g>
+    <g class="g" transform="translate(80,50)"><use xlink:href="#anchor"/><use xlink:href="#number1"/></g>
+    <g class="h" transform="translate(80,80)"><use xlink:href="#anchor"/><use xlink:href="#number8"/></g>
+   </g>
+   <g transform="translate(750,400)">
+    <use xlink:href="#card"/>
+    <g class="a" transform="translate(20,20)"><use xlink:href="#anchor"/><use xlink:href="#number2"/></g>
+    <g class="b" transform="translate(20,50)"><use xlink:href="#anchor"/><use xlink:href="#number2"/></g>
+    <g class="c" transform="translate(20,80)"><use xlink:href="#anchor"/><use xlink:href="#number2"/></g>
+    <g class="d" transform="translate(50,35)"><use xlink:href="#anchor"/><use xlink:href="#number2"/></g>
+    <g class="e" transform="translate(50,65)"><use xlink:href="#anchor"/><use xlink:href="#number2"/></g>
+    <g class="f" transform="translate(80,20)"><use xlink:href="#anchor"/><use xlink:href="#number2"/></g>
+    <g class="g" transform="translate(80,50)"><use xlink:href="#anchor"/><use xlink:href="#number2"/></g>
+    <g class="h" transform="translate(80,80)"><use xlink:href="#anchor"/><use xlink:href="#number8"/></g>
+   </g>
+   <g transform="translate(750,300)">
+    <use xlink:href="#card"/>
+    <g class="a" transform="translate(20,20)"><use xlink:href="#anchor"/><use xlink:href="#number3"/></g>
+    <g class="b" transform="translate(20,50)"><use xlink:href="#anchor"/><use xlink:href="#number3"/></g>
+    <g class="c" transform="translate(20,80)"><use xlink:href="#anchor"/><use xlink:href="#number3"/></g>
+    <g class="d" transform="translate(50,35)"><use xlink:href="#anchor"/><use xlink:href="#number3"/></g>
+    <g class="e" transform="translate(50,65)"><use xlink:href="#anchor"/><use xlink:href="#number3"/></g>
+    <g class="f" transform="translate(80,20)"><use xlink:href="#anchor"/><use xlink:href="#number3"/></g>
+    <g class="g" transform="translate(80,50)"><use xlink:href="#anchor"/><use xlink:href="#number3"/></g>
+    <g class="h" transform="translate(80,80)"><use xlink:href="#anchor"/><use xlink:href="#number8"/></g>
+   </g>
+   <g transform="translate(400,750)">
+    <use xlink:href="#card"/>
+    <g class="a" transform="translate(20,20)"><use xlink:href="#anchor"/><use xlink:href="#number4"/></g>
+    <g class="b" transform="translate(20,50)"><use xlink:href="#anchor"/><use xlink:href="#number4"/></g>
+    <g class="c" transform="translate(20,80)"><use xlink:href="#anchor"/><use xlink:href="#number4"/></g>
+    <g class="d" transform="translate(50,35)"><use xlink:href="#anchor"/><use xlink:href="#number4"/></g>
+    <g class="e" transform="translate(50,65)"><use xlink:href="#anchor"/><use xlink:href="#number4"/></g>
+    <g class="f" transform="translate(80,20)"><use xlink:href="#anchor"/><use xlink:href="#number4"/></g>
+    <g class="g" transform="translate(80,50)"><use xlink:href="#anchor"/><use xlink:href="#number4"/></g>
+    <g class="h" transform="translate(80,80)"><use xlink:href="#anchor"/><use xlink:href="#number8"/></g>
+   </g>
+   <g transform="translate(300,750)">
+    <use xlink:href="#card"/>
+    <g class="a" transform="translate(20,20)"><use xlink:href="#anchor"/><use xlink:href="#number5"/></g>
+    <g class="b" transform="translate(20,50)"><use xlink:href="#anchor"/><use xlink:href="#number5"/></g>
+    <g class="c" transform="translate(20,80)"><use xlink:href="#anchor"/><use xlink:href="#number5"/></g>
+    <g class="d" transform="translate(50,35)"><use xlink:href="#anchor"/><use xlink:href="#number5"/></g>
+    <g class="e" transform="translate(50,65)"><use xlink:href="#anchor"/><use xlink:href="#number5"/></g>
+    <g class="f" transform="translate(80,20)"><use xlink:href="#anchor"/><use xlink:href="#number5"/></g>
+    <g class="g" transform="translate(80,50)"><use xlink:href="#anchor"/><use xlink:href="#number5"/></g>
+    <g class="h" transform="translate(80,80)"><use xlink:href="#anchor"/><use xlink:href="#number8"/></g>
+   </g>
+   <g transform="translate(100,750)">
+    <use xlink:href="#card"/>
+    <g class="a" transform="translate(20,20)"><use xlink:href="#anchor"/><use xlink:href="#number6"/></g>
+    <g class="b" transform="translate(20,50)"><use xlink:href="#anchor"/><use xlink:href="#number6"/></g>
+    <g class="c" transform="translate(20,80)"><use xlink:href="#anchor"/><use xlink:href="#number6"/></g>
+    <g class="d" transform="translate(50,35)"><use xlink:href="#anchor"/><use xlink:href="#number6"/></g>
+    <g class="e" transform="translate(50,65)"><use xlink:href="#anchor"/><use xlink:href="#number6"/></g>
+    <g class="f" transform="translate(80,20)"><use xlink:href="#anchor"/><use xlink:href="#number6"/></g>
+    <g class="g" transform="translate(80,50)"><use xlink:href="#anchor"/><use xlink:href="#number6"/></g>
+    <g class="h" transform="translate(80,80)"><use xlink:href="#anchor"/><use xlink:href="#number8"/></g>
+   </g>
+   <g transform="translate(750,0)">
+    <use xlink:href="#card"/>
+    <g class="a" transform="translate(20,20)"><use xlink:href="#anchor"/><use xlink:href="#number7"/></g>
+    <g class="b" transform="translate(20,50)"><use xlink:href="#anchor"/><use xlink:href="#number7"/></g>
+    <g class="c" transform="translate(20,80)"><use xlink:href="#anchor"/><use xlink:href="#number7"/></g>
+    <g class="d" transform="translate(50,35)"><use xlink:href="#anchor"/><use xlink:href="#number7"/></g>
+    <g class="e" transform="translate(50,65)"><use xlink:href="#anchor"/><use xlink:href="#number7"/></g>
+    <g class="f" transform="translate(80,20)"><use xlink:href="#anchor"/><use xlink:href="#number7"/></g>
+    <g class="g" transform="translate(80,50)"><use xlink:href="#anchor"/><use xlink:href="#number7"/></g>
+    <g class="h" transform="translate(80,80)"><use xlink:href="#anchor"/><use xlink:href="#number8"/></g>
+   </g>
+   <!-- <path d="M 300,750 l 200,100 m 0,-100 l -200,100" stroke="#ff0000"/> -->
+  </g>
+  <g fill="none" stroke="#000000" stroke-opacity="0.15">
+   <path class="active line0" d="M 20,30 v 730"/>
+   <path class="active line1" d="M 20,50 l 600,600 q 80,80 140,120"/>
+   <path class="active line2" d="M 520,680 l -520,-260 c -50, -30  -50,-375    0,-350 l  620, 310 q 80,40 140,40"/>
+   <path class="active line3" d="M 150,535 l  480, 160 c 150,  50  160,-200  -80,-260 l -510,-170 c -60,-20 -90,-250 0,-230 l 600,200 q 90,30 120,80"/>
+   <path class="active line4" d="M 650,565 l -250,-500 c -70,-140 -430,-140 -350,   0 l  300, 600 q 40,60 60,90"/>
+   <path class="active line5" d="M 580,130 l  130, 390 c  45, 135 -190,  90 -230,   0 l -160,-480 c -20,-60 -270,-90 -235,0 l 200,600 q 20,60 35,115"/>
+   <path class="active line6" d="M  80, 50 c  -90,-110 200,-80 500,-80 c 100,0 250,40 100, 180 l -500,500 q -10,10 -60,110"/>
+   <path class="active line7" d="M  80, 80 h  600 q 30,0  80,-50"/>
+   <path class="active line8" d="M 830, 90 v  720 q 0,20 -20, 20 h -720"/>
+  </g>
+ </g>
+</svg>
