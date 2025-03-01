@@ -25,20 +25,35 @@
 
         #game-container {
             display: flex;
-            flex-direction: row; /* Align side by side for larger screens */
-            flex-wrap: wrap; /* Wrap into column for smaller screens */
-            gap: 10px;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column; /* Stack vertically in portrait mode */
             width: 100%;
+            height: 100%;
             transform: translateY(-5%);
+        }
+
+        @media (orientation: landscape) {
+            #game-container {
+                flex-direction: row; /* Side by side in landscape mode */
+                
+            }
         }
 
         .player-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 1;
+            justify-content: center;
+            width: 100%;
+            height: 50%; /* Each player takes half the screen in portrait mode */
+            position: relative;
+            touch-action: none; /* Disable default touch behaviors like scrolling */
+        }
+
+        @media (orientation: landscape) {
+            .player-container {
+                width: 50%; /* Each player takes half the screen in landscape mode */
+                height: 100%;
+            }
         }
 
         .card-frame {
@@ -56,13 +71,9 @@
             flex-direction: column;
         }
 
-        .rotate {
-            transform: rotate(180deg);
-        }
-        @media (orientation: landscape) {
-            .rotate {
-                transform: none;
-                
+        @media (orientation: portrait) {
+            .rotate-upper .card-frame {
+                transform: rotate(180deg); /* Rotate the upper deck in portrait mode */
             }
         }
 
@@ -101,6 +112,10 @@
             background-color: red;
         }
 
+        .symbol.highlight {
+            background-color: lightblue; /* Highlight color for the correct symbol */
+        }
+
         .score-counter {
             position: absolute;
             top: -30px;
@@ -112,6 +127,7 @@
             font-size: 14px;
             z-index: 1;
         }
+
         #fullscreen-button {
             position: fixed;
             bottom: 10px;
@@ -125,39 +141,46 @@
             cursor: pointer;
         }
 
-        /* Left of the middle cell */
         .left-of-middle {
             position: relative;
-            right: -20%; /* Adjust this value to position the cell closer to the middle */
+            right: -20%;
         }
 
-        /* Right of the middle cell */
         .right-of-middle {
             position: relative;
-            left: -20%; /* Adjust this value to position the cell closer to the middle */
+            left: -20%;
         }
 
-          /* Left of the middle cell */
-          .up-of-middle {
+        .up-of-middle {
             position: relative;
-            bottom: -20%; /* Adjust this value to position the cell closer to the middle */
+            bottom: -20%;
         }
 
-        /* Right of the middle cell */
         .down-of-middle {
             position: relative;
-            top: -20%; /* Adjust this value to position the cell closer to the middle */
+            top: -20%;
         }
 
-
+        .block-touches {
+            pointer-events: none; /* Disable touches */
+        }
     </style>
 </head>
 <body>
     <div id="header"></div>
-    <div id="game-container"></div>
+    <div id="game-container">
+        <div id="player1-container" class="player-container"></div>
+        <div id="player2-container" class="player-container"></div>
+    </div>
     <button id="fullscreen-button">Enter Fullscreen</button>
 
     <script>
+        let selectedSymbols = [];
+        let player1Score = 0;
+        let player2Score = 0;
+        let firstTapTime = 0;
+        const playerLocks = {1: false, 2: false};
+
         function generateSpotItDeck(n) {
             const numSymbols = n ** 2 + n + 1;
             const deck = [];
@@ -269,28 +292,46 @@
             renderCard(card1, 'player1-container', commonSymbol, 1);
             renderCard(card2, 'player2-container', commonSymbol, 2);
 
-            const player1CardFrame = player1Container.querySelector('.card-frame');
-            if (player1CardFrame) {
-                player1CardFrame.classList.add('rotate');
-            }
-
+            applyRotationToUpperDeck(); // Apply rotation to the upper deck
             selectedSymbols = [];
-            lockGame = false;
+            playerLocks[1] = false;
+            playerLocks[2] = false;
         }
 
-        let selectedSymbols = [];
-        let lockGame = false;
-        let player1Score = 0;
-        let player2Score = 0;
-        let firstTapTime = 0;
+        function applyRotationToUpperDeck() {
+            const gameContainer = document.getElementById('game-container');
+            const playerContainers = gameContainer.querySelectorAll('.player-container');
+
+            // Remove rotation classes from both players
+            playerContainers.forEach(container => {
+                container.classList.remove('rotate-upper');
+            });
+
+            // Apply rotation to the upper deck in portrait mode
+            if (window.matchMedia("(orientation: portrait)").matches) {
+                playerContainers[0].classList.add('rotate-upper'); // First container is the upper deck
+            }
+        }
+
+        function highlightCorrectSymbol(commonSymbol, player) {
+            const otherPlayerContainer = player === 1 ? document.getElementById('player2-container') : document.getElementById('player1-container');
+            const symbols = otherPlayerContainer.querySelectorAll('.symbol');
+            symbols.forEach(symbolDiv => {
+                const symbol = parseInt(symbolDiv.querySelector('img').alt.replace('symbol', ''));
+                if (symbol === commonSymbol) {
+                    symbolDiv.classList.add('highlight');
+                }
+            });
+        }
 
         function handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event) {
-            if (lockGame) return;
+            if (playerLocks[player]) return;
 
             const tapTime = event.timeStamp;
 
             if (symbol === commonSymbol) {
                 symbolDiv.classList.add('correct');
+                highlightCorrectSymbol(commonSymbol, player); // Highlight the correct symbol in the other player's deck
                 
                 if (!firstTapTime || tapTime < firstTapTime) {
                     firstTapTime = tapTime;
@@ -303,12 +344,15 @@
                 }, 3000);
             } else {
                 symbolDiv.classList.add('incorrect');
+                const playerContainer = document.getElementById(`player${player}-container`);
+                playerContainer.classList.add('block-touches'); // Block touches for this player
                 setTimeout(() => {
                     symbolDiv.classList.remove('incorrect', 'highlighted');
-                    lockGame = false;
-                }, 1000);
+                    playerContainer.classList.remove('block-touches'); // Re-enable touches
+                    playerLocks[player] = false;
+                }, 3000);
             }
-            lockGame = true;
+            playerLocks[player] = true;
         }
 
         function updateScore(player) {
@@ -328,8 +372,75 @@
                 }
             }
         }
+        // Add touch event listeners for both players
+const player1Container = document.getElementById('player1-container');
+const player2Container = document.getElementById('player2-container');
 
-                // Add the event listener for the fullscreen button
+player1Container.addEventListener('touchstart', (event) => handleTouch(event, 1));
+player2Container.addEventListener('touchstart', (event) => handleTouch(event, 2));
+
+function handleSymbolClick(symbol, symbolDiv, commonSymbol, player, event) {
+    if (playerLocks[player]) return; // Skip if the player is already locked
+
+    const tapTime = event.timeStamp;
+
+    if (symbol === commonSymbol) {
+        symbolDiv.classList.add('correct');
+        highlightCorrectSymbol(commonSymbol, player); // Highlight the correct symbol in the other player's deck
+
+        if (!firstTapTime || tapTime < firstTapTime) {
+            firstTapTime = tapTime;
+            updateScore(player);
+        }
+
+        setTimeout(() => {
+            firstTapTime = 0;
+            displayNewCards();
+        }, 3000);
+    } else {
+        symbolDiv.classList.add('incorrect');
+        const playerContainer = document.getElementById(`player${player}-container`);
+
+        // Block touches for this player immediately
+        playerContainer.style.pointerEvents = 'none'; // Disable all touches in the container
+        playerLocks[player] = true;
+
+        setTimeout(() => {
+            symbolDiv.classList.remove('incorrect', 'highlighted');
+            playerContainer.style.pointerEvents = 'auto'; // Re-enable touches after the delay
+            playerLocks[player] = false;
+        }, 3000);
+    }
+}
+
+// Throttle function to limit the rate of touch events
+function throttle(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function (...args) {
+        if (!lastRan) {
+            func.apply(this, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(() => {
+                if (Date.now() - lastRan >= limit) {
+                    func.apply(this, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    };
+}
+
+// Throttled touch handlers
+const handlePlayer1Touch = throttle((event) => handleTouch(event, 1), 100); // 300ms throttle
+const handlePlayer2Touch = throttle((event) => handleTouch(event, 2), 100); // 300ms throttle
+
+// Add throttled touch event listeners
+player1Container.addEventListener('touchstart', handlePlayer1Touch);
+player2Container.addEventListener('touchstart', handlePlayer2Touch);
+        // Fullscreen functionality
         document.getElementById('fullscreen-button').addEventListener('click', () => {
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
@@ -342,7 +453,7 @@
             }
         });
 
-        // Add the event listener for the fullscreen change
+        // Handle fullscreen change
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
                 document.getElementById('fullscreen-button').style.display = 'none';
@@ -351,33 +462,11 @@
             }
         });
 
-        document.addEventListener('mozfullscreenchange', () => { // Firefox
-            if (document.mozFullScreenElement) {
-                document.getElementById('fullscreen-button').style.display = 'none';
-            } else {
-                document.getElementById('fullscreen-button').style.display = 'block';
-            }
-        });
-
-        document.addEventListener('webkitfullscreenchange', () => { // Chrome, Safari, and Opera
-            if (document.webkitFullscreenElement) {
-                document.getElementById('fullscreen-button').style.display = 'none';
-            } else {
-                document.getElementById('fullscreen-button').style.display = 'block';
-            }
-        });
-
-        document.addEventListener('msfullscreenchange', () => { // IE/Edge
-            if (document.msFullscreenElement) {
-                document.getElementById('fullscreen-button').style.display = 'none';
-            } else {
-                document.getElementById('fullscreen-button').style.display = 'block';
-            }
-        });
-
-
         const deck = generateSpotItDeck(7);
         displayNewCards();
+
+        // Apply rotation on orientation change
+        window.addEventListener('resize', applyRotationToUpperDeck);
     </script>
 </body>
 </html>

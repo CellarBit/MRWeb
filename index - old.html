@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.2em;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 10px;
+        }
+
+        .container h1 {
+            margin-top: 0;
+        }
+
+        .screen-size {
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #555;
+            text-align: center;
+        }
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+  
+        
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <h1>Javascript Games</h1>
+            <ul>
+                <li><a href="Spot it!/spotit1player.html">Spot it!</a></li>
+                <li><a href="Spot it!/spotit2players.html">2 players Spot it!</a></li>
+                <li><a href="Memory/memory16.html">Memory 16</a></li>
+                <li><a href="Memory/memory32.html">Memory 32</a></li>
+                <li><a href="Oware (Abapa)/oware.html">Oware</a></li>
+                <li><a href="Sudoku/sudoku.html">Sudoku</a></li>
+                <li><a href="DiceGame/pigGame1p.html">Dice Game 1 players</a></li>
+                <li><a href="DiceGame/pigGame2p.html">Dice Game 2 players</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Element to display screen size -->
+    <div class="screen-size" id="screen-size"></div> 
+
+    <!-- JavaScript to check screen size -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let screenWidth = window.screen.width;
+            let screenHeight = window.screen.height;
+            document.getElementById('screen-size').textContent = `Width: ${screenWidth}px, Height: ${screenHeight}px`;
+        });
+    </script>
+</body>
+</html>

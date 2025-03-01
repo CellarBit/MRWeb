@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spot it!</title>
+    <title>Oware Abapa</title>
     <style>
-    /* General body styling */
-    body {
+        /* General body styling */
+        body {
             font-family: 'Arial', sans-serif; /* Use Arial font */
             margin: 0; /* Remove default margin */
             padding: 0; /* Remove default padding */
@@ -133,40 +133,43 @@
 </head>
 <body>
     <header>
-        <h1>Spot it!</h1>
+        <h1>Oware Abapa rules</h1>
     </header>
     <main>
         <section>
             <div class="text-container">
-            <p>Spot it! is a game in which players have to find symbols in common between two cards. It was the UK’s best-selling game in 2018 and 2019. 
+                <p>Oware is an abstract strategy game among the mancala family of board games (pit and pebble games) played worldwide with slight variations as to the layout of the game,
+                number of players and strategy of play. Its origin is uncertain but it is widely believed to be of Ashanti origin.</p>
 
-                The game is sold as Dobble in Europe and Spot It! in the US. The name is a play on the word 'double'. 
-                The game uses a deck of 55 cards, each printed with eight different symbols. Any two cards always share one, and only one, matching symbol.
-                The objective of the game is to be the first player to announce the common symbol between two given cards.
-            
-                In 1976, inspired by Kirkman's schoolgirl problem, French mathematics enthusiast Jacques Cottereau devised a game consisting of a set of 31 cards each with six images of insects, with exactly one image shared between each pair of them. In 2008, journalist and game designer Denis Blanchot found a few of the cards from the "game of insects" and developed the idea to create Dobble.
-            </p>
-            <h2>Gameplay:</h2>
-            <p>
-             In 1 player version. Select the common image in both decks. In 2 player version, each player control 1 deck and choose the repeated image only in their deck, who tpuch it first, who win the round.
-            </p>
-            <h2>Mathematics</h2>
-            <p>The special way that symbols are arranged on Dobble cards can be understood using geometry. If each card is represented by a line, and each symbol by a point where two lines intersect, then the properties of Dobble are that:
-
-                any two lines intersect at exactly one point, and
-                any two points are joined by exactly one line.
-                This geometric structure is an example of a finite projective plane.
-            
-                In general, a finite projective plane of order n has n+1 points on each line, and n2+n+1 points and lines. This implies that a finite projective plane of order n−1 has n points on each line, and n2−n+1 points and lines.
-                If there are 3 points in each line this creates a structure known as the Fano plane. This represents a simpler version of Dobble with 3 symbols on each card, 7 cards and 7 symbols.</p>
+                <h2>Gameplay</h2>
+                <p>The board with 12 houses with each player having 6 houses. Players only can grab and move seeds from their own side, and capture only from the opponent side.
+                    When clicking in one house the player will grab all seeds from that house and place one at a time in the next houses. 
+                    Seeds are captured, by placing the last seed in a house of the oponent territory that has one or two seeds.
+                    The aim of the game is to capture 25 seeds, as there are a total of 48 seeds. If each player capture 24 seeds, it's a draw.</p>
                 <div class="image-container">
-                    <img src="Fano_plane_with_colored_lines.png" alt="Fano_plane_with_colored_lines">
+                    <img src="boardAbout.png" alt="boardAbout">
                 </div>
-    
+
+                <h3>Omitting a house</h3>
+                <p>When a house that is being played has more than 11 seeds in it. A seed will be placed in each house normally until reaching the house from those seeds where grab from, 
+                    the next seed is not placed in this house but in the one after it.</p>
+
+                <h3>Multiple Capture</h3>
+                <p>If one makes a two or three with ones last seed and the house or houses preceding the captured house on the opponents side also have twos, threes or any combination of them,  
+                    one captures these as well. So long as there are no houses with less than two or more than three seeds, in-between them, a maximum of five houses can be captured in this way.  
+                    Beyond five houses one forfeits everything, as this would leave the opponent with no seeds to play with.</p>
+
+                <h3>Compulsory moves</h3>
+                <p>If the situation arises where one player has no seeds to play with the other player must provide some seeds to the opponent if possible. 
+                    A move that does not do this whilst being able to feed the other player with seeds is not allowed. Greater priority is placed on capturing seeds to the end. 
+                    There for maneuvering seeds in such a way that will eventually lead to the opponent not having no seeds to play with is not encouraged.</p>
+
+                <h3>End game</h3>
+                <p>The game ends when one player has captured 25 seeds or more. When both players decide that continuing will only lead to going round in circles in such a case each player keeps the seeds on their side.</p>
+
                 <h2>References:</h2>
-                <p style="text-align: center;"><a href="https://en.wikipedia.org/wiki/Dobble">Wikipedia: Dobble</a></p>
-                <p style="text-align: center;"><a href="https://en.wikipedia.org/wiki/Kirkman%27s_schoolgirl_problem">Kirkman's schoolgirl problem</a></p>
-                <p style="text-align: center;"><a href="https://upload.wikimedia.org/wikipedia/commons/8/88/Projective_plane_of_order_7.svg">Projective plane of order 7</a></p>
+                <p style="text-align: center;"><a href="https://en.wikipedia.org/wiki/Oware">Wikipedia: Oware</a></p>
+                <p style="text-align: center;"><a href="http://www.oware.org/">Oware.org</a></p>
             </div>
         </section>
     </main>

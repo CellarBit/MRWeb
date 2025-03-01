@@ -7,13 +7,11 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            height: 100vh;
+            min-height: 100vh; /* Ensure the body takes full height */
         }
 
         h1 {
@@ -21,37 +19,80 @@
             text-align: center;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
+        h2 {
+            text-align: center;
         }
 
-        li {
-            margin: 10px 0;
+        h3 {
+            margin-block-start: 0em;
+            margin-block-end: 0em;
         }
 
-        a {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 1.2em;
-            transition: color 0.3s;
-        }
-
-        a:hover {
-            color: #0056b3;
+        section {
+            margin: 20px 0;
         }
 
         .container {
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 0;
+            border-radius: 0;
+            box-shadow: 5px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin: 10px;
+            justify-content: center;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            grid-template-rows: repeat(2, 1fr); /* 2 rows with equal height */
+            /* gap: 20px; Space between game containers */
+            align-items: start; /* Align items to the top */
+            width: 500px; /* Fixed width */
+            height: auto; /*  height */
         }
 
-        .container h1 {
-            margin-top: 0;
+        .game-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            width: 100%; /* Ensure the container uses full width */
+            transform: scale(0.9); /* Scale down to fit within fixed container */
+            transform-origin: top left; /* Transform origin to the top left */
+        }
+
+        .game-group img {
+            width: 80%; /* Make the image fill the container width */
+            aspect-ratio: 1; /* Ensure the image is square */
+            /* border-radius: 0; */
+            margin-bottom: 5px;
+        }
+
+        .game-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Align links  */
+            gap: 0px; /* Reduce line spacing between links */
+            margin-top: 0px;
+            width: 100%; /* Use full width */
+        }
+
+        .game-links a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1em;
+            transition: color 0.3s;
+
+        }
+
+        .game-links a:hover {
+            color: #0056b3;
+        }
+
+        .play-options {
+            display: flex;
+            flex-direction: row; /* Display play options in a row */
+            gap: 5px;
+            justify-content: center; /* Align play options to the left flex, center is centered*/
+            width: 100%; /* Use full width */
         }
 
         .screen-size {
@@ -68,29 +109,120 @@
             flex-grow: 1;
         }
 
-  
-        
+        footer {
+            background-color: #333; /* Dark background */
+            color: white; /* White text */
+            text-align: center; /* Centered text */
+            padding: 10px 0; /* Padding for spacing */
+            width: 100%; /* Full width */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            margin-top: auto; /* Push footer to the bottom */
+        }
+
+        footer a {
+            color: #007bff; /* Link color */
+            text-decoration: none; /* Remove underline */
+        }
+
+        footer a:hover {
+            color: #0056b3; /* Hover color */
+        }
+
+        /* Media query for smaller screens (e.g., phones in portrait mode) */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr; /* Switch to a single column */
+                grid-template-rows: auto; /* Allow rows to adjust to content */
+                width: 30%; /* adjust width */
+                height: auto; /* Auto height */
+                gap: 0px; /* Reduce gap for smaller screens */
+                transform: translateX(-12%);
+            }
+
+            .game-group {
+                transform: none; /* Remove scaling for smaller screens */
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="container">
-            <h1>Javascript Games</h1>
-            <ul>
-                <li><a href="Spot it!/spotit1player.html">Spot it!</a></li>
-                <li><a href="Spot it!/spotit2playersBeta.html">2 players Spot it!</a></li>
-                <li><a href="Memory/memory16.html">Memory 16</a></li>
-                <li><a href="Memory/memory32.html">Memory 32</a></li>
-                <li><a href="Oware (Abapa)/oware.html">Oware</a></li>
-                <li><a href="Sudoku/sudoku.html">Sudoku</a></li>
-                <li><a href="DiceGame/pigGame1p.html">Dice Game 1 players</a></li>
-                <li><a href="DiceGame/pigGame2p.html">Dice Game 2 players</a></li>
-            </ul>
-        </div>
-    </div>
+    <h1>My website</h1>
 
-    <!-- Element to display screen size -->
-    <div class="screen-size" id="screen-size"></div> 
+    <!-- Game Section -->
+    <section>
+        <h2>Featured Games</h2>
+        <div class="wrapper">
+            <div class="container">
+                <!-- Group 1: Spot it! and 2 Players Spot it! -->
+                <div class="game-group">
+                    <img src="spotit.PNG" alt="Spot it!">
+                    <h3>Spot it!</h3>
+                    <div class="game-links">
+                        <div class="play-options">
+                            <a href="Spot it!/spotit1player.html">1 Player</a>
+                            <span>|</span>
+                            <a href="Spot it!/spotit2players.html">2 Players</a>
+                        </div>
+                        <a href="Spot it!/about.html">About</a>
+                    </div>
+                </div>
+
+                <!-- Group 2: Memory 16 and Memory 32 -->
+                <div class="game-group">
+                    <img src="memory.PNG" alt="Memory">
+                    <h3>Memory Cards</h3>
+                    <div class="game-links">
+                        <div class="play-options">
+                            <a href="Memory/memory16.html">Dinos (16 </a>
+                            <span>|</span>
+                            <a href="Memory/memory32.html">32)</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 3: Oware -->
+                <div class="game-group">
+                    <img src="oware.PNG" alt="Oware">
+                    <h3>Oware (Abapa)</h3>
+                    <div class="game-links">
+                        <a href="Oware (Abapa)/owareBeta.html">2 Players</a>
+                        <a href="Oware (Abapa)/aboutOware.html">About</a>
+                    </div>
+                </div>
+
+                <!-- Group 4: Sudoku -->
+                <div class="game-group">
+                    <img src="sudoku.png" alt="Sudoku">
+                    <h3>Sudoku</h3>
+                    <div class="game-links">
+                        <a href="Sudoku/sudoku.html">Play</a>
+                        <a href="Sudoku/about.html">about</a>
+                    </div>
+                </div>
+
+                <!-- Group 5: Dice Game 1 Player and Dice Game 2 Players -->
+                <div class="game-group">
+                    <img src="DiceGame.png" alt="Dice Game">
+                    <h3>Pig (Dice Game)</h3>
+                    <div class="game-links">
+                        <div class="play-options">
+                            <a href="DiceGame/pigGame1p.html">1 Player</a>
+                            <span>|</span>
+                            <a href="DiceGame/pigGame2p.html">2 Players</a>
+                        </div>
+                        <a href="DiceGame/aboutPigDice.html">About</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Marc's Website.<br> All rights reserved.</p>
+    </footer>
 
     <!-- JavaScript to check screen size -->
     <script>

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spot it!</title>
+    <title>Pig Dice game</title>
     <style>
-    /* General body styling */
-    body {
+        /* General body styling */
+        body {
             font-family: 'Arial', sans-serif; /* Use Arial font */
             margin: 0; /* Remove default margin */
             padding: 0; /* Remove default padding */
@@ -133,40 +133,28 @@
 </head>
 <body>
     <header>
-        <h1>Spot it!</h1>
+        <h1>Pig Dice Game</h1>
     </header>
     <main>
         <section>
             <div class="text-container">
-            <p>Spot it! is a game in which players have to find symbols in common between two cards. It was the UK’s best-selling game in 2018 and 2019. 
-
-                The game is sold as Dobble in Europe and Spot It! in the US. The name is a play on the word 'double'. 
-                The game uses a deck of 55 cards, each printed with eight different symbols. Any two cards always share one, and only one, matching symbol.
-                The objective of the game is to be the first player to announce the common symbol between two given cards.
-            
-                In 1976, inspired by Kirkman's schoolgirl problem, French mathematics enthusiast Jacques Cottereau devised a game consisting of a set of 31 cards each with six images of insects, with exactly one image shared between each pair of them. In 2008, journalist and game designer Denis Blanchot found a few of the cards from the "game of insects" and developed the idea to create Dobble.
-            </p>
-            <h2>Gameplay:</h2>
-            <p>
-             In 1 player version. Select the common image in both decks. In 2 player version, each player control 1 deck and choose the repeated image only in their deck, who tpuch it first, who win the round.
-            </p>
-            <h2>Mathematics</h2>
-            <p>The special way that symbols are arranged on Dobble cards can be understood using geometry. If each card is represented by a line, and each symbol by a point where two lines intersect, then the properties of Dobble are that:
-
-                any two lines intersect at exactly one point, and
-                any two points are joined by exactly one line.
-                This geometric structure is an example of a finite projective plane.
-            
-                In general, a finite projective plane of order n has n+1 points on each line, and n2+n+1 points and lines. This implies that a finite projective plane of order n−1 has n points on each line, and n2−n+1 points and lines.
-                If there are 3 points in each line this creates a structure known as the Fano plane. This represents a simpler version of Dobble with 3 symbols on each card, 7 cards and 7 symbols.</p>
-                <div class="image-container">
-                    <img src="Fano_plane_with_colored_lines.png" alt="Fano_plane_with_colored_lines">
-                </div>
-    
+                <p>Pig is a simple dice game first described in print by John Scarne in 1945. Players take turns to roll a single dice as many times as they wish, 
+                    adding all roll results to a running total, but losing their gained score for the turn if they roll a 1.</p>
+                <h2>Game Rules:</h2>
+                <ul>
+                    <li>Each turn, a player repeatedly rolls a dice until a 1 is rolled or the player decides to "hold":</li>
+                    <li>If the player rolls a 1, they score nothing and it becomes the next player's turn.</li>
+                    <li>If the player rolls any other number, it is added to their turn total and the player's turn continues.</li>
+                    <li>If a player chooses to "hold", their turn total is added to their score, and it becomes the next player's turn.</li>
+                    <li>The first player to score 100 or more points wins.</li>
+                </ul>
+            </section>
+            <section>
                 <h2>References:</h2>
-                <p style="text-align: center;"><a href="https://en.wikipedia.org/wiki/Dobble">Wikipedia: Dobble</a></p>
-                <p style="text-align: center;"><a href="https://en.wikipedia.org/wiki/Kirkman%27s_schoolgirl_problem">Kirkman's schoolgirl problem</a></p>
-                <p style="text-align: center;"><a href="https://upload.wikimedia.org/wikipedia/commons/8/88/Projective_plane_of_order_7.svg">Projective plane of order 7</a></p>
+                <p style="text-align: center;"><a href="https://en.wikipedia.org/wiki/Pig_(dice_game)">Wikipedia: Pig (dice game)</a></p>
+                <p style="text-align: center;"><a href="pigArticle.html">Optimal Play of the Dice Game Pig</a></p>
+                <p style="text-align: center;"><a href="https://www.numberphile.com/videos/the-math-of-being-a-pig">Numberphile page</a></p>
+                
             </div>
         </section>
     </main>
