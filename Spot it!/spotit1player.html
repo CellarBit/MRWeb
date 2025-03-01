@@ -106,14 +106,17 @@
 
         .symbol.highlighted {
             background-color: yellow;
+            border-radius: 30%;
         }
 
         .symbol.correct {
             background-color: green;
+            border-radius: 30%;
         }
 
         .symbol.incorrect {
             background-color: red;
+            border-radius: 30%;
         }
 
         /* Left of the middle cell */
@@ -150,6 +153,28 @@
     </div>
     <div id="game-container"></div>
     <script>
+// Declare deck in the global scope
+let deck;
+
+// Function to preload images
+function preloadImages(images, callback) {
+    let loadedImages = 0;
+    const totalImages = images.length;
+
+    images.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+            loadedImages += 1;
+            if (loadedImages === totalImages) {
+                callback(); // Call the callback when all images are loaded
+            }
+        };
+        img.onerror = () => {
+            console.error(`Failed to load image: ${src}`);
+        };
+    });
+}
 
 // Function to generate the deck
 function generateSpotItDeck(n) {
@@ -160,7 +185,7 @@ function generateSpotItDeck(n) {
         const card = [];
         card.push(0); // Add a common symbol for all cards
         for (let j = 0; j < n; j++) {
-            card.push(i * n + j + 1);
+            card.push(i * n + j);
         }
         deck.push(card);
     }
@@ -176,7 +201,6 @@ function generateSpotItDeck(n) {
             deck.push(card);
         }
     }
-
 
     // Verify the deck
     let noCommonSymbolCount = 0;
@@ -199,7 +223,7 @@ function generateSpotItDeck(n) {
     return deck;
 }
 
-
+// Function to render a card
 function renderCard(cardSymbols, containerId) {
     const container = document.getElementById(containerId);
     const frameDiv = document.createElement('div');
@@ -233,7 +257,7 @@ function renderCard(cardSymbols, containerId) {
             symbolDiv.classList.add('down-of-middle');
         }
         const img = document.createElement('img');
-        img.src = `images/symbol${cardSymbols[i]}.png`;
+        img.src = `images/symbol${cardSymbols[i]}.png`; // Use symbol0.png to symbol56.png
         img.alt = `symbol${cardSymbols[i]}`;
         symbolDiv.appendChild(img);
 
@@ -245,138 +269,145 @@ function renderCard(cardSymbols, containerId) {
     container.appendChild(frameDiv);
 }
 
-        // Function to display a new set of two cards
-        function displayNewCards() {
-            const gameContainer = document.getElementById('game-container');
-            gameContainer.innerHTML = ''; // Clear previous cards
+// Function to display a new set of two cards
+function displayNewCards() {
+    const gameContainer = document.getElementById('game-container');
+    gameContainer.innerHTML = ''; // Clear previous cards
 
-            const randomIndices = [];
-            while (randomIndices.length < 2) {
-                const index = Math.floor(Math.random() * deck.length);
-                if (!randomIndices.includes(index)) randomIndices.push(index);
-            }
-
-            renderCard(deck[randomIndices[0]], 'game-container');
-            renderCard(deck[randomIndices[1]], 'game-container');
-        }
-
-        // Sound for correct and incorrect answers
-        const correctSound = new Audio('correct.mp3'); // Place the correct sound file in the same directory
-        const incorrectSound = new Audio('incorrect.mp3'); // Place the incorrect sound file in the same directory
-
-        let selectedSymbols = [];
-        let correctCount = 0;
-        let timer;
-
-        function handleSymbolClick(symbol, symbolDiv) {
-            const cardFrame = symbolDiv.closest('.card-frame'); // Get the parent card frame
-            const isSameCard = selectedSymbols.length > 0 && selectedSymbols[0].symbolDiv.closest('.card-frame') === cardFrame;
-
-            // If selected symbol is on the same card, change the highlighted symbol
-            if (isSameCard) {
-                selectedSymbols[0].symbolDiv.classList.remove('highlighted'); // Remove highlight from previously selected symbol
-                selectedSymbols = [{ symbol, symbolDiv }]; // Update selected symbol on the same card
-                symbolDiv.classList.add('highlighted'); // Highlight the new selected symbol
-            } else {
-                selectedSymbols.push({ symbol, symbolDiv });
-                symbolDiv.classList.add('highlighted'); // Highlight the clicked symbol
-
-                if (selectedSymbols.length === 2) {
-                    checkMatch();
-                }
-            }
-        }
-
-        function checkMatch() {
-        const [{ symbol: symbol1, symbolDiv: div1 }, { symbol: symbol2, symbolDiv: div2 }] = selectedSymbols;
-
-        if (symbol1 === symbol2) {
-            correctCount++;
-            correctSound.play();
-            div1.classList.add('correct');
-            div2.classList.add('correct');
-            div1.classList.remove('highlighted');
-            div2.classList.remove('highlighted');
-            document.getElementById('correct-counter').textContent = `Correct: ${correctCount}`;
-            setTimeout(() => {
-                displayNewCards();
-            }, 1000);
-        } else {
-            incorrectSound.play();
-            div1.classList.add('incorrect');
-            div2.classList.add('incorrect');
-            div1.classList.remove('highlighted');
-            div2.classList.remove('highlighted');
-
-            // Show the correct pair
-            const correctPair = findCorrectPair(symbol1, symbol2);
-            if (correctPair) {
-                const { correctDiv1, correctDiv2 } = correctPair;
-                correctDiv1.classList.add('correct');
-                correctDiv2.classList.add('correct');
-            }
-
-            setTimeout(() => {
-                displayNewCards();
-            }, 2000); // Wait for 2 seconds before displaying new cards
-        }
-
-        selectedSymbols = [];
+    const randomIndices = [];
+    while (randomIndices.length < 2) {
+        const index = Math.floor(Math.random() * deck.length);
+        if (!randomIndices.includes(index)) randomIndices.push(index);
     }
 
-    function findCorrectPair(symbol1, symbol2) {
-        // Find the matching symbol and its divs from the two cards
-        const cardFrames = document.querySelectorAll('.card-frame');
-        for (let i = 0; i < cardFrames.length; i++) {
-            const symbols1 = cardFrames[i].querySelectorAll('.symbol');
-            for (let j = i + 1; j < cardFrames.length; j++) {
-                const symbols2 = cardFrames[j].querySelectorAll('.symbol');
-                for (let k = 0; k < symbols1.length; k++) {
-                    for (let l = 0; l < symbols2.length; l++) {
-                        if (symbols1[k].innerHTML === symbols2[l].innerHTML) {
-                            return {
-                                correctDiv1: symbols1[k],
-                                correctDiv2: symbols2[l]
-                            };
-                        }
+    renderCard(deck[randomIndices[0]], 'game-container');
+    renderCard(deck[randomIndices[1]], 'game-container');
+}
+
+// Sound for correct and incorrect answers
+const correctSound = new Audio('correct.mp3'); // Place the correct sound file in the same directory
+const incorrectSound = new Audio('incorrect.mp3'); // Place the incorrect sound file in the same directory
+
+let selectedSymbols = [];
+let correctCount = 0;
+let timer;
+
+function handleSymbolClick(symbol, symbolDiv) {
+    const cardFrame = symbolDiv.closest('.card-frame'); // Get the parent card frame
+    const isSameCard = selectedSymbols.length > 0 && selectedSymbols[0].symbolDiv.closest('.card-frame') === cardFrame;
+
+    // If selected symbol is on the same card, change the highlighted symbol
+    if (isSameCard) {
+        selectedSymbols[0].symbolDiv.classList.remove('highlighted'); // Remove highlight from previously selected symbol
+        selectedSymbols = [{ symbol, symbolDiv }]; // Update selected symbol on the same card
+        symbolDiv.classList.add('highlighted'); // Highlight the new selected symbol
+    } else {
+        selectedSymbols.push({ symbol, symbolDiv });
+        symbolDiv.classList.add('highlighted'); // Highlight the clicked symbol
+
+        if (selectedSymbols.length === 2) {
+            checkMatch();
+        }
+    }
+}
+
+function checkMatch() {
+    const [{ symbol: symbol1, symbolDiv: div1 }, { symbol: symbol2, symbolDiv: div2 }] = selectedSymbols;
+
+    if (symbol1 === symbol2) {
+        correctCount++;
+        correctSound.play();
+        div1.classList.add('correct');
+        div2.classList.add('correct');
+        div1.classList.remove('highlighted');
+        div2.classList.remove('highlighted');
+        document.getElementById('correct-counter').textContent = `Correct: ${correctCount}`;
+        setTimeout(() => {
+            displayNewCards();
+        }, 1000);
+    } else {
+        incorrectSound.play();
+        div1.classList.add('incorrect');
+        div2.classList.add('incorrect');
+        div1.classList.remove('highlighted');
+        div2.classList.remove('highlighted');
+
+        // Show the correct pair
+        const correctPair = findCorrectPair(symbol1, symbol2);
+        if (correctPair) {
+            const { correctDiv1, correctDiv2 } = correctPair;
+            correctDiv1.classList.add('correct');
+            correctDiv2.classList.add('correct');
+        }
+
+        setTimeout(() => {
+            displayNewCards();
+        }, 2000); // Wait for 2 seconds before displaying new cards
+    }
+
+    selectedSymbols = [];
+}
+
+function findCorrectPair(symbol1, symbol2) {
+    // Find the matching symbol and its divs from the two cards
+    const cardFrames = document.querySelectorAll('.card-frame');
+    for (let i = 0; i < cardFrames.length; i++) {
+        const symbols1 = cardFrames[i].querySelectorAll('.symbol');
+        for (let j = i + 1; j < cardFrames.length; j++) {
+            const symbols2 = cardFrames[j].querySelectorAll('.symbol');
+            for (let k = 0; k < symbols1.length; k++) {
+                for (let l = 0; l < symbols2.length; l++) {
+                    if (symbols1[k].innerHTML === symbols2[l].innerHTML) {
+                        return {
+                            correctDiv1: symbols1[k],
+                            correctDiv2: symbols2[l]
+                        };
                     }
                 }
             }
         }
-        return null;
     }
+    return null;
+}
 
-
-        // Start the game timer
-        function startTimer() {
-            let timeLeft = 100; // 1 minute
-            const timerElement = document.getElementById('timer');
-            timer = setInterval(() => {
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    alert(`Time's up! You correctly matched ${correctCount} pairs.`);
-                    location.reload();
-                } else {
-                    timerElement.textContent = `Time Left: ${timeLeft}s`;
-                    timeLeft--;
-                }
-            }, 1000);
+// Start the game timer
+function startTimer() {
+    let timeLeft = 100; // 1 minute
+    const timerElement = document.getElementById('timer');
+    timer = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            alert(`Time's up! You correctly matched ${correctCount} pairs.`);
+            location.reload();
+        } else {
+            timerElement.textContent = `Time Left: ${timeLeft}s`;
+            timeLeft--;
         }
+    }, 1000);
+}
 
-        // Main function to initiate the game
-        function initializeGame() {
-            // Ensure only one correct counter exists
-            const correctCounter = document.getElementById('correct-counter');
-            correctCounter.textContent = 'Correct: 0';
-        }
+// Main function to initiate the game
+function initializeGame() {
+    // Ensure only one correct counter exists
+    const correctCounter = document.getElementById('correct-counter');
+    correctCounter.textContent = 'Correct: 0';
+}
 
-        // Initialize the game
-        const deck = generateSpotItDeck(7); // Generate the deck with order 8
-        // Ensure the deck is generated correctly
+// Initialize the game after preloading images
+function startGame() {
+    deck = generateSpotItDeck(7); // Assign the generated deck to the global deck variable
+    initializeGame();
+    displayNewCards(); // Render the initial set of two cards
+    startTimer(); // Start the 1-minute timer
+}
 
-        initializeGame();
-        displayNewCards(); // Render the initial set of two cards
-        startTimer(); // Start the 1-minute timer
+// List of images to preload
+const imagePath = 'images/'; // Path to your images
+const cardsArray = Array.from({ length: 57 }, (_, i) => i); // Symbols from 0 to 56
+const imagesToPreload = cardsArray.map(value => `${imagePath}symbol${value}.png`); // symbol0.png to symbol56.png
+
+// Preload images and start the game
+preloadImages(imagesToPreload, startGame);
     </script>
 </body>
 </html>

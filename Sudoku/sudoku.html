@@ -111,33 +111,80 @@
         .deleteButton:hover {
             background-color: darkred;
         }
-/* Style for grey input numbers */
-.grey-input {
-    color: lightgrey; /* Light grey text color */
-}
+        /* Style for grey input numbers */
+        .grey-input {
+            color: lightgrey; /* Light grey text color */
+        }
+
+               /* General button styling */
+               .styled-button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin: 5px;
+        }
+
+        /* Hover effect */
+        .styled-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Active (click) effect */
+        .styled-button:active {
+            transform: translateY(0);
+        }
+
+        /* Specific styles for the Generate Puzzle button */
+        #generateButton {
+            background-color: #28a745; /* Green */
+        }
+
+        #generateButton:hover {
+            background-color: #218838; /* Darker green */
+        }
+
+        /* Specific styles for the Validate Puzzle button */
+        #validateButton {
+            background-color: #dc3545; /* Red */
+        }
+
+        #validateButton:hover {
+            background-color: #c82333; /* Darker red */
+        }
     </style>
 </head>
 <body>
-    <!-- Checkbox and label -->
-    <div class="checkbox-container">
-        <label for="draftCheckbox">
-            <input type="checkbox" id="draftCheckbox"> Check for draft
-        </label>
-    </div>
+    
 
     <!-- Sudoku grid -->
     <div class="grid" id="sudokuGrid"></div>
 
     <!-- Controls and statistics -->
     <div class="controls">
-        <label for="filledCells">Number of filled cells (from 25 to 80):</label>
-        <input type="number" id="filledCells" min="25" max="80" value="30">
+        <!-- Checkbox and label -->
+         <br>
+        <div id="draftCheckboxContainer" style="display: none;">
+            <label for="draftCheckbox">
+                <input type="checkbox" id="draftCheckbox"> Check for draft
+            </label>
+        </div>
+        <div id="inputFilledCells">
+            <label for="filledCells">Number of filled cells (from 25 to 80):</label>
+            <input type="number" id="filledCells" min="25" max="80" value="30">
+        </div>
         <br><br>
-        <button onclick="generatePuzzle(); startTimer();">Generate Puzzle</button>
-        <button id="validateButton" onclick="validatePuzzle()">Validate Puzzle</button>
+        <button id="generateButton" class="styled-button" onclick="generatePuzzle(); startTimer();">Generate Puzzle</button>
+        <button id="validateButton" class="styled-button" onclick="validatePuzzle()" style="display: none;">Validate Puzzle</button>
         <br><br>
-        <label for="solutionCount">Number of possible solutions:</label>
-        <span id="solutionCount">0</span>
+        <label for="solutionCount" style="display: none;">Number of possible solutions:</label>
+        <span id="solutionCount" style="display: none;">0</span>
     </div>
     <div id="playerStatistics">
         <table>
@@ -203,6 +250,10 @@ gridContainer.addEventListener('input', function(event) {
         function generatePuzzle() {
             // Re-enable the validate button
             document.getElementById('validateButton').disabled = false;
+            document.getElementById('validateButton').style.display = 'inline-block';
+            document.getElementById('draftCheckboxContainer').style.display = 'block';
+            document.getElementById('inputFilledCells').style.display = 'none';
+            document.getElementById('generateButton').style.display = 'none';
 
             const sudokuBoard = Array.from({ length: 9 }, () => Array(9).fill(0));
             fillGrid(sudokuBoard);
@@ -362,6 +413,9 @@ gridContainer.addEventListener('input', function(event) {
                 if (cells[i].value.length > 1 || value === 0 || !isValid(board, row, col, value)) {
                     valid = false;
                     cells[i].style.backgroundColor = 'red';
+                    setTimeout(() => {
+                        cells[i].style.backgroundColor = '';
+                    }, 3000);
                 } else {
                     cells[i].style.backgroundColor = '';
                 }
