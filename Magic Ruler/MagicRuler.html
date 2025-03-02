@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Magic Ruler</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1;
+        }
+
+        #controls button {
+            display: block;
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #controls button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="controls">
+        <button id="focus-xy">Focus XY</button>
+        <button id="focus-xz">Focus XZ</button>
+        <button id="focus-yz">Focus YZ</button>
+    </div>
+
+    <!-- Local Three.js library -->
+    <script src="js/three.min.js"></script>
+    <!-- Local OrbitControls module -->
+    <script src="js/OrbitControls.js"></script>
+
+    <script>
+        let scene, camera, renderer;
+        let controls;
+        let ruler = [];
+        let selectedSegment = null;
+
+        // Initialize the scene
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(10, 10, 30);
+            camera.lookAt(0, 0, 0);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            // Create the ruler
+            createRuler();
+
+            // Camera controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            // Add button event listeners
+            document.getElementById('focus-xy').addEventListener('click', () => focusCamera('xy'));
+            document.getElementById('focus-xz').addEventListener('click', () => focusCamera('xz'));
+            document.getElementById('focus-yz').addEventListener('click', () => focusCamera('yz'));
+
+            // Add click event for segment selection
+            renderer.domElement.addEventListener('click', onCanvasClick, false);
+
+            // Start animation loop
+            animate();
+        }
+
+        // Create the ruler with 24 segments
+        function createRuler() {
+            for (let n = 0; n < 24; n++) {
+                let vertices, indices;
+
+                if (n % 2 === 0) {
+                    // Even n (including n = 0)
+                    vertices = new Float32Array([
+                        // Front face
+                        0, n / 2, 0, // A
+                        0, n / 2 + 1, 0, // B
+                        0, 0.5 + n / 2, 0.5, // C
+
+                        // Back face
+                        1 / Math.sqrt(2), n / 2, 0, // A'
+                        1 / Math.sqrt(2), n / 2 + 1, 0, // B'
+                        1 / Math.sqrt(2), 0.5 + n / 2, 0.5, // C'
+                    ]);
+                } else {
+                    // Odd n
+                    vertices = new Float32Array([
+                        // Front face
+                        0, 1.5 + (n - 1) / 2, 0.5, // A
+                        0, 0.5 + (n - 1) / 2, 0.5, // B
+                        0, 0.5 + (n / 2), 0, // C
+
+                        // Back face
+                        1 / Math.sqrt(2), 1.5 + (n - 1) / 2, 0.5, // A'
+                        1 / Math.sqrt(2), 0.5 + (n - 1) / 2, 0.5, // B'
+                        1 / Math.sqrt(2), 0.5 + (n / 2), 0, // C'
+                    ]);
+                }
+
+                // Define the indices (faces)
+                indices = [
+                    // Front face
+                    0, 1, 2,
+
+                    // Back face
+                    3, 4, 5,
+
+                    // Connecting faces
+                    0, 3, 1,
+                    1, 3, 4,
+                    1, 4, 2,
+                    2, 4, 5,
+                    2, 5, 0,
+                    0, 5, 3,
+                ];
+
+                // Create the geometry
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+                geometry.setIndex(indices);
+
+                // Compute normals for lighting
+                geometry.computeVertexNormals();
+
+                // Create the segment material
+                const segmentMaterial = new THREE.MeshBasicMaterial({
+                    color: n % 2 === 0 ? 0x00ff00 : 0x0000ff, // Green for even, blue for odd
+                    side: THREE.DoubleSide,
+                });
+
+                // Create the segment
+                const segment = new THREE.Mesh(geometry, segmentMaterial);
+                segment.userData.index = n; // Store the segment index for identification
+
+                // Add black edges
+                const edges = new THREE.EdgesGeometry(geometry);
+                const lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+                const line = new THREE.LineSegments(edges, lineMaterial);
+                segment.add(line);
+
+                ruler.push(segment);
+                scene.add(segment);
+            }
+        }
+
+        // Focus the camera on the ruler in a specific plane
+        function focusCamera(plane) {
+            switch (plane) {
+                case 'xy':
+                    camera.position.set(10, 10, 30);
+                    camera.lookAt(0, 0, 0);
+                    break;
+                case 'xz':
+                    camera.position.set(10, 0, 30);
+                    camera.lookAt(0, 0, 0);
+                    break;
+                case 'yz':
+                    camera.position.set(0, 10, 30);
+                    camera.lookAt(0, 0, 0);
+                    break;
+            }
+            controls.update(); // Update the controls
+        }
+
+        // Handle canvas clicks to select segments
+        function onCanvasClick(event) {
+            const mouse = new THREE.Vector2();
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera(mouse, camera);
+
+            const intersects = raycaster.intersectObjects(ruler);
+            if (intersects.length > 0) {
+                const selected = intersects[0].object;
+
+                // Deselect the previously selected segment
+                if (selectedSegment) {
+                    selectedSegment.material.color.set(selectedSegment.userData.index % 2 === 0 ? 0x00ff00 : 0x0000ff);
+                }
+
+                // Highlight the selected segment
+                selected.material.color.set(0xff0000); // Red for selected
+                selectedSegment = selected;
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); // Required for damping
+            renderer.render(scene, camera);
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
