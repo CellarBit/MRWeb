@@ -260,7 +260,8 @@
                     // Restore the original color
                     selectedSegment.material.color.set(selectedSegment.userData.originalColor);
                 }
-
+                // Display segment information
+                displaySegmentInfo(selected);
                 // Highlight the selected segment
                 if (!selected.userData.originalColor) {
                     // Store the original color if not already stored
@@ -269,8 +270,7 @@
                 selected.material.color.set(0x80ffff); // Set to white
                 selectedSegment = selected;
             }
-            // Display segment information
-            displaySegmentInfo(selected);
+            
         }
 
         // Display the selected segment's information
