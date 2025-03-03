@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Magic Ruler</title>
     <style>
-     body {
+        body {
             margin: 0;
             overflow: hidden;
         }
@@ -52,8 +52,6 @@
 <body>
     <div id="container"></div>
     <div id="controls">
-        <!-- <button id="focus-xy">Focus XY</button>
-        <button id="focus-xz">Focus XZ</button> -->
         <button id="focus-yz">Focus YZ</button>
         <div id="segment-info">Select a segment to display its information.</div>
     </div>
@@ -80,7 +78,6 @@
             // Position the camera 
             camera.position.set(15, 0, 0); // Camera is 15 units away from the YZ plane along the X-axis
             camera.up.set(0, 0, 1); // vector to ensure alignment with the Y-axis
-                     
             camera.lookAt(0, 0, 0);
 
             // Renderer
@@ -97,11 +94,8 @@
             const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
             scene.add(axesHelper);
             axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
-            
 
             // Add button event listeners
-            // document.getElementById('focus-xy').addEventListener('click', () => focusCamera('xy'));
-            // document.getElementById('focus-xz').addEventListener('click', () => focusCamera('xz'));
             document.getElementById('focus-yz').addEventListener('click', () => focusCamera('yz'));
 
             // Add click event for segment selection
@@ -130,7 +124,7 @@
                         // Back face
                         1 / Math.sqrt(2), n / 2, 0, // A'
                         1 / Math.sqrt(2), n / 2 + 1, 0, // B'
-                        1 / Math.sqrt(2),  n / 2 + 0.5, 0.5, // C'
+                        1 / Math.sqrt(2), n / 2 + 0.5, 0.5, // C'
                     ]);
                 } else {
                     // Odd n
@@ -173,28 +167,10 @@
                 geometry.computeVertexNormals();
 
                 // Create the segment material
-                // const segmentMaterial = new THREE.MeshBasicMaterial({
-                //     color: n % 2 === 0 ? 0xff0000 : 0xffffff, // Black: 0x000000, White: 0xffffff, Red: 0xff0000, Green: 0x00ff00, Blue: 0x0000ff, Yellow: 0xffff00, Cyan: 0x00ffff, Magenta: 0xff00ff, Gray: 0x808080, Orange: 0xffa500, Purple: 0x800080, Pink: 0xffc0cb, Brown: 0xa52a2a
-                //     side: THREE.DoubleSide,
-                // });
-
-                // Make it as reainbow-------
-
-                const rainbowColors = [
-                0xff0000, // Red
-                0xff7f00, // Orange
-                0xffff00, // Yellow
-                0x00ff00, // Green
-                0x0000ff, // Blue
-                0x4b0082, // Indigo
-                0x9400d3, // Violet
-                ];
-
                 const segmentMaterial = new THREE.MeshBasicMaterial({
-                    color: rainbowColors[n % rainbowColors.length], // Cycle through rainbow colors
+                    color: n % 2 === 0 ? 0xff0000 : 0xffff00, // Colors
                     side: THREE.DoubleSide,
                 });
-                // ---------------------------
 
                 // Create the segment
                 const segment = new THREE.Mesh(geometry, segmentMaterial);
@@ -213,26 +189,14 @@
 
         // Focus the camera on the ruler in a specific plane
         function focusCamera(plane) {
-            switch (plane) {
-                // case 'xy':
-                //     camera.position.set(10, 10, 30);
-                //     camera.lookAt(0, 0, 0);
-                //     break;
-                // case 'xz':
-                //     camera.position.set(10, 0, 30);
-                //     camera.lookAt(0, 0, 0);
-                //     break;
-                case 'yz':
-                    camera.position.set(15, 0, 0); // Camera is 15 units away from the YZ plane along the X-axis
-                    camera.up.set(0, 0, 1); // vector to ensure alignment with the Y-axis
-                    camera.lookAt(0, 0, 0);
-                    break;
-            }
+            camera.position.set(15, 0, 0); // Camera is 15 units away from the YZ plane along the X-axis
+            camera.up.set(0, 0, 1); // vector to ensure alignment with the Y-axis
+            camera.lookAt(0, 0, 0);
+
             controls.update(); // Update the controls
         }
 
         // Handle canvas clicks to select segments
-
         function onCanvasClick(event) {
             const mouse = new THREE.Vector2();
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -266,59 +230,158 @@
                     // Store the original color if not already stored
                     selected.userData.originalColor = selected.material.color.getHex();
                 }
-                selected.material.color.set(0x80ffff); // Set to white
+                selected.material.color.set(0x80ffff); // Set to highlight color
                 selectedSegment = selected;
+
+                // Display segment information
+                displaySegmentInfo(selected);
             }
-            // Display segment information
-            displaySegmentInfo(selected);
         }
 
-        // Display the selected segment's information
-        function displaySegmentInfo(segment) {
-            const n = segment.userData.index;
-            const positions = segment.geometry.attributes.position.array;
+  
+// Display the selected segment's information
+function displaySegmentInfo(segment) {
+    const n = segment.userData.index;
+    const positions = segment.geometry.attributes.position.array;
 
-            // Function to format a number as a fraction if it's approximately 1/sqrt(2)
-            function formatNumber(value) {
-                const sqrt2 = Math.sqrt(2);
-                const tolerance = 0.0001; // Tolerance for floating-point comparison
-                if (Math.abs(value - 1 / sqrt2) < tolerance) {
-                    return "1/√2";
-                }
-                return value.toFixed(1); // Display other numbers with 4 decimal places
-            }
-
-            // Extract vertex coordinates and format them
-            const A = `A: (${formatNumber(positions[0])}, ${formatNumber(positions[1])}, ${formatNumber(positions[2])})`;
-            const B = `B: (${formatNumber(positions[3])}, ${formatNumber(positions[4])}, ${formatNumber(positions[5])})`;
-            const C = `C: (${formatNumber(positions[6])}, ${formatNumber(positions[7])}, ${formatNumber(positions[8])})`;
-            const A_prime = `A': (${formatNumber(positions[9])}, ${formatNumber(positions[10])}, ${formatNumber(positions[11])})`;
-            const B_prime = `B': (${formatNumber(positions[12])}, ${formatNumber(positions[13])}, ${formatNumber(positions[14])})`;
-            const C_prime = `C': (${formatNumber(positions[15])}, ${formatNumber(positions[16])}, ${formatNumber(positions[17])})`;
-
-            // Format the information
-            const info = `
-                <strong>Segment N = ${n}</strong><br>
-                ${A}<br>
-                ${B}<br>
-                ${C}<br>
-                ${A_prime}<br>
-                ${B_prime}<br>
-                ${C_prime}
-            `;
-
-            // Update the info box
-            document.getElementById('segment-info').innerHTML = info;
+    // Function to format a number as a fraction if it's approximately 1/sqrt(2)
+    function formatNumber(value) {
+        const sqrt2 = Math.sqrt(2);
+        const tolerance = 0.0001; // Tolerance for floating-point comparison
+        if (Math.abs(value - 1 / sqrt2) < tolerance) {
+            return "1/√2";
         }
-    
+        return value.toFixed(1); // Display other numbers with 4 decimal places
+    }
 
+    // Extract vertex coordinates and format them
+    const A = `A: (${formatNumber(positions[0])}, ${formatNumber(positions[1])}, ${formatNumber(positions[2])})`;
+    const B = `B: (${formatNumber(positions[3])}, ${formatNumber(positions[4])}, ${formatNumber(positions[5])})`;
+    const C = `C: (${formatNumber(positions[6])}, ${formatNumber(positions[7])}, ${formatNumber(positions[8])})`;
+    const A_prime = `A': (${formatNumber(positions[9])}, ${formatNumber(positions[10])}, ${formatNumber(positions[11])})`;
+    const B_prime = `B': (${formatNumber(positions[12])}, ${formatNumber(positions[13])}, ${formatNumber(positions[14])})`;
+    const C_prime = `C': (${formatNumber(positions[15])}, ${formatNumber(positions[16])}, ${formatNumber(positions[17])})`;
 
+    // Format the information
+    const info = `
+        <strong>Segment N = ${n}</strong><br>
+        ${A}<br>
+        ${B}<br>
+        ${C}<br>
+        ${A_prime}<br>
+        ${B_prime}<br>
+        ${C_prime}
+    `;
+
+    // Update the info box
+    document.getElementById('segment-info').innerHTML = info;
+}
         // Animation loop
         function animate() {
             requestAnimationFrame(animate);
             controls.update(); // Required for damping
             renderer.render(scene, camera);
         }
+
+        function rotateSegment(segment, rotationStep) {
+    const n = segment.userData.index;
+    const midpoint = getMidpoint(n);
+    const axis = getFaceNormal(segment.geometry.attributes.position.array, [0, 1, 2]); // Use the first face to calculate the normal
+
+    // Calculate the rotation angle (90 degrees per step)
+    const angle = (Math.PI / 2) * rotationStep;
+
+    // Rotate the segment around its midpoint
+    rotateAroundPoint(segment, midpoint, axis, angle);
+
+    // Update subsequent segments
+    updateSubsequentSegments(n);
+}
+function rotateAroundPoint(object, point, axis, angle) {
+    // Translate the object to the origin
+    object.position.sub(point);
+
+    // Rotate the object's position
+    object.position.applyAxisAngle(axis, angle);
+
+    // Rotate the object's orientation
+    object.quaternion.setFromAxisAngle(axis, angle);
+
+    // Translate the object back to its original position
+    object.position.add(point);
+}
+function updateSubsequentSegments(n) {
+    let currentSegment = ruler[n];
+    for (let i = n + 1; i < ruler.length; i++) {
+        const nextSegment = ruler[i];
+
+        // Calculate the new position of the next segment
+        const offset = segmentOffset.clone().applyQuaternion(currentSegment.quaternion);
+        nextSegment.position.copy(currentSegment.position).add(offset);
+
+        // Update the orientation of the next segment to match the current segment
+        nextSegment.quaternion.copy(currentSegment.quaternion);
+
+        // Move to the next segment
+        currentSegment = nextSegment;
+    }
+}
+
+function getMidpoint(n) {
+    return new THREE.Vector3(1 / (2 * Math.sqrt(2)), 0.75 + n / 2, 0.5);
+}
+
+function getFaceNormal(vertices, faceIndices) {
+    const v1 = new THREE.Vector3(vertices[faceIndices[0] * 3], vertices[faceIndices[0] * 3 + 1], vertices[faceIndices[0] * 3 + 2]);
+    const v2 = new THREE.Vector3(vertices[faceIndices[1] * 3], vertices[faceIndices[1] * 3 + 1], vertices[faceIndices[1] * 3 + 2]);
+    const v3 = new THREE.Vector3(vertices[faceIndices[2] * 3], vertices[faceIndices[2] * 3 + 1], vertices[faceIndices[2] * 3 + 2]);
+
+    const edge1 = v2.clone().sub(v1);
+    const edge2 = v3.clone().sub(v1);
+    const normal = edge1.cross(edge2).normalize();
+
+    return normal;
+}
+
+function onCanvasClick(event) {
+    const mouse = new THREE.Vector2();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.params.Line.threshold = 0.01;
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(ruler, true);
+
+    if (intersects.length > 0) {
+        let selected = intersects[0].object;
+        while (selected.parent && selected.parent !== scene) {
+            selected = selected.parent;
+        }
+
+        if (selectedSegment) {
+            selectedSegment.material.color.set(selectedSegment.userData.originalColor);
+        }
+
+        if (!selected.userData.originalColor) {
+            selected.userData.originalColor = selected.material.color.getHex();
+        }
+        selected.material.color.set(0x80ffff); // Set to highlight color
+        selectedSegment = selected;
+
+        // Increment the rotation step
+        const rotationStep = (selected.userData.rotationStep || 0) + 1;
+        selected.userData.rotationStep = rotationStep;
+
+        // Rotate the selected segment and update subsequent segments
+        rotateSegment(selected, rotationStep);
+
+        // Display segment information
+        displaySegmentInfo(selected);
+    }
+}
+const segmentOffset = new THREE.Vector3(0, 1, 0); // Each segment is 1 unit apart along the Y-axis
 
         // Start the app
         init();
