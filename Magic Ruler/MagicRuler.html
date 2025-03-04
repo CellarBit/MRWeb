@@ -193,8 +193,12 @@
                 const segmentMaterial = new THREE.MeshBasicMaterial({
                     color: rainbowColors[n % rainbowColors.length], // Cycle through rainbow colors
                     side: THREE.DoubleSide,
+                    transparent: true, // Enable transparency
+                    opacity: 0.3, // Set opacity to 30%
                 });
                 // ---------------------------
+
+                
 
                 // Create the segment
                 const segment = new THREE.Mesh(geometry, segmentMaterial);
@@ -209,6 +213,14 @@
                 ruler.push(segment);
                 scene.add(segment);
             }
+        }
+
+        //Function Helper to find faces 0253 and 1254 midpoints
+        function calculateQuadMidpoint(vertex1, vertex2, vertex3, vertex4) {
+                const x = (vertex1[0] + vertex2[0] + vertex3[0] + vertex4[0]) / 4;
+                const y = (vertex1[1] + vertex2[1] + vertex3[1] + vertex4[1]) / 4;
+                const z = (vertex1[2] + vertex2[2] + vertex3[2] + vertex4[2]) / 4;
+                return { x, y, z };
         }
 
         // Focus the camera on the ruler in a specific plane
@@ -296,6 +308,25 @@
             const B_prime = `B': (${formatNumber(positions[12])}, ${formatNumber(positions[13])}, ${formatNumber(positions[14])})`;
             const C_prime = `C': (${formatNumber(positions[15])}, ${formatNumber(positions[16])}, ${formatNumber(positions[17])})`;
 
+            // Calculate midpoints of rectangular faces
+            const midpoint1245 = calculateQuadMidpoint(
+                [positions[3], positions[4], positions[5]], // Vertex 1 (B)
+                [positions[6], positions[7], positions[8]], // Vertex 2 (C)
+                [positions[15], positions[16], positions[17]], // Vertex 5 (C')
+                [positions[12], positions[13], positions[14]] // Vertex 4 (B')
+            );
+
+            const midpoint0253 = calculateQuadMidpoint(
+                [positions[0], positions[1], positions[2]], // Vertex 0 (A)
+                [positions[6], positions[7], positions[8]], // Vertex 2 (C)
+                [positions[15], positions[16], positions[17]], // Vertex 5 (C')
+                [positions[9], positions[10], positions[11]] // Vertex 3 (A')
+            );
+
+            // Format the midpoints
+            const midpoint1245Formatted = `Midpoint of Face 1245: (${formatNumber(midpoint1245.x)}, ${formatNumber(midpoint1245.y)}, ${formatNumber(midpoint1245.z)})`;
+            const midpoint0253Formatted = `Midpoint of Face 0253: (${formatNumber(midpoint0253.x)}, ${formatNumber(midpoint0253.y)}, ${formatNumber(midpoint0253.z)})`;
+
             // Format the information
             const info = `
                 <strong>Segment N = ${n}</strong><br>
@@ -304,9 +335,11 @@
                 ${C}<br>
                 ${A_prime}<br>
                 ${B_prime}<br>
-                ${C_prime}
+                ${C_prime}<br>
+                <strong>Midpoints:</strong><br>
+                ${midpoint1245Formatted}<br>
+                ${midpoint0253Formatted}
             `;
-
             // Update the info box
             document.getElementById('segment-info').innerHTML = info;
         }

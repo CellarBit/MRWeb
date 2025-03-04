@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Template threeJS</title>
+    <style>
+     body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+  
+
+    <!-- Local Three.js library -->
+    <script src="js/three.min.js"></script>
+    <!-- Local OrbitControls module -->
+    <script src="js/OrbitControls.js"></script>
+
+    <script>
+        let scene, camera, renderer;
+        let controls;
+        //-------- Scene, camera, lights and controls -----------
+        scene = new THREE.Scene();
+
+        // Initialize the camera
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // Position the camera 
+        camera.position.set(0, 0, 25); // Position camera along the XYZ axis
+        camera.up.set(0, 0, 1); // vector to ensure alignment with the Y-axis
+                
+        camera.lookAt(0, 0, 0);
+
+        // Renderer
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        // Camera controls
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Create the axes helper
+        const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
+        scene.add(axesHelper);
+        axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
+
+        // Add lighting
+        const light = new THREE.AmbientLight(0xffffff, 10);
+        scene.add(light);
+
+        //-----------------------------------------------------
+
+        //make variables for arm length
+        let armLength = 5;
+
+        // Create a group to hold the crane arm
+        const craneArm = new THREE.Group();
+
+        // Create the base of the crane
+        const base = new THREE.Mesh(
+            new THREE.CylinderGeometry(2, 2, 1, 15), // Radius top, radius bottom, height, Radial segments (the higher the more looks like a circle)
+            new THREE.MeshPhongMaterial({ 
+                color: 0x888888,
+                transparent: true,
+                opacity: 0.5 })
+            );
+        base.position.y = 0.5; // Position the base on x Axis. As it is 1 unit height, 0.5 will bring it there.
+        craneArm.add(base);
+
+        // Create a pivot1 group for armSegment1
+        const pivot1 = new THREE.Group();
+        pivot1.position.set(0, 0.5, 0); // Position the pivot at the top of the base
+        base.add(pivot1); //Add the pivot1 as part of base
+
+        // Create the first segment of the arm
+        const armSegment1 = new THREE.Mesh(
+            new THREE.BoxGeometry(0.5, armLength, 0.5), // Width, height, depth
+            new THREE.MeshPhongMaterial({ 
+                color: 0x00ff000,
+                transparent: true,
+                opacity: 0.5 })
+            );
+        
+        armSegment1.position.y = armLength/2; // Position the segment1 relative to the pivot1, as Segment1 is 10 at 5 will be on top of pivot 1
+        pivot1.add(armSegment1); //Add armSegment1 as child of pivot1
+
+        // Create a pivot2 group for armSegment1
+        const pivot2 = new THREE.Group();
+        pivot2.position.set(0, armLength/2, 0); // Position the pivot at the top of armSegment1
+        armSegment1.add(pivot2); //Add pivot2 as child of armSegment1 
+
+        // Create the second segment of the arm
+        const armSegment2 = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, armLength, 0.5),
+        new THREE.MeshPhongMaterial({ 
+                color: 0x0034000,
+                transparent: true,
+                opacity: 0.5 })
+            );
+        armSegment2.position.y = armLength/2; // Position the armSegment2 above the armSegment1
+        pivot2.add(armSegment2); //Add armSegment2 to pivot2
+
+
+        // Add the crane arm group to the scene
+        scene.add(craneArm);
+
+  
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); // Required for damping
+
+            // Rotate the pivot group around an axis
+            pivot1.rotation.z = Math.PI / 4 * Math.sin(Date.now() * 0.001); // Oscillate rotation
+            pivot2.rotation.z = Math.PI / 2 * Math.sin(Date.now() * 0.001); // Oscillate rotation
+            renderer.render(scene, camera);
+        }
+
+        // Start animation loop
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>three.js app</title>
+		<style>
+			
+            #container {
+            width: 100vw;
+            height: 100vh;
+        }
+		</style>
+	</head>
+	<body>
+        <div id="container"></div>
+
+        <!-- Local Three.js library -->
+        <script src="js/three.min.js"></script>
+        <!-- Local OrbitControls module -->
+        <script src="js/OrbitControls.js"></script>
+
+		<script>
+            
+            //Initialize scene and camera
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+            //position camera
+            camera.position.set(0, 0, 5); //can also be camera.position.z = 5;
+
+
+
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.getElementById('container').appendChild( renderer.domElement );
+
+            
+            //Create a cube, first its geometry, then material and then Mesh it.
+            const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+            const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+            const cube = new THREE.Mesh( geometry, material );
+            
+            //Add black edges to the cube
+            const edges = new THREE.EdgesGeometry(geometry);
+            const lineMaterial = new THREE.LineBasicMaterial({color: 0x000000});
+            const line = new THREE.LineSegments(edges, lineMaterial);
+            cube.add(line);
+
+            //Add the cube to the scene.      
+            scene.add( cube );
+            
+
+            
+
+            function animate() {
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+                renderer.render( scene, camera );
+            }
+
+            renderer.setAnimationLoop( animate );
+
+        </script>
+	</body>
+</html>
