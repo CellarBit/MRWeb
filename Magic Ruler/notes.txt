@@ -1,4 +1,0 @@
-first step 90 degrees A(0, 1, 1); B(1/sqrt(2), 0.5, 0.5); C(0, 1, 0); A'(0, 1.5, 0,5); B'(1/sqrt(2), 1, 0); C'(0, 1, 0). 
-Second step of 90 degrees A(1/sqrt(2), 1, 1); B(1/sqrt(2), 1, 0); C(1/sqrt(2), 0.5, 0.5); A'(0, 1, 1); B(0, 1, 0); C(0, 0.5, 0.5). 
-The third step of 90 degrees A(1/sqrt(2), 1.5, 0.5); B(0, 1, 0); C(1/sqrt(2), 1, 0); A'(1/sqrt(2), 1, 1.5); B'(0, 0.5, 0.5); C'(1/sqrt(2), 0.5, 0.5).
-Initial position i.e. A(0, 1.5, 0.5); B(0, 0.5, 0.5); C(0, 1, 0); A'(1/sqrt(2), 1.5, 0.5); B'(1/sqrt(2), 0.5, 0.5); C'(1/sqrt(2), 1, 0).
