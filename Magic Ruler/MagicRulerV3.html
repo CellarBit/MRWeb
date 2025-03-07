@@ -120,8 +120,8 @@
         segmentGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
         segmentGeometry.setIndex(indices);
 
-        const materialType0 = new THREE.MeshBasicMaterial({ color: 0xffc0cb, side: THREE.DoubleSide });
-        const materialType1 = new THREE.MeshBasicMaterial({ color: 0xff00ff, side: THREE.DoubleSide });
+        const materialType0 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+        const materialType1 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
         const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
         const SegmentLines = new THREE.EdgesGeometry(segmentGeometry);
 
