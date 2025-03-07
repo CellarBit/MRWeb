@@ -3,24 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Template threeJS</title>
+    <title>RotatingNsegments</title>
     <style>
-        body {
+
+        body, html {
             margin: 0;
+            height: 100%;
             overflow: hidden;
         }
 
         #container {
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+        }
+
+        .toggle-button {
+            transform: translateX(50%);
+            margin-bottom: 1%;
+            background-color:  #87b268;;
+            color: blue;
+            border: none;
+            cursor: pointer;
         }
 
         #controls {
             position: absolute;
             top: 10px;
             left: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
+            background: #87b268;
+            padding: 5px;
             border-radius: 5px;
             z-index: 100;
             max-height: 90vh;
@@ -62,15 +73,26 @@
             padding: 3px 6px;
             cursor: pointer;
         }
+
+        #fullscreen-button {
+            background-color:  #87b268;;
+            color: blue;
+        }
     </style>
 </head>
 <body>
-    <div id="container"></div>
-    <div id="controls">
-        <div class="control-header">
-            <button id="addSegmentButton">Add New</button>
-            <label for="randomSpeedCheckbox">Add with speed</label>
-            <input type="checkbox" id="randomSpeedCheckbox">
+    <div id="container">
+        <div id="controls">
+            <button class="toggle-button">(hide control)</button>
+            <div class="control-header">
+                <button id="addSegmentButton">Add New</button>
+                <label for="randomSpeedCheckbox">Add with speed</label>
+                <input type="checkbox" id="randomSpeedCheckbox">
+                <button id="fullscreen-button">FullScreen</button>
+            </div>
+            <div id="controlPanel">
+                <!-- Control groups for segments will be added here -->
+            </div>
         </div>
     </div>
 
@@ -80,6 +102,22 @@
     <script src="js/OrbitControls.js"></script>
 
     <script>
+        //listener for folding panel
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.querySelector('.toggle-button');
+            const controlPanel = document.getElementById('controlPanel');
+
+            toggleButton.addEventListener('click', function() {
+                if (controlPanel.style.display === 'none' || controlPanel.style.display === '') {
+                    controlPanel.style.display = 'block';
+                    toggleButton.textContent = 'hide control';
+                } else {
+                    controlPanel.style.display = 'none';
+                    toggleButton.textContent = '(show control)';
+                }
+            });
+        });
+
         let scene, camera, renderer;
         let controls;
         let segments = [];
@@ -166,7 +204,7 @@
             initialRotations.push(segmentPivot.rotation.clone());
 
             // Add speed control slider and stop/reset button
-            const controlsDiv = document.getElementById('controls');
+            const controlsDiv = document.getElementById('controlPanel');
             const controlGroup = document.createElement('div');
             controlGroup.classList.add('control-group');
 
@@ -208,10 +246,10 @@
             }
         }
 
-        // Create initial segments
-        for (let i = 0; i < 7; i++) {
-            createSegment(i);
-        }
+        // // Create initial segments
+        // for (let i = 0; i < 7; i++) {
+        //     createSegment(i);
+        // }
 
         // Add new segment button
         document.getElementById('addSegmentButton').addEventListener('click', () => {
@@ -230,6 +268,52 @@
 
             renderer.render(scene, camera);
         }
+
+                    // Add the event listener for the fullscreen button
+                    document.getElementById('fullscreen-button').addEventListener('click', () => {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+                document.documentElement.msRequestFullscreen();
+            }
+        });
+
+        // Add the event listener for the fullscreen change
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.getElementById('fullscreen-button').style.display = 'none';
+            } else {
+                document.getElementById('fullscreen-button').style.display = 'block';
+            }
+        });
+
+        document.addEventListener('mozfullscreenchange', () => { // Firefox
+            if (document.mozFullScreenElement) {
+                document.getElementById('fullscreen-button').style.display = 'none';
+            } else {
+                document.getElementById('fullscreen-button').style.display = 'block';
+            }
+        });
+
+        document.addEventListener('webkitfullscreenchange', () => { // Chrome, Safari, and Opera
+            if (document.webkitFullscreenElement) {
+                document.getElementById('fullscreen-button').style.display = 'none';
+            } else {
+                document.getElementById('fullscreen-button').style.display = 'block';
+            }
+        });
+
+        document.addEventListener('msfullscreenchange', () => { // IE/Edge
+            if (document.msFullscreenElement) {
+                document.getElementById('fullscreen-button').style.display = 'none';
+            } else {
+                document.getElementById('fullscreen-button').style.display = 'block';
+            }
+        });
 
         animate();
     </script>

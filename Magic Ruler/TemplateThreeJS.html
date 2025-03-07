@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Template threeJS</title>
+    <style>
+     body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+  
+
+    <!-- Local Three.js library -->
+    <script src="js/three.min.js"></script>
+    <!-- Local OrbitControls module -->
+    <script src="js/OrbitControls.js"></script>
+
+    <script>
+
+//----------------------Scene, camera, lights and renderer-------------------
+
+        let scene, camera, renderer;
+        let controls;
+        // Scene
+        scene = new THREE.Scene();
+
+        // Initialize the camera
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // Position the camera 
+        camera.position.set(15, 0, 0); // Camera is 15 units away from the YZ plane along the X-axis
+        camera.up.set(0, 0, 1); // vector to ensure alignment with the Y-axis
+                
+        camera.lookAt(0, 0, 0);
+
+        // Renderer
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        // Camera controls
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Create the axes helper
+        const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
+        scene.add(axesHelper);
+        axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
+
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5).normalize();
+        scene.add(directionalLight);
+//---------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------
+        // Start animation loop
+        animate();
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); // Required for damping
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>

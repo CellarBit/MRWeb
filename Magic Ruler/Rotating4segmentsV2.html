@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Template threeJS</title>
+    <style>
+     body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+
+    <!-- Local Three.js library -->
+    <script src="js/three.min.js"></script>
+    <!-- Local OrbitControls module -->
+    <script src="js/OrbitControls.js"></script>
+
+    <script>
+        
+        let scene, camera, renderer;
+        let controls;
+
+
+        // Scene
+        scene = new THREE.Scene();
+
+        // Initialize the camera
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // Position the camera 
+        camera.position.set(5, 0, 0); // Camera is 15 units away from the YZ plane along the X-axis
+        camera.up.set(0, 0, 1); // vector to ensure alignment with the Y-axis
+                
+        camera.lookAt(0, 0, 0);
+
+        // Renderer
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        // Camera controls
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // // Create the axes helper
+        // const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
+        // scene.add(axesHelper);
+        // axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
+
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5).normalize();
+        scene.add(directionalLight);
+
+
+        //------Segment Vertices, Geometry, edges-----------
+            //To create a segment (chancing N for the number of segment)=> //const SegmentN = new THREE.Mesh(segmentGeometry, materialType0); 
+                                                                           //const SegmentNEdges = new THREE.LineSegments(SegmentLines, edgeMaterial);
+                                                                           //SegmentN.add(SegmentNedges);
+
+        //---Vertices and indices---       
+        vertices = new Float32Array([
+            // Front face A (0,0,0) B (0,1,0) C(0,0.5,0.5), extruded along X 1/sqrt2
+            -1/(2*Math.sqrt(2)),-1/(Math.sqrt(2)),1/(2*Math.sqrt(2)),   //A
+            -1/(2*Math.sqrt(2)),0,-1/(2*Math.sqrt(2)),  //B
+            -1/(2*Math.sqrt(2)),0,1/(2*Math.sqrt(2)),   //C
+            1/(2*Math.sqrt(2)),-1/(Math.sqrt(2)),1/(2*Math.sqrt(2)),  //A'
+            1/(2*Math.sqrt(2)),0,-1/(2*Math.sqrt(2)), //B'
+            1/(2*Math.sqrt(2)),0,1/(2*Math.sqrt(2)), //C'
+            ]);
+            // Define the indices (faces)
+        indices = [
+            // Front face and back face
+            0, 1, 2,  3, 4, 5,
+            // Connecting faces
+            0, 3, 1,  1, 3, 4,  1, 4, 2,  2, 4, 5,  2, 5, 0,  0, 5, 3,
+        ];
+
+        //---Geometry---
+        const segmentGeometry = new THREE.BufferGeometry();
+        segmentGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+        segmentGeometry.setIndex(indices);
+
+        //---Materials-type0 and type1 for each color of segment-
+        const materialType0 = new THREE.MeshBasicMaterial({
+            color: 0xffc0cb, ///Red: 0xff0000, /Green: 0x00ff00, Blue: 0x0000ff, Yellow: 0xffff00, Cyan: 0x00ffff, Magenta: 0xff00ff, Gray: 0x808080, Orange: 0xffa500, Purple: 0x800080, Pink: 0xffc0cb, Brown: 0xa52a2a
+            side: THREE.DoubleSide,
+            // transparent: true, // Enable transparency
+            // opacity: 0.1, // Set opacity to 30%
+        });
+        const materialType1 = new THREE.MeshBasicMaterial({
+            color: 0xff00ff, ///Red: 0xff0000, /Green: 0x00ff00, Blue: 0x0000ff, Yellow: 0xffff00, Cyan: 0x00ffff, Magenta: 0xff00ff, Gray: 0x808080, Orange: 0xffa500, Purple: 0x800080, Pink: 0xffc0cb, Brown: 0xa52a2a
+            side: THREE.DoubleSide,
+            // transparent: true, // Enable transparency
+            // opacity: 0.1, // Set opacity to 30%
+        });
+
+        //---Black edges material for the segments---
+        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+        const SegmentLines = new THREE.EdgesGeometry(segmentGeometry); //Create the lines along the common geometry.
+        
+        //-------------------------------------------------------------
+
+   
+        
+        //--------Segment0--------
+
+        //---Create Segment---
+        const Segment0 = new THREE.Mesh(segmentGeometry, materialType0); //Create Segment0 with the common segment geometry and Material Type 0 or 1 depending the desired color.
+        const Segment0Edges = new THREE.LineSegments(SegmentLines, edgeMaterial); //Create the lines that form the edges for the Segments
+        Segment0.add(Segment0Edges); //Add edges to the segment
+
+        //---Segment0Pivot---
+        const Segment0Pivot = new THREE.Object3D();
+
+        //add axes helper to the pivot element
+        // const Segment0axesHelperPivot = new THREE.AxesHelper(1); // The size of the axes helper
+        // Segment0Pivot.add(Segment0axesHelperPivot); // Attach the axes helper to the pivot
+
+        //---Constrains---
+        Segment0Pivot.add(Segment0); //Add Segmetn0 to its pivot.
+        
+        //---Position pivot and segment---
+        Segment0Pivot.rotation.x = Math.PI/4;
+
+
+        //--------Segment1--------
+
+        //---Create Segment---
+        const Segment1 = new THREE.Mesh(segmentGeometry, materialType1); //Create Segment1 with the common segment geometry and Material Type 0 or 1 depending the desired color.
+        const Segment1Edges = new THREE.LineSegments(SegmentLines, edgeMaterial); //Create the lines that form the edges for the Segments
+        Segment1.add(Segment1Edges); //Add edges to the segment
+
+        //---Segment1Pivot---
+        const Segment1Pivot = new THREE.Object3D();
+
+        //add axes helper to the pivot element
+        // const Segment1axesHelperPivot = new THREE.AxesHelper(1); // The size of the axes helper
+        // Segment1Pivot.add(Segment1axesHelperPivot); // Attach the axes helper to the pivot
+
+        //---Constrains---
+        Segment1Pivot.add(Segment1); //Add Segmetn0 to its pivot.
+        
+        //---Position pivot and segment---
+        Segment1Pivot.rotation.x = -3*Math.PI/4;
+    
+
+        //--------Segment2--------
+
+        //---Create Segment---
+        const Segment2 = new THREE.Mesh(segmentGeometry, materialType0); //Create Segment2 with the common segment geometry and Material Type 0 or 1 depending the desired color.
+        const Segment2Edges = new THREE.LineSegments(SegmentLines, edgeMaterial); //Create the lines that form the edges for the Segments
+        Segment2.add(Segment2Edges); //Add edges to the segment
+
+        //---Segment2Pivot---
+        const Segment2Pivot = new THREE.Object3D();
+
+        //add axes helper to the pivot element
+        // const Segment2axesHelperPivot = new THREE.AxesHelper(1); // The size of the axes helper
+        // Segment2Pivot.add(Segment2axesHelperPivot); // Attach the axes helper to the pivot
+
+       
+        //---Constrains---
+        Segment2Pivot.add(Segment2); //Add Segmetn0 to its pivot.
+
+        Segment1Pivot.add(Segment2Pivot);
+        
+        // ---Position pivot ---
+        
+        Segment2Pivot.position.set(0,-1/(2*Math.sqrt(2)),1/(2*Math.sqrt(2)));
+        Segment2Pivot.rotation.x = Math.PI/2;
+        Segment2Pivot.rotation.z = Math.PI; 
+        
+                        //--------Segment3--------
+
+        //---Create Segment---
+        const Segment3 = new THREE.Mesh(segmentGeometry, materialType1); //Create Segment3 with the common segment geometry and Material Type 0 or 1 depending the desired color.
+        const Segment3Edges = new THREE.LineSegments(SegmentLines, edgeMaterial); //Create the lines that form the edges for the Segments
+        Segment3.add(Segment3Edges); //Add edges to the segment
+
+        //---Segment3Pivot---
+        const Segment3Pivot = new THREE.Object3D();
+
+        //add axes helper to the pivot element
+        // const Segment3axesHelperPivot = new THREE.AxesHelper(1); // The size of the axes helper
+        // Segment3Pivot.add(Segment3axesHelperPivot); // Attach the axes helper to the pivot
+
+        //---Constrains---
+        Segment3Pivot.add(Segment3); //Add Segmetn0 to its pivot.
+
+        Segment2Pivot.add(Segment3Pivot);
+        
+        // ---Position pivot and segment---
+        Segment3Pivot.position.set(0,-1/(2*Math.sqrt(2)),1/(2*Math.sqrt(2)));
+        Segment3Pivot.rotation.x = Math.PI/2;
+        Segment3Pivot.rotation.z = Math.PI; 
+
+
+                //--------Segment4--------
+
+        //---Create Segment---
+        const Segment4 = new THREE.Mesh(segmentGeometry, materialType0); //Create Segment4 with the common segment geometry and Material Type 0 or 1 depending the desired color.
+        const Segment4Edges = new THREE.LineSegments(SegmentLines, edgeMaterial); //Create the lines that form the edges for the Segments
+        Segment4.add(Segment4Edges); //Add edges to the segment
+
+        //---Segment4Pivot---
+        const Segment4Pivot = new THREE.Object3D();
+
+        //add axes helper to the pivot element
+        // const Segment4axesHelperPivot = new THREE.AxesHelper(1); // The size of the axes helper
+        // Segment4Pivot.add(Segment4axesHelperPivot); // Attach the axes helper to the pivot
+
+       
+        //---Constrains---
+        Segment4Pivot.add(Segment4); //Add Segmetn0 to its pivot.
+
+        Segment3Pivot.add(Segment4Pivot);
+        
+        // ---Position pivot ---
+        
+        Segment4Pivot.position.set(0,-1/(2*Math.sqrt(2)),1/(2*Math.sqrt(2)));
+        Segment4Pivot.rotation.x = Math.PI/2;
+        Segment4Pivot.rotation.z = Math.PI; 
+
+                                //--------Segment5--------
+
+        //---Create Segment---
+        const Segment5 = new THREE.Mesh(segmentGeometry, materialType1); //Create Segment5 with the common segment geometry and Material Type 0 or 1 depending the desired color.
+        const Segment5Edges = new THREE.LineSegments(SegmentLines, edgeMaterial); //Create the lines that form the edges for the Segments
+        Segment5.add(Segment5Edges); //Add edges to the segment
+
+        //---Segment5Pivot---
+        const Segment5Pivot = new THREE.Object3D();
+
+        //add axes helper to the pivot element
+        // const Segment5axesHelperPivot = new THREE.AxesHelper(1); // The size of the axes helper
+        // Segment5Pivot.add(Segment5axesHelperPivot); // Attach the axes helper to the pivot
+
+        //---Constrains---
+        Segment5Pivot.add(Segment5); //Add Segmetn0 to its pivot.
+
+        Segment4Pivot.add(Segment5Pivot);
+        
+        // ---Position pivot and segment---
+        Segment5Pivot.position.set(0,-1/(2*Math.sqrt(2)),1/(2*Math.sqrt(2)));
+        Segment5Pivot.rotation.x = Math.PI/2;
+        Segment5Pivot.rotation.z = Math.PI; 
+
+                                //--------Segment6--------
+
+        //---Create Segment---
+        const Segment6 = new THREE.Mesh(segmentGeometry, materialType0); //Create Segment6 with the common segment geometry and Material Type 0 or 1 depending the desired color.
+        const Segment6Edges = new THREE.LineSegments(SegmentLines, edgeMaterial); //Create the lines that form the edges for the Segments
+        Segment6.add(Segment6Edges); //Add edges to the segment
+
+        //---Segment6Pivot---
+        const Segment6Pivot = new THREE.Object3D();
+
+        //add axes helper to the pivot element
+        // const Segment6axesHelperPivot = new THREE.AxesHelper(1); // The size of the axes helper
+        // Segment6Pivot.add(Segment6axesHelperPivot); // Attach the axes helper to the pivot
+
+        //---Constrains---
+        Segment6Pivot.add(Segment6); //Add Segmetn0 to its pivot.
+
+        Segment5Pivot.add(Segment6Pivot);
+        
+        // ---Position pivot and segment---
+        Segment6Pivot.position.set(0,-1/(2*Math.sqrt(2)),1/(2*Math.sqrt(2)));
+        Segment6Pivot.rotation.x = Math.PI/2;
+        Segment6Pivot.rotation.z = Math.PI; 
+
+         //---Scene---
+        scene.add(Segment0Pivot); //Add SegmentN group to scene.
+          //---Scene---
+        scene.add(Segment1Pivot); //Add SegmentN group to scene.
+      
+
+        animate();
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); // Required for damping
+
+            Segment0Pivot.rotateY(0.03);
+            Segment1Pivot.rotateY(0.03/2);
+            Segment2Pivot.rotateY(0.03/3);
+            Segment3Pivot.rotateY(0.03/4);
+            Segment4Pivot.rotateY(0.03/5);
+            Segment5Pivot.rotateY(0.03/6);
+            Segment6Pivot.rotateY(0.03/7);
+            
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>

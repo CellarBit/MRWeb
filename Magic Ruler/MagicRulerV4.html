@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Template threeJS</title>
     <style>
- body {
+    body {
         margin: 0;
         overflow: hidden;
+        height: 100%;
     }
 
     #container {
@@ -15,16 +16,19 @@
         height: 100vh;
     }
 
-    #controls { 
-        position: absolute; 
-        top: 10px; 
-        left: 10px; 
-        background: rgba(255, 255, 255, 0.8); 
-        padding: 10px; 
-        border-radius: 5px; 
-        z-index: 100; 
-    }
 
+    #controls { 
+            position: absolute; 
+            top: 10px; 
+            left: 10px; 
+            background: rgba(255, 255, 255, 0.8); 
+            padding: 5px; 
+            border-radius: 20%; 
+            z-index: 100; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
     #dpad-container {
         display: flex;
@@ -95,12 +99,41 @@
         border: none;
         border-radius: 50%;
     }
+    .toggle-button {
+            position: absolute;
+            right: 0;
+            bottom: 0%;
+            right: 30%;
+            transform: translateY(5px);        
+            cursor: pointer;
+            background: none;
+            color: #c6b2f5;
+            border: none;
+            font: inherit;
+        }
+
+        .side-panel {
+            position: fixed;
+            bottom: -100%; /* Hide the panel off-screen initially */
+            left: 320px;
+            width: 300px;
+            height: 50%;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            transition: bottom 0.3s ease;
+            padding: 20px;
+        }
+
     </style>
 </head>
 <body>
     <div id="container"></div>
     <div id="container"></div>
     <div id="controls">
+        <button class="toggle-button">Scene</button>
+        <!-- <div class="scene-panel">
+            <p> here is some content</p>
+        </div>     -->
         <div id="dpad-container">
             <div id="dpad">
                 <button id="cwButton">↻</button><br>
@@ -131,6 +164,12 @@
 
         // Scene
         scene = new THREE.Scene();
+        // Set the background color to light blue
+        scene.background = new THREE.Color(0xB0E2FF); 
+        scene.rotation.y = 3*Math.PI/4;      
+        scene.rotation.x = Math.PI/4;
+        scene.position.x = -10;   
+        
 
         // Initialize the camera
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -138,6 +177,8 @@
         // Position the camera 
         camera.position.set(5, 5, 5); // Adjusted for better view
         camera.lookAt(0, 0, 0);
+
+
 
         // Renderer
         renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -148,6 +189,13 @@
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
+
+        //         // Create the axes helper
+        // const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
+        // scene.add(axesHelper);
+        // axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
+
+        
 
         // Add lighting
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -349,7 +397,7 @@
             controls.update();
             renderer.render(scene, camera);
         }
-
+        
         animate();
     </script>
 </body>
