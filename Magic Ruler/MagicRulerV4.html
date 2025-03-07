@@ -5,46 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Template threeJS</title>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
+ body {
+        margin: 0;
+        overflow: hidden;
+    }
 
-        #container {
-            width: 100vw;
-            height: 100vh;
-        }
+    #container {
+        width: 100vw;
+        height: 100vh;
+    }
 
-        #controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            z-index: 100;
-        }
+    #controls { 
+        position: absolute; 
+        top: 10px; 
+        left: 10px; 
+        background: rgba(255, 255, 255, 0.8); 
+        padding: 10px; 
+        border-radius: 5px; 
+        z-index: 100; 
+    }
 
-        #controls button {
-            margin: 1px;
-            padding: 2px 5px;
-            cursor: pointer;
-            border: 0px;
-            border-radius: 5px;
-        }
 
-        #controls input {
-            margin: 2px;
-            padding: 5px;
-            width: 50px;
-        }
+    #dpad-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateY(5%);
+    }
+
+    #controls button {
+        margin: 2px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+    
+    
 
     #dpad {
         display: grid;
         grid-template-areas:
-            ". up ."
-            "left select right"
-            "leftCircle down rightCircle";
+            "leftUp up rightUp"
+            "left middle right"
+            "leftDown down rightDown";
         grid-gap: 5px;
     }
 
@@ -64,49 +66,62 @@
         grid-area: right;
     }
 
-
-    #selectButton {
-        grid-area: select;
+    #unselectAllButton {
+        grid-area: middle;
+        border: none;
+        border-radius: 40%;
     }
 
     #addSegmentButton {
-        grid-area: leftCircle;
-        /* border-radius: 50%;
-        width: 40px;
-        height: 40px; */
+        grid-area: leftDown;
+        border: none;
+        border-radius: 50%;
     }
 
     #removeLastSegmentButton {
-        grid-area: rightCircle;
-        /* border-radius: 50%;
-        width: 40px;
-        height: 40px; */
-    }    
+        grid-area: rightDown;
+        border: none;
+        border-radius: 50%;
+    }
+
+    #saveButton {
+        grid-area: leftUp;
+        border: none;
+        border-radius: 50%;
+    }
+
+    #loadButton {
+        grid-area: rightUp;
+        border: none;
+        border-radius: 50%;
+    }
     </style>
 </head>
 <body>
     <div id="container"></div>
+    <div id="container"></div>
     <div id="controls">
-        <div id="dpad">
-        <button id="cwButton">↻</button><br>
-        <button id="prevButton">←</button>
-        <button id="unselectAllButton">Select</button>
-        <button id="nextButton">→</button><br>
-        <button id="ccwButton">↺</button>
-        <button id="addSegmentButton">add</button>
-        <button id="removeLastSegmentButton">del</button>
-        <button id="saveButton">Save</button>
-        <button id="loadButton">Load</button>
+        <div id="dpad-container">
+            <div id="dpad">
+                <button id="cwButton">↻</button><br>
+                <button id="prevButton">←</button>
+                <button id="unselectAllButton">Sel</button>
+                <button id="nextButton">→</button><br>
+                <button id="ccwButton">↺</button>
+                <button id="addSegmentButton">+</button>
+                <button id="removeLastSegmentButton">-</button>
+                <button id="saveButton">S</button>
+                <button id="loadButton">L</button>
+            </div>
         </div>
-
     </div>
-
     <!-- Local Three.js library -->
     <script src="js/three.min.js"></script>
     <!-- Local OrbitControls module -->
     <script src="js/OrbitControls.js"></script>
 
     <script>
+        
         let scene, camera, renderer;
         let controls;
         let segments = [];
@@ -161,8 +176,8 @@
         segmentGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
         segmentGeometry.setIndex(indices);
 
-        const materialType0 = new THREE.MeshBasicMaterial({ color: 0xffc0cb, side: THREE.DoubleSide });
-        const materialType1 = new THREE.MeshBasicMaterial({ color: 0xff00ff, side: THREE.DoubleSide });
+        const materialType0 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+        const materialType1 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
         const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
         const SegmentLines = new THREE.EdgesGeometry(segmentGeometry);
 
@@ -197,29 +212,29 @@
         });
 
         function removeLastSegment() {
-    if (segments.length > 0) {
-        const lastSegment = segments.pop(); // Remove the last segment from the array
-        const lastSegmentPivot = segmentPivots.pop(); // Remove the last pivot from the array
+            if (segments.length > 0) {
+                const lastSegment = segments.pop(); // Remove the last segment from the array
+                const lastSegmentPivot = segmentPivots.pop(); // Remove the last pivot from the array
 
-        // Ensure the last segment is a child of the last pivot
-        if (lastSegment && lastSegment.parent === lastSegmentPivot) {
-            lastSegmentPivot.remove(lastSegment); // Remove the segment from the pivot
+                // Ensure the last segment is a child of the last pivot
+                if (lastSegment && lastSegment.parent === lastSegmentPivot) {
+                    lastSegmentPivot.remove(lastSegment); // Remove the segment from the pivot
+                }
+
+                // Remove the pivot from the scene
+                if (lastSegmentPivot) {
+                    scene.remove(lastSegmentPivot);
+                }
+
+                console.log("segment removed");
+
+                // If the removed segment was selected, unselect it
+                if (selectedSegmentIndex >= segments.length) {
+                    selectedSegmentIndex = -1;
+                    selectedSegment = null;
+                }
+            }
         }
-
-        // Remove the pivot from the scene
-        if (lastSegmentPivot) {
-            scene.remove(lastSegmentPivot);
-        }
-
-        console.log("segment removed");
-
-        // If the removed segment was selected, unselect it
-        if (selectedSegmentIndex >= segments.length) {
-            selectedSegmentIndex = -1;
-            selectedSegment = null;
-        }
-    }
-}
 
 
 

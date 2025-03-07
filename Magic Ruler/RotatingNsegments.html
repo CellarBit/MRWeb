@@ -23,6 +23,8 @@
             padding: 10px;
             border-radius: 5px;
             z-index: 100;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         #controls label {
@@ -30,9 +32,34 @@
             margin-bottom: 5px;
         }
 
+        .control-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
         #addSegmentButton {
-            margin-top: 10px;
-            padding: 5px 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        #randomSpeedCheckbox {
+            margin-left: 5px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .control-group input[type="range"] {
+            margin-right: 5px;
+            width: 150px;
+        }
+
+        .control-group button {
+            padding: 3px 6px;
             cursor: pointer;
         }
     </style>
@@ -40,8 +67,11 @@
 <body>
     <div id="container"></div>
     <div id="controls">
-        
-        <button id="addSegmentButton">Add New Segment</button>
+        <div class="control-header">
+            <button id="addSegmentButton">Add New</button>
+            <label for="randomSpeedCheckbox">Add with speed</label>
+            <input type="checkbox" id="randomSpeedCheckbox">
+        </div>
     </div>
 
     <!-- Local Three.js library -->
@@ -55,6 +85,7 @@
         let segments = [];
         let segmentPivots = [];
         let segmentSpeeds = [0,0,0,0,0,0,0];
+        let initialRotations = [];
 
         // Scene
         scene = new THREE.Scene();
@@ -104,8 +135,8 @@
         segmentGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
         segmentGeometry.setIndex(indices);
 
-        const materialType0 = new THREE.MeshBasicMaterial({ color: 0xffc0cb, side: THREE.DoubleSide });
-        const materialType1 = new THREE.MeshBasicMaterial({ color: 0xff00ff, side: THREE.DoubleSide });
+        const materialType0 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+        const materialType1 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
         const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
         const SegmentLines = new THREE.EdgesGeometry(segmentGeometry);
 
@@ -131,25 +162,50 @@
             segmentPivots.push(segmentPivot);
             segmentSpeeds.push(0);
 
-            // Add speed control slider
+            // Store initial rotation
+            initialRotations.push(segmentPivot.rotation.clone());
+
+            // Add speed control slider and stop/reset button
             const controlsDiv = document.getElementById('controls');
+            const controlGroup = document.createElement('div');
+            controlGroup.classList.add('control-group');
+
             const label = document.createElement('label');
             label.setAttribute('for', `speed${index}`);
             label.textContent = `Segment ${index} Speed:`;
-            controlsDiv.appendChild(label);
+            controlGroup.appendChild(label);
 
             const slider = document.createElement('input');
             slider.type = 'range';
             slider.id = `speed${index}`;
-            slider.min = 0;
+            slider.min = -0.1;
             slider.max = 0.1;
             slider.step = 0.01;
             slider.value = 0;
-            controlsDiv.appendChild(slider);
+            controlGroup.appendChild(slider);
+
+            const stopButton = document.createElement('button');
+            stopButton.textContent = 'Stop';
+            controlGroup.appendChild(stopButton);
+
+            controlsDiv.appendChild(controlGroup);
 
             slider.addEventListener('input', (e) => {
                 segmentSpeeds[index] = parseFloat(e.target.value);
             });
+
+            stopButton.addEventListener('click', () => {
+                segmentSpeeds[index] = 0;
+                slider.value = 0;
+                segmentPivot.rotation.copy(initialRotations[index]); // Reset rotation
+            });
+
+            // If random speed checkbox is checked, assign random speed to the segment
+            if (document.getElementById('randomSpeedCheckbox').checked) {
+                const randomSpeed = (Math.random() * 0.2) - 0.1;
+                segmentSpeeds[index] = randomSpeed;
+                slider.value = randomSpeed;
+            }
         }
 
         // Create initial segments
