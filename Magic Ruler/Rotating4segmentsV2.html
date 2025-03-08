@@ -54,9 +54,9 @@
         controls.dampingFactor = 0.05;
 
         // // Create the axes helper
-        // const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
-        // scene.add(axesHelper);
-        // axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
+        const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
+        scene.add(axesHelper);
+        axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
 
         // Add lighting
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -128,8 +128,8 @@
         const Segment0Pivot = new THREE.Object3D();
 
         //add axes helper to the pivot element
-        // const Segment0axesHelperPivot = new THREE.AxesHelper(1); // The size of the axes helper
-        // Segment0Pivot.add(Segment0axesHelperPivot); // Attach the axes helper to the pivot
+        const Segment0axesHelperPivot = new THREE.AxesHelper(1); // The size of the axes helper
+        Segment0Pivot.add(Segment0axesHelperPivot); // Attach the axes helper to the pivot
 
         //---Constrains---
         Segment0Pivot.add(Segment0); //Add Segmetn0 to its pivot.
@@ -297,13 +297,13 @@
             requestAnimationFrame(animate);
             controls.update(); // Required for damping
 
-            Segment0Pivot.rotateY(0.03);
-            Segment1Pivot.rotateY(0.03/2);
-            Segment2Pivot.rotateY(0.03/3);
-            Segment3Pivot.rotateY(0.03/4);
-            Segment4Pivot.rotateY(0.03/5);
-            Segment5Pivot.rotateY(0.03/6);
-            Segment6Pivot.rotateY(0.03/7);
+            // Segment0Pivot.rotateY(0.03);
+            // Segment1Pivot.rotateY(0.03/2);
+            // Segment2Pivot.rotateY(0.03/3);
+            // Segment3Pivot.rotateY(0.03/4);
+            // Segment4Pivot.rotateY(0.03/5);
+            // Segment5Pivot.rotateY(0.03/6);
+            // Segment6Pivot.rotateY(0.03/7);
             
             renderer.render(scene, camera);
         }

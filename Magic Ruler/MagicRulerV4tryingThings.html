@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template threeJS</title>
+    <style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    #container {
+        width: 100vw;
+        height: 100vh;
+    }
+
+
+    #controls { 
+            position: absolute; 
+            top: 10px; 
+            left: 10px; 
+            background: rgba(255, 255, 255, 0.8); 
+            padding: 5px; 
+            border-radius: 20%; 
+            z-index: 100; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+    #dpad-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateY(5%);
+    }
+
+    #controls button {
+        margin: 2px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+    
+    
+
+    #dpad {
+        display: grid;
+        grid-template-areas:
+            "leftUp up rightUp"
+            "left middle right"
+            "leftDown down rightDown";
+        grid-gap: 5px;
+    }
+
+    #cwButton {
+        grid-area: up;
+    }
+
+    #ccwButton {
+        grid-area: down;
+    }
+
+    #prevButton {
+        grid-area: left;
+    }
+
+    #nextButton {
+        grid-area: right;
+    }
+
+    #unselectAllButton {
+        grid-area: middle;
+        border: none;
+        border-radius: 40%;
+    }
+
+    #addSegmentButton {
+        grid-area: leftDown;
+        border: none;
+        border-radius: 50%;
+    }
+
+    #removeLastSegmentButton {
+        grid-area: rightDown;
+        border: none;
+        border-radius: 50%;
+    }
+
+    #saveButton {
+        grid-area: leftUp;
+        border: none;
+        border-radius: 50%;
+    }
+
+    #loadButton {
+        grid-area: rightUp;
+        border: none;
+        border-radius: 50%;
+    }
+    .toggle-button {
+            position: absolute;
+            right: 0;
+            bottom: 0%;
+            right: 30%;
+            transform: translateY(5px);        
+            cursor: pointer;
+            background: none;
+            color: #c6b2f5;
+            border: none;
+            font: inherit;
+        }
+
+        .side-panel {
+            position: fixed;
+            bottom: -100%; /* Hide the panel off-screen initially */
+            left: 320px;
+            width: 300px;
+            height: 50%;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            transition: bottom 0.3s ease;
+            padding: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="container"></div>
+    <div id="controls">
+        <button class="toggle-button">Scene</button>
+        <!-- <div class="scene-panel">
+            <p> here is some content</p>
+        </div>     -->
+        <div id="dpad-container">
+            <div id="dpad">
+                <button id="cwButton">↻</button><br>
+                <button id="prevButton">←</button>
+                <button id="unselectAllButton">Sel</button>
+                <button id="nextButton">→</button><br>
+                <button id="ccwButton">↺</button>
+                <button id="addSegmentButton">+</button>
+                <button id="removeLastSegmentButton">-</button>
+                <button id="saveButton">S</button>
+                <button id="loadButton">L</button>
+            </div>
+        </div>
+    </div>
+    <!-- Local Three.js library -->
+    <script src="js/three.min.js"></script>
+    <!-- Local OrbitControls module -->
+    <script src="js/OrbitControls.js"></script>
+
+    <script>
+        
+        let scene, camera, renderer;
+        let controls;
+        let segments = [];
+        let segmentPivots = [];
+        let selectedSegmentIndex = -1;
+        let selectedSegment = null;
+        const userModifiedRotations = [false, false]; // Track if Segment0 and Segment1 have been modified
+
+        // Scene
+        scene = new THREE.Scene();
+        // Set the background color to light blue
+        scene.background = new THREE.Color(0xB0E2FF); 
+        scene.rotation.y = 3*Math.PI/4;      
+        scene.rotation.x = Math.PI/4;
+        //scene.position.x = -10;   
+        
+
+        // Initialize the camera
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // Position the camera 
+        camera.position.set(5, 5, 5); // Adjusted for better view
+        camera.lookAt(0, 0, 0);
+
+
+
+        // Renderer
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        // Camera controls
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+                // Create the axes helper
+        const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
+        scene.add(axesHelper);
+        axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
+
+        
+
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5).normalize();
+        scene.add(directionalLight);
+
+        //------Segment Vertices, Geometry, edges-----------
+        const vertices = new Float32Array([
+            -1/(2*Math.sqrt(2)), -1/(Math.sqrt(2)), 1/(2*Math.sqrt(2)),
+            -1/(2*Math.sqrt(2)), 0, -1/(2*Math.sqrt(2)),
+            -1/(2*Math.sqrt(2)), 0, 1/(2*Math.sqrt(2)),
+            1/(2*Math.sqrt(2)), -1/(Math.sqrt(2)), 1/(2*Math.sqrt(2)),
+            1/(2*Math.sqrt(2)), 0, -1/(2*Math.sqrt(2)),
+            1/(2*Math.sqrt(2)), 0, 1/(2*Math.sqrt(2)),
+        ]);
+
+        const indices = [
+            0, 1, 2, 3, 4, 5,
+            0, 3, 1, 1, 3, 4, 1, 4, 2, 2, 4, 5, 2, 5, 0, 0, 5, 3,
+        ];
+
+        const segmentGeometry = new THREE.BufferGeometry();
+        segmentGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+        segmentGeometry.setIndex(indices);
+
+        const materialType0 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+        const materialType1 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+        const SegmentLines = new THREE.EdgesGeometry(segmentGeometry);
+
+
+        // Function to create a new segment
+        
+        function createSegment(index) {
+            const segment = new THREE.Mesh(segmentGeometry, index % 2 === 0 ? materialType0 : materialType1);
+            const segmentEdges = new THREE.LineSegments(SegmentLines, edgeMaterial);
+            segment.add(segmentEdges);
+
+            const segmentPivot = new THREE.Object3D();
+            segmentPivot.add(segment);
+
+            const axesHelperSegment = new THREE.AxesHelper(1); // The size of the axes helper
+            segmentPivot.add(axesHelperSegment); // Attach the axes helper to the pivot
+
+            if(index ===1){
+                segmentPivots[index - 1].add(segmentPivot);
+                segmentPivot.position.set(0, -1/(2*Math.sqrt(2)), 1/(2*Math.sqrt(2)));
+                segmentPivots[0].position.set(0, -1/(2*Math.sqrt(2)), 1/(2*Math.sqrt(2)));
+                segmentPivots[0].rotation.y = 2*Math.PI;
+                segmentPivot.rotation.x = Math.PI / 2;
+                segmentPivot.rotation.z = Math.PI;
+
+            }
+
+            if (index > 1) {
+                segmentPivots[index - 1].add(segmentPivot);
+                segmentPivot.position.set(0, -1/(2*Math.sqrt(2)), 1/(2*Math.sqrt(2)));
+                segmentPivot.rotation.x = Math.PI / 2;
+                segmentPivot.rotation.z = Math.PI;
+
+            } else {
+                segmentPivot.rotation.y = Math.PI;
+                segmentPivot.rotation.x = Math.PI/4;
+                scene.add(segmentPivot);
+
+            }
+            segments.push(segment);
+            segmentPivots.push(segmentPivot);
+
+            // Set userData.index for the segment
+            segment.userData = { index: index };
+        }
+
+        // Remove last segment button
+        document.getElementById('removeLastSegmentButton').addEventListener('click', () => {
+           removeLastSegment();
+        });
+
+        function removeLastSegment() {
+            if (segments.length > 0) {
+                const lastSegment = segments.pop(); // Remove the last segment from the array
+                const lastSegmentPivot = segmentPivots.pop(); // Remove the last pivot from the array
+
+                // Ensure the last segment is a child of the last pivot
+                if (lastSegment && lastSegment.parent === lastSegmentPivot) {
+                    lastSegmentPivot.remove(lastSegment); // Remove the segment from the pivot
+                }
+
+                // Remove the pivot from the scene
+                if (lastSegmentPivot) {
+                    scene.remove(lastSegmentPivot);
+                }
+
+                console.log("segment removed");
+
+                // If the removed segment was selected, unselect it
+                if (selectedSegmentIndex >= segments.length) {
+                    selectedSegmentIndex = -1;
+                    selectedSegment = null;
+                }
+            }
+        }
+
+
+
+        document.getElementById('addSegmentButton').addEventListener('click', () => {
+            const newIndex = segments.length;
+            createSegment(newIndex);
+        });
+
+        // Function to select a segment by index
+        function selectSegment(index) {
+            if (selectedSegment) {
+                selectedSegment.material = selectedSegment.userData.originalMaterial; // Restore original material
+            }
+
+            if (index >= 0 && index < segments.length) {
+                selectedSegmentIndex = index;
+                selectedSegment = segments[index];
+                selectedSegment.userData.originalMaterial = selectedSegment.material; // Save original material
+                selectedSegment.material = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide}); // Highlight color
+                
+            } else {
+                selectedSegmentIndex = -1;
+                selectedSegment = null;
+                
+            }
+        }
+
+        // Previous button
+        document.getElementById('prevButton').addEventListener('click', () => {
+            if (segments.length > 0) {
+                let newIndex = selectedSegmentIndex - 1;
+                if (newIndex < 0) newIndex = segments.length - 1; // Wrap around to the last segment
+                selectSegment(newIndex);
+            }
+        });
+
+        // Next button
+        document.getElementById('nextButton').addEventListener('click', () => {
+            if (segments.length > 0) {
+                let newIndex = selectedSegmentIndex + 1;
+                if (newIndex >= segments.length) newIndex = 0; // Wrap around to the first segment
+                selectSegment(newIndex);
+            }
+        });
+
+        // Rotation buttons
+        document.getElementById('cwButton').addEventListener('click', () => {
+            if (selectedSegmentIndex !== -1 && segmentPivots[selectedSegmentIndex]) {
+                segmentPivots[selectedSegmentIndex].rotateY(Math.PI / 2); // Rotate 90 degrees CW
+                if (selectedSegmentIndex === 0 || selectedSegmentIndex === 1) {
+                    userModifiedRotations[selectedSegmentIndex] = true; // Mark as modified by user
+                }
+            }
+        });
+
+        document.getElementById('ccwButton').addEventListener('click', () => {
+            if (selectedSegmentIndex !== -1 && segmentPivots[selectedSegmentIndex]) {
+                segmentPivots[selectedSegmentIndex].rotateY(-Math.PI / 2); // Rotate 90 degrees CCW
+                if (selectedSegmentIndex === 0 || selectedSegmentIndex === 1) {
+                    userModifiedRotations[selectedSegmentIndex] = true; // Mark as modified by user
+                }
+            }
+        });
+                // Save configuration
+        document.getElementById('saveButton').addEventListener('click', () => {
+            // Create a copy of the rotations array
+            const rotations = segmentPivots.map(pivot => pivot.rotation.y);
+
+            // Reset rotations for Segment0 and Segment1 if they haven't been modified by the user
+            if (!userModifiedRotations[0]) rotations[0] = 0; // Reset Segment0
+            if (!userModifiedRotations[1]) rotations[1] = 0; // Reset Segment1
+
+            // Save the configuration
+            const config = {
+                count: segments.length,
+                rotations: rotations
+            };
+            const blob = new Blob([JSON.stringify(config)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'segments_config.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Load configuration
+        document.getElementById('loadButton').addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const config = JSON.parse(event.target.result);
+                    // Clear existing segments
+                    segments.forEach(segment => scene.remove(segment));
+                    segments = [];
+                    segmentPivots = [];
+                    // Create new segments
+                    for (let i = 0; i < config.count; i++) {
+                        createSegment(i);
+                        segmentPivots[i].rotation.y = config.rotations[i];
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        });
+
+        // Unselect all segments
+        document.getElementById('unselectAllButton').addEventListener('click', () => {
+            if (selectedSegment) {
+                selectedSegment.material = selectedSegment.userData.originalMaterial; // Restore original material
+                selectedSegment = null;
+                selectedSegmentIndex = -1;
+                
+            }
+        });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        createSegment(0); // Create Segment0
+        createSegment(1); // Create Segment1
+        animate();
+    </script>
+</body>
+</html>
