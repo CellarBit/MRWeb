@@ -81,9 +81,10 @@
         .container {
             background-color: white;
             padding: 0;
-            border-radius: 0;
+            border: solid blue;
             box-shadow: 5px rgba(0, 0, 0, 0.1);
             text-align: center;
+            /* transform: translateY(-10%); */
             justify-content: flex-start; /* Align items to the start for horizontal scrolling */
             margin: 0;
             display: flex; /* Change from grid to flex for horizontal scrolling */
@@ -94,6 +95,16 @@
             height: auto; /* Auto height */
             scroll-behavior: smooth; /* Smooth scrolling */
         
+        }
+
+        /* Hide scrollbar */
+        .container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .container {
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
         }
 
         .game-group {
@@ -142,37 +153,38 @@
             justify-content: center; /* Align play options to the left flex, center is centered */
             width: 100%; /* Use full width */
         }
-
-       /* Hide scrollbar */
-        .container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .container {
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
-        }
-
-        /* Footer styles */
-        footer {
-            background-color: #333; /* Dark background */
+      
+        .scroll-button {
+            background-color: #4a90e2; /* Nice blue color */
             color: white; /* White text */
-            text-align: center; /* Centered text */
-            padding: 10px 0; /* Padding for spacing */
-            width: 100%; /* Full width */
-            display: flex;
-            justify-content: center; /* Center content horizontally */
-            align-items: center; /* Center content vertically */
-            margin-top: auto; /* Push footer to the bottom */
+            border: none; /* Remove default border */
+            border-radius: 50%; /* Circular buttons */
+            width: 40px; /* Button size */
+            height: 40px;
+            font-size: 24px; /* Arrow size */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+            position: absolute; /* Position buttons absolutely */
+            top: 50%; /* Center vertically */           
         }
 
-        footer a {
-            color: #007bff; /* Link color */
-            text-decoration: none; /* Remove underline */
+        .scroll-button:hover {
+            background-color: #357abd; /* Darker blue on hover */
         }
 
-        footer a:hover {
-            color: #0056b3; /* Hover color */
+        .scroll-button.left {
+            position: relative;
+            left: -1px; /* Position left button to the left of the container */
+        }
+
+        .scroll-button.right {
+            position: relative;
+            right: -1px; /* Position right button to the right of the container */
+        }
+
+        .scroll-button:disabled {
+            background-color: #ccc; /* Gray out disabled buttons */
+            cursor: not-allowed; /* Change cursor for disabled buttons */
         }
 
         /* Media query for smaller screens (e.g., phones in portrait mode) */
@@ -213,35 +225,29 @@
                 width: 90%; /* Smaller width for landscape mode */
             }
         }
-        .scroll-button {
-            background-color: #4a90e2; /* Nice blue color */
+
+         /* Footer styles */
+         footer {
+            background-color: #333; /* Dark background */
             color: white; /* White text */
-            border: none; /* Remove default border */
-            border-radius: 50%; /* Circular buttons */
-            width: 40px; /* Button size */
-            height: 40px;
-            font-size: 24px; /* Arrow size */
-            cursor: pointer; /* Pointer cursor on hover */
-            transition: background-color 0.3s ease; /* Smooth hover effect */
-            position: absolute; /* Position buttons absolutely */
-            top: 50%; /* Center vertically */
-            transform: translateY(-50%); /* Adjust for exact centering */
-           
+            text-align: center; /* Centered text */
+            padding: 10px 0; /* Padding for spacing */
+            width: 100%; /* Full width */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            margin-top: auto; /* Push footer to the bottom */
         }
 
-        .scroll-button:hover {
-            background-color: #357abd; /* Darker blue on hover */
+        footer a {
+            color: #007bff; /* Link color */
+            text-decoration: none; /* Remove underline */
         }
 
-        .scroll-button.left {
-            position: relative;
-            left: 13px; /* Position left button to the left of the container */
+        footer a:hover {
+            color: #0056b3; /* Hover color */
         }
 
-        .scroll-button.right {
-            position: relative;
-            right: -13px; /* Position right button to the right of the container */
-        }
         
     </style>
 </head>
@@ -358,13 +364,44 @@
     
     <script>
         //JavaScript for Scroll Functionality
-        const container = document.querySelector('.container');
-        const indicators = document.querySelectorAll('.scroll-indicators span');
-
         function scrollGames(direction) {
-            const scrollAmount = container.clientWidth * direction;
-            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            const container = document.querySelector('.container');
+            const scrollAmount = container.clientWidth * 0.8; // Scroll 80% of the container width
+            container.scrollBy({
+                left: scrollAmount * direction, // Scroll left or right based on direction
+                behavior: 'smooth' // Smooth scrolling
+            });
         }
+
+        const container = document.querySelector('.container');
+        const leftButton = document.querySelector('.scroll-button.left');
+        const rightButton = document.querySelector('.scroll-button.right');
+
+        container.addEventListener('scroll', () => {
+            // Disable left button if at the start
+            if (container.scrollLeft === 0) {
+                leftButton.disabled = true;
+            } else {
+                leftButton.disabled = false;
+            }
+
+            // Disable right button if at the end
+            if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
+                rightButton.disabled = true;
+            } else {
+                rightButton.disabled = false;
+            }
+        });
+
+        // Initial check on page load
+        window.addEventListener('load', () => {
+            if (container.scrollLeft === 0) {
+                leftButton.disabled = true;
+            }
+            if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
+                rightButton.disabled = true;
+            }
+        });
 
         container.addEventListener('scroll', () => {
             const scrollPosition = container.scrollLeft;
