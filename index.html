@@ -145,11 +145,64 @@
                 transform: none; /* Remove scaling for smaller screens */
             }
         }
-    </style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px; /* Adjust the height of the header */
+            background-color: #f0f0f0; /* Optional: Adds a background color */
+            overflow: hidden; /* Ensures images don't overflow the header */
+        }
+
+        .header-images {
+            display: flex;
+            width: 100%; /* Ensures the images take up the full header width */
+            height: 100%; /* Ensures the images take up the full header height */
+        }
+
+        .header-images img {
+            flex: 1; /* Distributes space equally among images */
+            width: 100%; /* Ensures each image takes up its allocated space */
+            height: 100%; /* Ensures images fill the header height */
+            object-fit: cover; /* Ensures images cover their area without distortion */
+        }
+
+        .header-text {
+            text-align: center;
+            font-family: 'Georgia', serif; /* Nice font */
+            font-size: 36px; /* Larger font size */
+            color: #4a90e2; /* Nice blue color */
+            margin-top: 20px; /* Adds space between the header and text */
+        }
+
+        .header-text p {
+            margin: 0; /* Removes default margin for the paragraph */
+        }
+        </style>
 </head>
 <body>
-    <h1>My website</h1>
+        <header>
+            <div class="header-images">
+                <img src="indexImages/headerImage1.jpg" alt="Image 1">
+                <img src="indexImages/headerImage2.jpg" alt="Image 2">
+                <img src="indexImages/headerImage3.jpg" alt="Image 3">
+                <img src="indexImages/headerImage4.jpg" alt="Image 4">
+            </div>
+        </header>
 
+    <div class="header-text">
+        <p>Marc's website</p>
+    </div>
+    
     <!-- Game Section -->
     <section>
         <h2>Games</h2>
@@ -157,7 +210,7 @@
             <div class="container">
                 <!-- Group 1: Spot it! and 2 Players Spot it! -->
                 <div class="game-group">
-                    <img src="spotit.PNG" alt="Spot it!">
+                    <img src="indexImages/spotit.PNG" alt="Spot it!">
                     <h3>Spot it!</h3>
                     <div class="game-links">
                         <div class="play-options">
@@ -171,7 +224,7 @@
 
                 <!-- Group 2: Memory 16 and Memory 32 -->
                 <div class="game-group">
-                    <img src="memory.PNG" alt="Memory">
+                    <img src="indexImages/memory.PNG" alt="Memory">
                     <h3>Memory Cards</h3>
                     <div class="game-links">
                         <div class="play-options">
@@ -184,7 +237,7 @@
 
                 <!-- Group 3: Oware -->
                 <div class="game-group">
-                    <img src="oware.PNG" alt="Oware">
+                    <img src="indexImages/oware.PNG" alt="Oware">
                     <h3>Oware (Abapa)</h3>
                     <div class="game-links">
                         <a href="Oware (Abapa)/oware.html">2 Players</a>
@@ -194,7 +247,7 @@
 
                 <!-- Group 4: Sudoku -->
                 <div class="game-group">
-                    <img src="sudoku.png" alt="Sudoku">
+                    <img src="indexImages/sudoku.png" alt="Sudoku">
                     <h3>Sudoku</h3>
                     <div class="game-links">
                         <a href="Sudoku/sudoku.html">Play</a>
@@ -204,7 +257,7 @@
 
                 <!-- Group 5: Dice Game 1 Player and Dice Game 2 Players -->
                 <div class="game-group">
-                    <img src="DiceGame.png" alt="Dice Game">
+                    <img src="indexImages/DiceGame.png" alt="Dice Game">
                     <h3>Pig (Dice Game)</h3>
                     <div class="game-links">
                         <div class="play-options">
@@ -217,7 +270,7 @@
                 </div>
                 <!-- Group 6: Magic Ruler -->
                 <div class="game-group">
-                    <img src="magicruler.jpg" alt="Dice Game">
+                    <img src="indexImages/magicruler.jpg" alt="Dice Game">
                     <h3>Magic ruler</h3>
                     <div class="game-links">
                         <a href="Magic Ruler/MagicRulerV4.html">Play original</a>
