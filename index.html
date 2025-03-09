@@ -47,6 +47,8 @@
             display: flex;
             width: 100%; /* Ensures the images take up the full header width */
             height: 100%; /* Ensures the images take up the full header height */
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-snap-type: x mandatory; /* Smooth snapping */
         }
 
         .header-images img {
@@ -81,7 +83,7 @@
         .container {
             background-color: white;
             padding: 0;
-            border: solid blue;
+            
             box-shadow: 5px rgba(0, 0, 0, 0.1);
             text-align: center;
             /* transform: translateY(-10%); */
@@ -117,7 +119,6 @@
             scroll-snap-align: start; /* Snap to start of each game group */
             transform: none; /* scale(0.9);  Scale down to fit within fixed container */
             transform-origin: top left; /* Transform origin to the top left */
-        
         }
 
         .game-group img {
@@ -174,12 +175,12 @@
 
         .scroll-button.left {
             position: relative;
-            left: -1px; /* Position left button to the left of the container */
+            /*left: -1px;  Position left button to the left of the container */
         }
 
         .scroll-button.right {
             position: relative;
-            right: -1px; /* Position right button to the right of the container */
+            /* right: -1px; Position right button to the right of the container */
         }
 
         .scroll-button:disabled {
