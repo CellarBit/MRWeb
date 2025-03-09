@@ -187,13 +187,15 @@
 
         // Camera controls
         controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
+        // controls.enableDamping = true;
+        // controls.dampingFactor = 0.05;
+        controls.minPolarAngle = 0; // Allow the camera to point straight down
+        controls.maxPolarAngle = Math.PI * 2; // Allow the camera to rotate all the way around vertically
 
         //         // Create the axes helper
-        // const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
-        // scene.add(axesHelper);
-        // axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
+        const axesHelper = new THREE.AxesHelper(5); // Default size is 5 units
+        scene.add(axesHelper);
+        axesHelper.scale.y = 3; // Make the Y-axis longer Scale it by a factor.
 
         
 
