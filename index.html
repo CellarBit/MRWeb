@@ -205,6 +205,17 @@
                 min-width: 100%; /* Ensures each image takes up at least the full width */
             }
         }
+        /* Media query for landscape mode on mobile devices */
+        @media (max-width: 768px) and (orientation: landscape) {
+            header {
+                height: 150px; /* Adjust height for landscape mode */
+            }
+
+            .header-images img {
+                width: 50%; /* Show two images at a time */
+                min-width: 50%; /* Ensure each image takes up half the width */
+            }
+        }
         </style>
 </head>
 <body>
