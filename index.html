@@ -5,213 +5,245 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marc's website</title>
     <style>
-    /* General styles */
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
+        /* General styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    h1 {
-        color: #333;
-        text-align: center;
-    }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
 
-    h2 {
-        text-align: center;
-    }
+        h2 {
+            text-align: center;
+        }
 
-    h3 {
-        margin-block-start: 0em;
-        margin-block-end: 0em;
-    }
+        h3 {
+            margin-block-start: 0em;
+            margin-block-end: 0em;
+        }
 
-    section {
-        margin: 20px 0;
-    }
+        section {
+            margin: 20px 0;
+        }
 
-    /* Header styles */
-    header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 300px; /* Adjust the height of the header */
-        background-color: #f0f0f0; /* Optional: Adds a background color */
-        overflow: hidden; /* Ensures images don't overflow the header */
-    }
-
-    .header-images {
-        display: flex;
-        width: 100%; /* Ensures the images take up the full header width */
-        height: 100%; /* Ensures the images take up the full header height */
-    }
-
-    .header-images img {
-        flex: 1; /* Distributes space equally among images */
-        width: 100%; /* Ensures each image takes up its allocated space */
-        height: 100%; /* Ensures images fill the header height */
-        object-fit: cover; /* Ensures images cover their area without distortion */
-    }
-
-    .header-text {
-        text-align: center;
-        font-family: 'Georgia', serif; /* Nice font */
-        font-size: 36px; /* Larger font size */
-        color: #4a90e2; /* Nice blue color */
-        margin-top: 20px; /* Adds space between the header and text */
-    }
-
-    .header-text p {
-        margin: 0; /* Removes default margin for the paragraph */
-    }
-
-    /* Games section styles */
-    .wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-grow: 1;
-    }
-
-    .container {
-        background-color: white;
-        padding: 0;
-        border-radius: 0;
-        box-shadow: 5px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        justify-content: flex-start; /* Align items to the start for horizontal scrolling */
-        margin: 0;
-        display: flex; /* Change from grid to flex for horizontal scrolling */
-        overflow-x: auto; /* Enable horizontal scrolling */
-        scroll-snap-type: x mandatory; /* Smooth snapping */
-        gap: 0px; /* Space between game groups */
-        width: 500px; /* Fixed width */
-        height: auto; /* Auto height */
-        scroll-behavior: smooth; /* Smooth scrolling */
-       
-    }
-
-    .game-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-        width: 150px; /* Fixed width for each game group */
-        flex: 0 0 auto; /* Prevent shrinking or growing */
-        scroll-snap-align: start; /* Snap to start of each game group */
-        transform: none; /* scale(0.9);  Scale down to fit within fixed container */
-        transform-origin: top left; /* Transform origin to the top left */
-       
-    }
-
-    .game-group img {
-        width: 80%; /* Make the image fill the container width */
-        aspect-ratio: 1; /* Ensure the image is square */
-        margin-bottom: 5px;
-    }
-
-    .game-links {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Align links */
-        gap: 0px; /* Reduce line spacing between links */
-        margin-top: 0px;
-        width: 100%; /* Use full width */
-    }
-
-    .game-links a {
-        text-decoration: none;
-        color: #007bff;
-        font-size: 1em;
-        transition: color 0.3s;
-    }
-
-    .game-links a:hover {
-        color: #0056b3;
-    }
-
-    .play-options {
-        display: flex;
-        flex-direction: row; /* Display play options in a row */
-        gap: 5px;
-        justify-content: center; /* Align play options to the left flex, center is centered */
-        width: 100%; /* Use full width */
-    }
-
-    /* Hide scrollbar */
-    /* .container::-webkit-scrollbar {
-        display: none;
-    }
-
-    .container {
-        -ms-overflow-style: none; 
-        scrollbar-width: none; 
-    } */
-
-    /* Footer styles */
-    footer {
-        background-color: #333; /* Dark background */
-        color: white; /* White text */
-        text-align: center; /* Centered text */
-        padding: 10px 0; /* Padding for spacing */
-        width: 100%; /* Full width */
-        display: flex;
-        justify-content: center; /* Center content horizontally */
-        align-items: center; /* Center content vertically */
-        margin-top: auto; /* Push footer to the bottom */
-    }
-
-    footer a {
-        color: #007bff; /* Link color */
-        text-decoration: none; /* Remove underline */
-    }
-
-    footer a:hover {
-        color: #0056b3; /* Hover color */
-    }
-
-    /* Media query for smaller screens (e.g., phones in portrait mode) */
-    @media (max-width: 768px) {
+        /* Header styles */
         header {
-            height: 200px; /* Adjust height for smaller screens */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px; /* Adjust the height of the header */
+            background-color: #f0f0f0; /* Optional: Adds a background color */
+            overflow: hidden; /* Ensures images don't overflow the header */
         }
 
         .header-images {
-            overflow-x: auto; /* Enables horizontal scrolling */
-            scroll-snap-type: x mandatory; /* Ensures smooth snapping */
+            display: flex;
+            width: 100%; /* Ensures the images take up the full header width */
+            height: 100%; /* Ensures the images take up the full header height */
         }
 
         .header-images img {
-            width: auto; /* Allows images to maintain their aspect ratio */
-            min-width: 100%; /* Ensures each image takes up at least the full width */
-        }
-    }
-
-    /* Media query for landscape mode on mobile devices */
-    @media (max-width: 768px) and (orientation: landscape) {
-
-        .header-images {
-            overflow-x: auto; /* Enables horizontal scrolling */
-            scroll-snap-type: x mandatory; /* Ensures smooth snapping */
+            flex: 1; /* Distributes space equally among images */
+            width: 100%; /* Ensures each image takes up its allocated space */
+            height: 100%; /* Ensures images fill the header height */
+            object-fit: cover; /* Ensures images cover their area without distortion */
         }
 
-        .header-images img {
-            width: auto; /* Allows images to maintain their aspect ratio */
-            min-width: 100%; /* Ensures each image takes up at least the full width */
+        .header-text {
+            text-align: center;
+            font-family: 'Georgia', serif; /* Nice font */
+            font-size: 36px; /* Larger font size */
+            color: #4a90e2; /* Nice blue color */
+            margin-top: 20px; /* Adds space between the header and text */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Adds a shadow */
+            /*border-bottom: 2px solid #4a90e2; /* Adds a border below the text */
+        }
+
+        .header-text p {
+            margin: 0; /* Removes default margin for the paragraph */
+        }
+
+        /* Games section styles */
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Needed for absolute positioning of buttons */
         }
 
         .container {
-            width: 90%; /* Adjust width for landscape mode */
+            background-color: white;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            justify-content: flex-start; /* Align items to the start for horizontal scrolling */
+            margin: 0;
+            display: flex; /* Change from grid to flex for horizontal scrolling */
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-snap-type: x mandatory; /* Smooth snapping */
+            gap: 0px; /* Space between game groups */
+            width: 300px; /* Fixed width */
+            height: auto; /* Auto height */
+            scroll-behavior: smooth; /* Smooth scrolling */
+        
         }
 
         .game-group {
-            width: 120px; /* Smaller width for landscape mode */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            width: 150px; /* Fixed width for each game group */
+            flex: 0 0 auto; /* Prevent shrinking or growing */
+            scroll-snap-align: start; /* Snap to start of each game group */
+            transform: none; /* scale(0.9);  Scale down to fit within fixed container */
+            transform-origin: top left; /* Transform origin to the top left */
+        
         }
-    }
-        </style>
+
+        .game-group img {
+            width: 80%; /* Make the image fill the container width */
+            aspect-ratio: 1; /* Ensure the image is square */
+            margin-bottom: 5px;
+        }
+
+        .game-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Align links */
+            gap: 0px; /* Reduce line spacing between links */
+            margin-top: 0px;
+            width: 100%; /* Use full width */
+        }
+
+        .game-links a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1em;
+            transition: color 0.3s;
+        }
+
+        .game-links a:hover {
+            color: #0056b3;
+        }
+
+        .play-options {
+            display: flex;
+            flex-direction: row; /* Display play options in a row */
+            gap: 5px;
+            justify-content: center; /* Align play options to the left flex, center is centered */
+            width: 100%; /* Use full width */
+        }
+
+       /* Hide scrollbar */
+        .container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .container {
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #333; /* Dark background */
+            color: white; /* White text */
+            text-align: center; /* Centered text */
+            padding: 10px 0; /* Padding for spacing */
+            width: 100%; /* Full width */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            margin-top: auto; /* Push footer to the bottom */
+        }
+
+        footer a {
+            color: #007bff; /* Link color */
+            text-decoration: none; /* Remove underline */
+        }
+
+        footer a:hover {
+            color: #0056b3; /* Hover color */
+        }
+
+        /* Media query for smaller screens (e.g., phones in portrait mode) */
+        @media (max-width: 768px) {
+            header {
+                height: 200px; /* Adjust height for smaller screens */
+            }
+
+            .header-images {
+                overflow-x: auto; /* Enables horizontal scrolling */
+                scroll-snap-type: x mandatory; /* Ensures smooth snapping */
+            }
+
+            .header-images img {
+                width: auto; /* Allows images to maintain their aspect ratio */
+                min-width: 100%; /* Ensures each image takes up at least the full width */
+            }
+        }
+
+        /* Media query for landscape mode on mobile devices */
+        @media (max-width: 768px) and (orientation: landscape) {
+
+            .header-images {
+                overflow-x: auto; /* Enables horizontal scrolling */
+                scroll-snap-type: x mandatory; /* Ensures smooth snapping */
+            }
+
+            .header-images img {
+                width: auto; /* Allows images to maintain their aspect ratio */
+                min-width: 100%; /* Ensures each image takes up at least the full width */
+            }
+
+            .container {
+                width: 90%; /* Adjust width for landscape mode */
+            }
+
+            .game-group {
+                width: 90%; /* Smaller width for landscape mode */
+            }
+        }
+        .scroll-button {
+            background-color: #4a90e2; /* Nice blue color */
+            color: white; /* White text */
+            border: none; /* Remove default border */
+            border-radius: 50%; /* Circular buttons */
+            width: 40px; /* Button size */
+            height: 40px;
+            font-size: 24px; /* Arrow size */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+            position: absolute; /* Position buttons absolutely */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Adjust for exact centering */
+           
+        }
+
+        .scroll-button:hover {
+            background-color: #357abd; /* Darker blue on hover */
+        }
+
+        .scroll-button.left {
+            position: relative;
+            left: 13px; /* Position left button to the left of the container */
+        }
+
+        .scroll-button.right {
+            position: relative;
+            right: -13px; /* Position right button to the right of the container */
+        }
+        
+    </style>
 </head>
 <body>
         <header>
@@ -232,7 +264,10 @@
     <section>
         <h2>Games</h2>
         <div class="wrapper">
+            <!-- Left Scroll Button -->
+            <button class="scroll-button left" onclick="scrollGames(-1)">‹</button>
             <div class="container">
+                
                 <!-- Group 1: Spot it! and 2 Players Spot it! -->
                 <div class="game-group">
                     <img src="indexImages/spotit.PNG" alt="Spot it!">
@@ -303,7 +338,12 @@
                         <a href="Magic Ruler/aboutMagicRuler.html">About</a>
                     </div>
                 </div>
+                
             </div>
+            <!-- Right Scroll Button -->
+            <button class="scroll-button right" onclick="scrollGames(1)">›</button>
+        
+
         </div>
     </section>
 
