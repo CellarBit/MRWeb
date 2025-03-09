@@ -368,6 +368,7 @@
                     const config = JSON.parse(event.target.result);
                     // Clear existing segments
                     segments.forEach(segment => scene.remove(segment));
+                    segmentPivots.forEach(pivot => scene.remove(pivot));
                     segments = [];
                     segmentPivots = [];
                     // Create new segments
