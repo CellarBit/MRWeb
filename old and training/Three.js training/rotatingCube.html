@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>three.js app</title>
+		<style>
+            #container {
+                width: 100vw;
+                height: 100vh;
+            }
+		</style>
+	</head>
+	<body>
+        <div id="container"></div>
+
+        <!-- Local Three.js library -->
+        <script src="libsR124/three.min.js"></script>
+        <!-- Local TrackballControls module -->
+        <script src="libsR124/TrackballControls.js"></script>
+
+		<script>
+            // Initialize scene and camera
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+            // Position camera
+            camera.position.set(0, 0, 5); // can also be camera.position.z = 5;
+
+            // Renderer
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            // Controls
+            const controls = new THREE.TrackballControls(camera, renderer.domElement);
+
+            controls.rotateSpeed = 10;
+            controls.zoomSpeed = 1.2;
+            controls.panSpeed = 0;
+
+            // Create a cube, first its geometry, then material and then Mesh it.
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            const cube = new THREE.Mesh(geometry, material);
+
+            // Add black edges to the cube
+            const edges = new THREE.EdgesGeometry(geometry);
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+            const line = new THREE.LineSegments(edges, lineMaterial);
+            cube.add(line);
+
+            // Add the cube to the scene.
+            scene.add(cube);
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // Update controls
+                controls.update();
+
+                // Rotate the cube
+                // cube.rotation.x += 0.01;
+                // cube.rotation.y += 0.01;
+
+                // Render the scene
+                renderer.render(scene, camera);
+            }
+
+            // Start the animation loop
+            animate();
+        </script>
+	</body>
+</html>
