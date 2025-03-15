@@ -7,7 +7,7 @@
     <style>
         /* General styles */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Georgia', serif;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -28,6 +28,16 @@
             margin-block-start: 0em;
             margin-block-end: 0em;
         }
+        
+        p {
+            line-height: 2; /* Improve readability with more line spacing */
+            text-align: justify; /* Justify text */
+            width: 80%;
+            margin: 0 auto 0.75em; /* Center the paragraph horizontally and add spacing below */
+            text-indent: 2em; /* Indent the first line of the paragraph */
+            font-size: 1.2vw;
+        }
+
 
         section {
             margin: 20px 0;
@@ -58,6 +68,7 @@
             object-fit: cover; /* Ensures images cover their area without distortion */
         }
 
+        /* Style for the header text */
         .header-text {
             text-align: center;
             font-family: 'Georgia', serif; /* Nice font */
@@ -65,11 +76,13 @@
             color: #4a90e2; /* Nice blue color */
             margin-top: 20px; /* Adds space between the header and text */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Adds a shadow */
-            /*border-bottom: 2px solid #4a90e2; /* Adds a border below the text */
         }
 
+        /* Ensure the paragraph inside .header-text is centered */
         .header-text p {
-            margin: 0; /* Removes default margin for the paragraph */
+           
+            text-align: center; /* Ensure the text inside .header-text is centered */
+            font-size: 2vw;
         }
 
         /* Games section styles */
@@ -253,20 +266,37 @@
     </style>
 </head>
 <body>
-        <header>
-            <div class="header-images">
-                <img src="indexImages/headerImage1.jpg" alt="Image 1">
-                <img src="indexImages/headerImage2.jpg" alt="Image 2">
-                <img src="indexImages/headerImage3.jpg" alt="Image 3">
-                <img src="indexImages/headerImage4.jpg" alt="Image 4">
-                <img src="indexImages/headerImage5.jpg" alt="Image 4">
-            </div>
-        </header>
+    <header>
+        <div class="header-images">
+            <img src="indexImages/headerImage1.jpg" alt="Image 1">
+            <img src="indexImages/headerImage2.jpg" alt="Image 2">
+            <img src="indexImages/headerImage3.jpg" alt="Image 3">
+            <img src="indexImages/headerImage4.jpg" alt="Image 4">
+            <img src="indexImages/headerImage5.jpg" alt="Image 4">
+        </div>
+    </header>
 
     <div class="header-text">
         <p>Marc's website</p>
     </div>
-    
+    <p>
+        Every person you meet is fighting a battle you know nothing about. Kindness costs nothing but has the power to change everything. 
+        We often underestimate the ripple effect of our actions, both good and bad. The truth is, no one has it all figured out—life is a constant journey of learning, stumbling, and growing. 
+        The moments that challenge us the most are often the ones that teach us the most. And in the end, it’s not about being perfect but about being present, authentic, and true to yourself.
+    </p>
+    <p> 
+        Life is a series of choices, each one shaping the path we walk. Some roads are smooth, others rocky, but every step teaches us something valuable. We often fear failure, 
+        yet it is through failure that we grow the most. Success is not the absence of struggle but the courage to keep going despite it. The people who lift you up, the moments that make you smile, 
+        and the lessons that make you wiser are the true treasures of existence. And while we cannot control the winds of life, we can always adjust our sails. 
+    </p>
+    <p> 
+        Life is a fleeting journey, marked by moments of joy and sorrow, triumph and failure. We often seek meaning in the grand gestures, but it is in the quiet, everyday acts of kindness and connection 
+        that true purpose is found. Time is our most precious resource, yet we squander it on distractions and regrets. The past cannot be changed, the future remains uncertain, and the present is all we truly possess. 
+        In the end, it is not what we accumulate but how we love, grow, and contribute to the world that defines our existence. Embrace imperfection, for it is the essence of being human, and remember that even in darkness, 
+        there is always a glimmer of light waiting to be found. 
+    </p>
+
+    </div>
     <!-- Game Section -->
     <section>
         <h2>Games</h2>
