@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spirograph Animation</title>
+  <style>
+    canvas {
+      border: none;
+      display: block;
+      margin: 0px auto;
+    }
+    #sliderContainer {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .slider-group {
+      margin-bottom: 10px;
+    }
+    .slider-group label {
+      display: inline-block;
+      width: 120px;
+    }
+    .slider-group input[type="range"] {
+      width: 150px;
+    }
+    .slider-group span {
+      display: inline-block;
+      width: 50px;
+      text-align: right;
+    }
+    #controls {
+      margin-top: 10px;
+    }
+    #controls button {
+      margin-right: 10px;
+    }
+    #colorMenu {
+      margin-top: 10px;
+    }
+    #colorMenu select {
+      width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div id="sliderContainer">
+    <div class="slider-group">
+      <label for="speedSlider">Speed:</label>
+      <input type="range" id="speedSlider" min="0" max="0.5" step="0.01" value="0.05">
+      <span id="speedValue">0.05</span>
+    </div>
+    <div class="slider-group">
+      <label for="fixedRadiusSlider">Fixed Radius:</label>
+      <input type="range" id="fixedRadiusSlider" min="50" max="250" step="1" value="151">
+      <span id="fixedRadiusValue">151</span>
+    </div>
+    <div class="slider-group">
+      <label for="movingRadiusSlider">Moving Radius:</label>
+      <input type="range" id="movingRadiusSlider" min="10" max="150" step="1" value="78">
+      <span id="movingRadiusValue">78</span>
+    </div>
+    <div class="slider-group">
+      <label for="penDistanceSlider">Pen Distance:</label>
+      <input type="range" id="penDistanceSlider" min="0" max="78" step="1" value="18">
+      <span id="penDistanceValue">18</span>
+    </div>
+    <div id="controls">
+      <button id="clearButton">Clear Canvas</button>
+      <label>
+        <input type="checkbox" id="showCirclesCheckbox" checked> Show Circles
+      </label>
+    </div>
+    <div id="colorMenu">
+      <label for="colorSelect">Pen Color:</label>
+      <select id="colorSelect">
+        <option value="#0000FF">Blue</option>
+        <option value="#FF0000">Red</option>
+        <option value="#00FF00">Green</option>
+        <option value="#FFFF00">Yellow</option>
+        <option value="#FF00FF">Magenta</option>
+        <option value="#00FFFF">Cyan</option>
+        <option value="#000000">Black</option>
+        <option value="#FFFFFF">White</option>
+        
+      </select>
+    </div>
+  </div>
+  <canvas id="spirographCanvas" width="500" height="500"></canvas>
+
+  <script>
+    const canvas = document.getElementById('spirographCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas dimensions
+    canvas.width = 500;
+    canvas.height = 500;
+
+    // Spirograph parameters
+    let R = 151; // Radius of the fixed circle
+    let r = 78;  // Radius of the moving circle
+    let d = 18;  // Distance of the pen from the center of the moving circle
+    let angle = 0; // Initial angle
+    let showCircles = true; // Whether to show the fixed and moving circles
+
+    // Pen color
+    let penColor = '#0000FF'; // Default pen color (blue)
+ 
+
+    // Center of the canvas (shifted down to avoid overlapping with controls)
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2 + 50;
+
+    // Array to store the current path of the pen
+    let path = [];
+    // Array to store the history of paths
+    let pathHistory = [];
+
+    // Slider elements
+    const speedSlider = document.getElementById('speedSlider');
+    const speedValue = document.getElementById('speedValue');
+    const fixedRadiusSlider = document.getElementById('fixedRadiusSlider');
+    const fixedRadiusValue = document.getElementById('fixedRadiusValue');
+    const movingRadiusSlider = document.getElementById('movingRadiusSlider');
+    const movingRadiusValue = document.getElementById('movingRadiusValue');
+    const penDistanceSlider = document.getElementById('penDistanceSlider');
+    const penDistanceValue = document.getElementById('penDistanceValue');
+    const clearButton = document.getElementById('clearButton');
+    const showCirclesCheckbox = document.getElementById('showCirclesCheckbox');
+    const colorSelect = document.getElementById('colorSelect');
+
+    // Initialize slider values
+    speedValue.textContent = speedSlider.value;
+    fixedRadiusValue.textContent = fixedRadiusSlider.value;
+    movingRadiusValue.textContent = movingRadiusSlider.value;
+    penDistanceValue.textContent = penDistanceSlider.value;
+
+    // Update moving radius slider max value when fixed radius changes
+    fixedRadiusSlider.addEventListener('input', () => {
+      R = parseFloat(fixedRadiusSlider.value);
+      fixedRadiusValue.textContent = R;
+      movingRadiusSlider.max = R - 1;
+      if (r > R - 1) {
+        r = R - 1;
+        movingRadiusSlider.value = r;
+        movingRadiusValue.textContent = r;
+      }
+      penDistanceSlider.max = r;
+      if (d > r) {
+        d = r;
+        penDistanceSlider.value = d;
+        penDistanceValue.textContent = d;
+      }
+      parametersChanged();
+      
+    });
+
+    // Update moving radius value
+    movingRadiusSlider.addEventListener('input', () => {
+      r = parseFloat(movingRadiusSlider.value);
+      movingRadiusValue.textContent = r;
+      penDistanceSlider.max = r;
+      if (d > r) {
+        d = r;
+        penDistanceSlider.value = d;
+        penDistanceValue.textContent = d;
+      }
+      parametersChanged();
+    });
+
+    // Update pen distance value
+    penDistanceSlider.addEventListener('input', () => {
+      d = parseFloat(penDistanceSlider.value);
+      penDistanceValue.textContent = d;
+      // Save the current path to history and reset the path array
+      parametersChanged();
+    });
+
+    // Clear the canvas
+    clearButton.addEventListener('click', () => {
+      path = []; // Clear the current path
+      pathHistory = []; // Clear the path history
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    });
+
+    // Toggle visibility of circles
+    showCirclesCheckbox.addEventListener('change', () => {
+      showCircles = showCirclesCheckbox.checked;
+    });
+
+    // Update pen color
+    colorSelect.addEventListener('change', () => {
+      parametersChanged();
+      const selectedColor = colorSelect.value;
+      penColor = selectedColor;
+      
+      
+    });
+    
+    //Function to react at changes on paramenters
+    function parametersChanged(){
+      if (path.length > 0) {
+        // Save the current path along with its color
+        pathHistory.push({ path: [...path], color: penColor });
+      }
+      path = []; // Reset the current path
+      speedSlider.value = 0;
+      speedValue.textContent = 0;
+    }
+    
+    // Function to draw the Spirograph
+    function drawSpirograph() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw the fixed circle if enabled
+      if (showCircles) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, R, 0, 2 * Math.PI);
+        ctx.strokeStyle = 'black';
+        ctx.stroke();
+      }
+
+      // Calculate the position of the moving circle
+      const movingCircleX = centerX + (R - r) * Math.cos(angle);
+      const movingCircleY = centerY + (R - r) * Math.sin(angle);
+
+      // Draw the moving circle if enabled
+      if (showCircles) {
+        ctx.beginPath();
+        ctx.arc(movingCircleX, movingCircleY, r, 0, 2 * Math.PI);
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+      }
+
+      // Calculate the position of the pen
+      const penAngle = -((R - r) / r) * angle; // Angle for the pen's position
+      const penX = movingCircleX + d * Math.cos(penAngle);
+      const penY = movingCircleY + d * Math.sin(penAngle);
+
+      // Set the pen color
+    
+        ctx.fillStyle = penColor;
+        ctx.strokeStyle = penColor;
+    
+
+      // Draw the pen point
+      ctx.beginPath();
+      ctx.arc(penX, penY, 2, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Store the pen's position in the path array if drawing is enabled
+      if (speedSlider.value > 0) {
+        path.push({ x: penX, y: penY });
+      }
+
+      // Draw all paths in history with their stored colors
+      pathHistory.forEach((entry) => {
+        if (entry.path.length > 0) {
+          ctx.beginPath();
+          ctx.strokeStyle = entry.color; // Use the stored color
+          ctx.moveTo(entry.path[0].x, entry.path[0].y);
+          for (let i = 1; i < entry.path.length; i++) {
+            ctx.lineTo(entry.path[i].x, entry.path[i].y);
+          }
+          ctx.stroke();
+        }
+      });
+
+      // Draw the current path (if any)
+      if (path.length > 0) {
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        ctx.strokeStyle = penColor; // Use the current pen color
+        for (let i = 1; i < path.length; i++) {
+          ctx.lineTo(path[i].x, path[i].y);
+        }
+        ctx.stroke();
+      }
+
+      // Increment the angle for the next frame
+      angle += parseFloat(speedSlider.value);
+
+      // Request the next frame
+      requestAnimationFrame(drawSpirograph);
+    }
+
+    // Start the animation
+    drawSpirograph();
+  </script>
+</body>
+</html>
