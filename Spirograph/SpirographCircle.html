@@ -8,8 +8,8 @@
     canvas {
       border: none;
       display: block;
-      margin: 0px auto;
-      transform: translateY(25%);
+      
+      transform: translateY(50%);
     }
     #sliderContainer {
       position: absolute;
@@ -92,15 +92,15 @@
       </select>
     </div>
   </div>
-  <canvas id="spirographCanvas" width="600" height="600"></canvas>
+  <canvas id="spirographCanvas" width="500" height="700"></canvas>
 
   <script>
     const canvas = document.getElementById('spirographCanvas');
     const ctx = canvas.getContext('2d');
 
     // Set canvas dimensions
-    canvas.width = 500;
-    canvas.height = 500;
+    canvas.width = 700;
+    canvas.height = 700;
 
     // Spirograph parameters
     let R = 151; // Radius of the fixed circle
