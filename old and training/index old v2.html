@@ -52,23 +52,22 @@
             background-color: #f0f0f0; /* Optional: Adds a background color */
             overflow: hidden; /* Ensures images don't overflow the header */
         }
-        
+
         .header-images {
-        overflow: hidden;
-        height: 300px;
-        position: relative;
+            display: flex;
+            width: 100%; /* Ensures the images take up the full header width */
+            height: 100%; /* Ensures the images take up the full header height */
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-snap-type: x mandatory; /* Smooth snapping */
         }
 
-        .image-track {
-        display: flex;
-        flex-wrap: nowrap;
+        .header-images img {
+            flex: 1; /* Distributes space equally among images */
+            width: 100%; /* Ensures each image takes up its allocated space */
+            height: 100%; /* Ensures images fill the header height */
+            object-fit: cover; /* Ensures images cover their area without distortion */
         }
-        .image-track img {
-        height: 100%;
-        flex-shrink: 0;
-        object-fit: cover;
-        }
-      
+
         /* Style for the header text */
         .header-text {
             text-align: center;
@@ -107,7 +106,7 @@
             overflow-x: auto; /* Enable horizontal scrolling */
             scroll-snap-type: x mandatory; /* Smooth snapping */
             gap: 0px; /* Space between game groups */
-            width: 600px; /* Fixed width */
+            width: 300px; /* Fixed width */
             height: auto; /* Auto height */
             scroll-behavior: smooth; /* Smooth scrolling */
         
@@ -268,24 +267,13 @@
 </head>
 <body>
     <header>
-      
         <div class="header-images">
-            <div class="image-track">
-                <img src="indexImages/headerImage1.jpg" alt="Image 1" />
-                <img src="indexImages/headerImage2.jpg" alt="Image 2" />
-                <img src="indexImages/headerImage3.jpg" alt="Image 3" />
-                <img src="indexImages/headerImage4.jpg" alt="Image 4" />
-                <img src="indexImages/headerImage5.jpg" alt="Image 5" />
-
-                <!-- Duplicate the images for seamless loop -->
-                <img src="indexImages/headerImage1.jpg" alt="Image 1" />
-                <img src="indexImages/headerImage2.jpg" alt="Image 2" />
-                <img src="indexImages/headerImage3.jpg" alt="Image 3" />
-                <img src="indexImages/headerImage4.jpg" alt="Image 4" />
-                <img src="indexImages/headerImage5.jpg" alt="Image 5" />
-            </div>
+            <img src="indexImages/headerImage1.jpg" alt="Image 1">
+            <img src="indexImages/headerImage2.jpg" alt="Image 2">
+            <img src="indexImages/headerImage3.jpg" alt="Image 3">
+            <img src="indexImages/headerImage4.jpg" alt="Image 4">
+            <img src="indexImages/headerImage5.jpg" alt="Image 4">
         </div>
-        
     </header>
 
     <div class="header-text">
@@ -394,16 +382,6 @@
                         <a href="Magic Ruler/aboutMagicRuler.html">About</a>
                     </div>
                 </div>
-
-                <!-- Group 7: Spirograph -->
-                <div class="game-group">
-                    <img src="indexImages/spirograph.PNG" alt="spirograph">
-                    <h3>Spirograph</h3>
-                    <div class="game-links">
-                        <a href="Spirograph/SpirographCircle.html">Play</a>
-                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
-                    </div>
-                </div>
                 
             </div>
             <!-- Right Scroll Button -->
@@ -415,13 +393,21 @@
 
     <!-- Math section -->
     <section>
-        <h2>CAD</h2>
+        <h2>Maths</h2>
         <div class="wrapper">
             <!-- Left Scroll Button 
             <button class="scroll-button left" onclick="scrollGames(-1)">‹</button> -->
             <div class="container">
                 
-
+                <!-- Group 1: Spirograph -->
+                <div class="game-group">
+                    <img src="indexImages/spirograph.PNG" alt="spirograph">
+                    <h3>Spirograph</h3>
+                    <div class="game-links">
+                        <a href="Spirograph/SpirographCircle.html">Play</a>
+                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
+                    </div>
+                </div>
 
                
             </div>
@@ -489,24 +475,6 @@
                 indicator.classList.toggle('active', index === activeIndicator);
             });
         });
-
-        //this animates the header images
-
-
-        const track = document.querySelector('.image-track');
-        let scrollX = 0;
-
-        function animate() {
-            scrollX -= 3; // speed in pixels per frame
-            if (Math.abs(scrollX) >= track.scrollWidth / 2) {
-            scrollX = 0; // reset to start of loop
-            }
-            track.style.transform = `translateX(${scrollX}px)`;
-            requestAnimationFrame(animate);
-        }
-
-  animate();
-
         // //JavaScript to check screen size
         // document.addEventListener("DOMContentLoaded", function() {
         //     let screenWidth = window.screen.width;
