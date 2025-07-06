@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,13 +29,17 @@
             margin-block-start: 0em;
             margin-block-end: 0em;
         }
-        
+
         p {
-            line-height: 2; /* Improve readability with more line spacing */
-            text-align: justify; /* Justify text */
+            line-height: 2;
+            /* Improve readability with more line spacing */
+            text-align: justify;
+            /* Justify text */
             width: 80%;
-            margin: 0 auto 0.75em; /* Center the paragraph horizontally and add spacing below */
-            text-indent: 2em; /* Indent the first line of the paragraph */
+            margin: 0 auto 0.75em;
+            /* Center the paragraph horizontally and add spacing below */
+            text-indent: 2em;
+            /* Indent the first line of the paragraph */
             font-size: 1.2vw;
         }
 
@@ -45,13 +50,19 @@
 
         section h2 {
             text-align: center;
-            font-family: 'Georgia', serif; /* Nice font */
-            font-size: 36px; /* Larger font size */
-            color: #4a90e2; /* Nice blue color */
-            margin-top: 20px; /* Adds space between the header and text */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Adds a shadow */
-         }
-         .sections-description {
+            font-family: 'Georgia', serif;
+            /* Nice font */
+            font-size: 36px;
+            /* Larger font size */
+            color: #4a90e2;
+            /* Nice blue color */
+            margin-top: 20px;
+            /* Adds space between the header and text */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            /* Adds a shadow */
+        }
+
+        .sections-description {
             color: #00000062;
             text-align: center;
             max-width: 700px;
@@ -65,41 +76,51 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 300px; /* Adjust the height of the header */
-            background-color: #f0f0f0; /* Optional: Adds a background color */
-            overflow: hidden; /* Ensures images don't overflow the header */
+            height: 300px;
+            /* Adjust the height of the header */
+            background-color: #f0f0f0;
+            /* Optional: Adds a background color */
+            overflow: hidden;
+            /* Ensures images don't overflow the header */
         }
-        
+
         .header-images {
-        overflow: hidden;
-        height: 300px;
-        position: relative;
+            overflow: hidden;
+            height: 300px;
+            position: relative;
         }
 
         .image-track {
-        display: flex;
-        flex-wrap: nowrap;
+            display: flex;
+            flex-wrap: nowrap;
         }
+
         .image-track img {
-        height: 100%;
-        flex-shrink: 0;
-        object-fit: cover;
+            height: 100%;
+            flex-shrink: 0;
+            object-fit: cover;
         }
-      
+
         /* Style for the header text */
         .header-text {
             text-align: center;
-            font-family: 'Georgia', serif; /* Nice font */
-            font-size: 36px; /* Larger font size */
-            color: #4a90e2; /* Nice blue color */
-            margin-top: 20px; /* Adds space between the header and text */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Adds a shadow */
+            font-family: 'Georgia', serif;
+            /* Nice font */
+            font-size: 5vw;
+            /* Larger font size */
+            color: #4a90e2;
+            /* Nice blue color */
+            margin-top: 20px;
+            /* Adds space between the header and text */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            /* Adds a shadow */
         }
 
         /* Ensure the paragraph inside .header-text is centered */
         .header-text p {
-           
-            text-align: center; /* Ensure the text inside .header-text is centered */
+
+            text-align: center;
+            /* Ensure the text inside .header-text is centered */
             font-size: 2vw;
         }
 
@@ -108,26 +129,35 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative; /* Needed for absolute positioning of buttons */
+            position: relative;
+            /* Needed for absolute positioning of buttons */
         }
 
         .container {
             background-color: white;
             padding: 0;
-            
+
             box-shadow: 5px rgba(0, 0, 0, 0.1);
             text-align: center;
             /* transform: translateY(-10%); */
-            justify-content: flex-start; /* Align items to the start for horizontal scrolling */
+            justify-content: flex-start;
+            /* Align items to the start for horizontal scrolling */
             margin: 0;
-            display: flex; /* Change from grid to flex for horizontal scrolling */
-            overflow-x: auto; /* Enable horizontal scrolling */
-            scroll-snap-type: x mandatory; /* Smooth snapping */
-            gap: 0px; /* Space between game groups */
-            width: 600px; /* Fixed width */
-            height: auto; /* Auto height */
-            scroll-behavior: smooth; /* Smooth scrolling */
-        
+            display: flex;
+            /* Change from grid to flex for horizontal scrolling */
+            overflow-x: auto;
+            /* Enable horizontal scrolling */
+            scroll-snap-type: x mandatory;
+            /* Smooth snapping */
+            gap: 0px;
+            /* Space between game groups */
+            width: 600px;
+            /* Fixed width */
+            height: auto;
+            /* Auto height */
+            scroll-behavior: smooth;
+            /* Smooth scrolling */
+
         }
 
         /* Hide scrollbar */
@@ -136,8 +166,8 @@
         }
 
         .container {
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         .group {
@@ -145,26 +175,36 @@
             flex-direction: column;
             align-items: center;
             padding: 0px;
-            width: 150px; /* Fixed width for each game group */
-            flex: 0 0 auto; /* Prevent shrinking or growing */
-            scroll-snap-align: start; /* Snap to start of each game group */
-            transform: none; /* scale(0.9);  Scale down to fit within fixed container */
-            transform-origin: top left; /* Transform origin to the top left */
+            width: 150px;
+            /* Fixed width for each game group */
+            flex: 0 0 auto;
+            /* Prevent shrinking or growing */
+            scroll-snap-align: start;
+            /* Snap to start of each game group */
+            transform: none;
+            /* scale(0.9);  Scale down to fit within fixed container */
+            transform-origin: top left;
+            /* Transform origin to the top left */
         }
 
         .group img {
-            width: 80%; /* Make the image fill the container width */
-            aspect-ratio: 1; /* Ensure the image is square */
+            width: 80%;
+            /* Make the image fill the container width */
+            aspect-ratio: 1;
+            /* Ensure the image is square */
             margin-bottom: 5px;
         }
 
         .links {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Align links */
-            gap: 0px; /* Reduce line spacing between links */
+            align-items: center;
+            /* Align links */
+            gap: 0px;
+            /* Reduce line spacing between links */
             margin-top: 0px;
-            width: 100%; /* Use full width */
+            width: 100%;
+            /* Use full width */
         }
 
         .links a {
@@ -180,28 +220,42 @@
 
         .play-options {
             display: flex;
-            flex-direction: row; /* Display play options in a row */
+            flex-direction: row;
+            /* Display play options in a row */
             gap: 5px;
-            justify-content: center; /* Align play options to the left flex, center is centered */
-            width: 100%; /* Use full width */
+            justify-content: center;
+            /* Align play options to the left flex, center is centered */
+            width: 100%;
+            /* Use full width */
         }
-      
+
         .scroll-button {
-            background-color: #4a90e2; /* Nice blue color */
-            color: white; /* White text */
-            border: none; /* Remove default border */
-            border-radius: 50%; /* Circular buttons */
-            width: 40px; /* Button size */
+            background-color: #4a90e2;
+            /* Nice blue color */
+            color: white;
+            /* White text */
+            border: none;
+            /* Remove default border */
+            border-radius: 50%;
+            /* Circular buttons */
+            width: 40px;
+            /* Button size */
             height: 40px;
-            font-size: 24px; /* Arrow size */
-            cursor: pointer; /* Pointer cursor on hover */
-            transition: background-color 0.3s ease; /* Smooth hover effect */
-            position: absolute; /* Position buttons absolutely */
-            top: 50%; /* Center vertically */           
+            font-size: 24px;
+            /* Arrow size */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+            transition: background-color 0.3s ease;
+            /* Smooth hover effect */
+            position: absolute;
+            /* Position buttons absolutely */
+            top: 50%;
+            /* Center vertically */
         }
 
         .scroll-button:hover {
-            background-color: #357abd; /* Darker blue on hover */
+            background-color: #357abd;
+            /* Darker blue on hover */
         }
 
         .scroll-button.left {
@@ -215,13 +269,15 @@
         }
 
         .scroll-button:disabled {
-            background-color: #ccc; /* Gray out disabled buttons */
-            cursor: not-allowed; /* Change cursor for disabled buttons */
+            background-color: #ccc;
+            /* Gray out disabled buttons */
+            cursor: not-allowed;
+            /* Change cursor for disabled buttons */
         }
 
- 
 
-         /* Footer styles */
+
+        /* Footer styles */
         footer {
             background-color: #333;
             color: white;
@@ -238,15 +294,12 @@
         footer div {
             display: block;
         }
-
-        
-
-        
     </style>
 </head>
+
 <body>
     <header>
-      
+
         <div class="header-images">
             <div class="image-track">
                 <img src="indexImages/headerImages/headerImage1.jpg" alt="Image 1" />
@@ -254,63 +307,139 @@
                 <img src="indexImages/headerImages/headerImage3.jpg" alt="Image 3" />
                 <img src="indexImages/headerImages/headerImage4.jpg" alt="Image 4" />
                 <img src="indexImages/headerImages/headerImage5.jpg" alt="Image 5" />
-                <img src="indexImages/headerImages/headerImage6.jpg" alt="Image 6" />
-                <img src="indexImages/headerImages/headerImage7.jpg" alt="Image 7" />
-                <img src="indexImages/headerImages/headerImage8.jpg" alt="Image 8" />
+
+
                 
-8
                 <!-- Duplicate the images for seamless loop -->
                 <img src="indexImages/headerImages/headerImage1.jpg" alt="Image 1" />
                 <img src="indexImages/headerImages/headerImage2.jpg" alt="Image 2" />
                 <img src="indexImages/headerImages/headerImage3.jpg" alt="Image 3" />
                 <img src="indexImages/headerImages/headerImage4.jpg" alt="Image 4" />
                 <img src="indexImages/headerImages/headerImage5.jpg" alt="Image 5" />
-                <img src="indexImages/headerImages/headerImage6.jpg" alt="Image 6" />
-                <img src="indexImages/headerImages/headerImage7.jpg" alt="Image 7" />
-                <img src="indexImages/headerImages/headerImage8.jpg" alt="Image 8" />
-                
+
+
             </div>
         </div>
-        
+
     </header>
 
     <div class="header-text">
         <p>Marc's website</p>
     </div>
     <p>
-        Every person you meet is fighting a battle you know nothing about. Kindness costs nothing but has the power to change everything. 
-        We often underestimate the ripple effect of our actions, both good and bad. The truth is, no one has it all figured out—life is a constant journey of learning, stumbling, and growing. 
-        The moments that challenge us the most are often the ones that teach us the most. And in the end, it’s not about being perfect but about being present, authentic, and true to yourself.
-        
+        Hi, I’m Marc — a mechanical engineering graduate with a passion for blending precision with creativity.
+        This site is my digital workshop, where I bring my ideas to life through detailed CAD designs and dynamic
+        browser games built with JavaScript. I’ve always loved the intersection of logic and artistry — from engineering
+        concepts on the screen to interactive code that people can play and explore.
+        Whether I’m sketching 3D models, coding a new game mechanic, or just experimenting with new tech, I’m constantly
+        exploring ways to create, learn, and improve. This site is both a portfolio and a playground — feel free to
+        browse my projects, test out a game, or reach out if you’d like to collaborate.
+        Thanks for stopping by — and welcome to my creative corner of the web.
     </p>
-    <p> 
-        Life is a series of choices, each one shaping the path we walk. Some roads are smooth, others rocky, but every step teaches us something valuable. We often fear failure, 
-        yet it is through failure that we grow the most. Success is not the absence of struggle but the courage to keep going despite it. The people who lift you up, the moments that make you smile, 
-        and the lessons that make you wiser are the true treasures of existence. And while we cannot control the winds of life, we can always adjust our sails. 
-    </p>
-    <p> 
-        Life is a fleeting journey, marked by moments of joy and sorrow, triumph and failure. We often seek meaning in the grand gestures, but it is in the quiet, everyday acts of kindness and connection 
-        that true purpose is found. Time is our most precious resource, yet we squander it on distractions and regrets. The past cannot be changed, the future remains uncertain, and the present is all we truly possess. 
-        In the end, it is not what we accumulate but how we love, grow, and contribute to the world that defines our existence. Embrace imperfection, for it is the essence of being human, and remember that even in darkness, 
-        there is always a glimmer of light waiting to be found. <span style="opacity: 0.03;">coral@brrval.com qC6_vAVy5xTYA9Q</span>
-    </p>
-	<p> 
-	La perfección del que imparte órdenes es ser pacífico. Del que combate, carecer de cólera. Del que quiere vencer, no luchar. Del que se sirve de los hombres, ponerse por debajo de ellos. Lao-tsé
-    </p>
-	<p>
-	El éxito en la relaciones pasa por ayudar a los otros a sujetarse la careta. León Daudí
-	</p>
-	
-    </div>
-    <!-- Game Section -->
+
+    <!-- CAD section -->
+
     <section>
-        <h2>Games</h2>
-        <p class=sections-description> Each game in this section was crafted while I was learning JavaScript — they’re part of my coding adventure, and now yours to play with. Dive in and have fun!</p>
+        <h2>CAD</h2>
+        <p class=sections-description> These designs showcase my learning journey in Computer-Aided Design, with a focus
+            on SolidWorks. Each model is a milestone in developing my 3D modeling skills.</p>
         <div class="wrapper">
             <!-- Left Scroll Button -->
             <button class="scroll-button left" onclick="scrollSection(this, -1)">‹</button>
             <div class="container">
-                
+
+
+
+                <!-- Group 1: --- Bike-->
+                <div class="group">
+                    <img src="indexImages/CADimages/Bicycle.PNG" alt="Bicycle">
+                    <h3>Bicycle</h3>
+                    <div class="links">
+                        <a href="">See model</a>
+                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
+                    </div>
+                </div>
+
+                <!-- Group 2: --- CVD reactor-->
+                <div class="group">
+                    <img src="indexImages/CADimages/reactorCVD.png" alt="spirograph">
+                    <h3>CVD reactor</h3>
+                    <div class="links">
+                        <a href="">See model</a>
+                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
+                    </div>
+                </div>
+
+                <!-- Group 3: --- Gearbox-->
+                <div class="group">
+                    <img src="indexImages/CADimages/reductor.png" alt="reductor">
+                    <h3>Gearbox</h3>
+                    <div class="links">
+                        <a href="">See model</a>
+                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
+                    </div>
+                </div>
+
+                <!-- Group 4: --- Mobula7 Frame-->
+                <div class="group">
+                    <img src="indexImages/CADimages/Mobula7Frame.png" alt="Mobula7Frame">
+                    <h3>Mobula 7 Frame</h3>
+                    <div class="links">
+                        <a href="">See model</a>
+                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
+                    </div>
+                </div>
+
+                <!-- Group 5: --- Toroidal prop-->
+                <div class="group">
+                    <img src="indexImages/CADimages/toroidalprop.png" alt="toroidalprop">
+                    <h3>Toroidal prop</h3>
+                    <div class="links">
+                        <a href="">See model</a>
+                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
+                    </div>
+                </div>
+
+                <!-- Group 6: --- Custom frame-->
+                <div class="group">
+                    <img src="indexImages/CADimages/CustomFrame.png" alt="CustomFrame">
+                    <h3>Custom Frame</h3>
+                    <div class="links">
+                        <a href="">See model</a>
+                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
+                    </div>
+                </div>
+
+                <!-- Group 7: --- Propeller-->
+                <div class="group">
+                    <img src="indexImages/CADimages/prop.png" alt="Propeller--">
+                    <h3>Propeller</h3>
+                    <div class="links">
+                        <a href="">See model</a>
+                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- Right Scroll Button -->
+            <button class="scroll-button right" onclick="scrollSection(this, 1)">›</button>
+
+
+
+        </div>
+    </section>
+
+    </div>
+    <!-- Game Section -->
+    <section>
+        <h2>Games</h2>
+        <p class=sections-description> Each game in this section was crafted while I was learning JavaScript — they’re
+            part of my coding adventure, and now yours to play with. Dive in and have fun!</p>
+        <div class="wrapper">
+            <!-- Left Scroll Button -->
+            <button class="scroll-button left" onclick="scrollSection(this, -1)">‹</button>
+            <div class="container">
+
                 <!-- Group 1: Spot it! and 2 Players Spot it! -->
                 <div class="group">
                     <img src="indexImages/gamesImages/spotit.PNG" alt="Spot it!">
@@ -391,109 +520,56 @@
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
                     </div>
                 </div>
-                
+
             </div>
             <!-- Right Scroll Button -->
-           <button class="scroll-button right" onclick="scrollSection(this, 1)">›</button>
+            <button class="scroll-button right" onclick="scrollSection(this, 1)">›</button>
 
-        
+
 
         </div>
     </section>
 
-    <!-- CAD section -->
-     
+
     <section>
-        <h2>CAD</h2>
-        <p class=sections-description> These designs showcase my learning journey in Computer-Aided Design, with a focus on SolidWorks. Each model is a milestone in developing my 3D modeling skills.</p>
-        <div class="wrapper">
-            <!-- Left Scroll Button -->
-            <button class="scroll-button left" onclick="scrollSection(this, -1)">‹</button>
-            <div class="container">     
+        <h2>QUOTES</h2>
+        <p>
+            Every person you meet is fighting a battle you know nothing about. Kindness costs nothing but has the power
+            to change everything.
+            We often underestimate the ripple effect of our actions, both good and bad. The truth is, no one has it all
+            figured out—life is a constant journey of learning, stumbling, and growing.
+            The moments that challenge us the most are often the ones that teach us the most. And in the end, it’s not
+            about being perfect but about being present, authentic, and true to yourself.
 
+        </p>
+        <p>
+            Life is a series of choices, each one shaping the path we walk. Some roads are smooth, others rocky, but
+            every step teaches us something valuable. We often fear failure,
+            yet it is through failure that we grow the most. Success is not the absence of struggle but the courage to
+            keep going despite it. The people who lift you up, the moments that make you smile,
+            and the lessons that make you wiser are the true treasures of existence. And while we cannot control the
+            winds of life, we can always adjust our sails.
+        </p>
+        <p>
+            Life is a fleeting journey, marked by moments of joy and sorrow, triumph and failure. We often seek meaning
+            in the grand gestures, but it is in the quiet, everyday acts of kindness and connection
+            that true purpose is found. Time is our most precious resource, yet we squander it on distractions and
+            regrets. The past cannot be changed, the future remains uncertain, and the present is all we truly possess.
+            In the end, it is not what we accumulate but how we love, grow, and contribute to the world that defines our
+            existence. Embrace imperfection, for it is the essence of being human, and remember that even in darkness,
+            there is always a glimmer of light waiting to be found. <span style="opacity: 0.03;">coral@brrval.com
+                qC6_vAVy5xTYA9Q</span>
+        </p>
+        <p>
+            La perfección del que imparte órdenes es ser pacífico. Del que combate, carecer de cólera. Del que quiere
+            vencer, no luchar. Del que se sirve de los hombres, ponerse por debajo de ellos. Lao-tsé
+        </p>
+        <p>
+            El éxito en la relaciones pasa por ayudar a los otros a sujetarse la careta. León Daudí
+        </p>
 
-               
-                <!-- Group 1: --- Bike-->
-                <div class="group">
-                    <img src="indexImages/CADimages/Bicycle.PNG" alt="Bicycle">
-                    <h3>Bicycle</h3>
-                    <div class="links">
-                        <a href="">See model</a>
-                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
-                    </div>
-                </div>
-                
-                <!-- Group 2: --- CVD reactor-->
-                <div class="group">
-                    <img src="indexImages/CADimages/reactorCVD.png" alt="spirograph">
-                    <h3>CVD reactor</h3>
-                    <div class="links">
-                        <a href="">See model</a>
-                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
-                    </div>
-                </div>
-                
-                <!-- Group 3: --- Gearbox-->
-                <div class="group">
-                    <img src="indexImages/CADimages/reductor.png" alt="reductor">
-                    <h3>Gearbox</h3>
-                    <div class="links">
-                        <a href="">See model</a>
-                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
-                    </div>
-                </div>
-
-                <!-- Group 4: --- Mobula7 Frame-->
-                <div class="group">
-                    <img src="indexImages/CADimages/Mobula7Frame.png" alt="Mobula7Frame">
-                    <h3>Mobula 7 Frame</h3>
-                    <div class="links">
-                        <a href="">See model</a>
-                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
-                    </div>
-                </div>
-
-                 <!-- Group 5: --- Toroidal prop-->
-                <div class="group">
-                    <img src="indexImages/CADimages/toroidalprop.png" alt="toroidalprop">
-                    <h3>Toroidal prop</h3>
-                    <div class="links">
-                        <a href="">See model</a>
-                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
-                    </div>
-                </div>
-
-                <!-- Group 6: --- Custom frame-->
-                <div class="group">
-                    <img src="indexImages/CADimages/CustomFrame.png" alt="CustomFrame">
-                    <h3>Custom Frame</h3>
-                    <div class="links">
-                        <a href="">See model</a>
-                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
-                    </div>
-                </div>
-
-                <!-- Group 7: --- Propeller-->
-                <div class="group">
-                    <img src="indexImages/CADimages/prop.png" alt="Propeller--">
-                    <h3>Propeller</h3>
-                    <div class="links">
-                        <a href="">See model</a>
-                        <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
-                    </div>
-                </div>
-
-            </div>
-            <!-- Right Scroll Button -->
-           <button class="scroll-button right" onclick="scrollSection(this, 1)">›</button>
-
-        
-
-        </div>
     </section>
 
-
-    
     <!-- Footer <p>&copy; 2025 Marc's Website.<br>All rights reserved.</p> -->
     <footer>
         <div>
@@ -502,8 +578,8 @@
         </div>
     </footer>
 
-    
-    
+
+
     <script>
         //JavaScript for Scroll Functionality
         function scrollSection(button, direction) {
@@ -564,13 +640,13 @@
         function animate() {
             scrollX -= 1; // speed in pixels per frame
             if (Math.abs(scrollX) >= track.scrollWidth / 2) {
-            scrollX = 0; // reset to start of loop
+                scrollX = 0; // reset to start of loop
             }
             track.style.transform = `translateX(${scrollX}px)`;
             requestAnimationFrame(animate);
         }
 
-  animate();
+        animate();
 
         // //JavaScript to check screen size
         // document.addEventListener("DOMContentLoaded", function() {
@@ -580,4 +656,5 @@
         // });
     </script>
 </body>
+
 </html>
