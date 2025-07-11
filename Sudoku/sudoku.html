@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,29 +16,35 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
+
         .checkbox-container {
             margin-bottom: 20px;
             font-size: 1.2rem;
         }
+
         .checkbox-container label {
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
         }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(9, 1fr);
             grid-template-rows: repeat(9, 1fr);
             gap: 0;
             border: 2px solid #000;
-            width: 90vw;
-            max-width: 720px; /* Adjust for larger screens */
+            width: 85vw;
+            max-width: 700px;
+            /* Adjust for larger screens */
         }
+
         .cell {
             position: relative;
             width: 100%;
-            padding-top: 100%; /* Creates a 1:1 aspect ratio */
+            padding-top: 100%;
+            /* Creates a 1:1 aspect ratio */
             text-align: center;
             border: 1px solid #000;
             background-color: #fff;
@@ -45,8 +52,10 @@
             justify-content: center;
             align-items: center;
             box-sizing: border-box;
-            font-size: calc(1.5rem + 1.4vw); /* Ensure the font size is consistent */
+            font-size: calc(1.5rem + 1.4vw);
+            /* Ensure the font size is consistent */
         }
+
         .cell input {
             position: absolute;
             top: 0;
@@ -58,48 +67,63 @@
             background-color: transparent;
             box-sizing: border-box;
             transition: font-size 0.2s ease;
-            font-size: inherit; /* Use the inherited font size from the parent .cell */
+            font-size: inherit;
+            /* Use the inherited font size from the parent .cell */
         }
+
         .cell input:focus {
             outline: none;
         }
+
         .cell input[readonly] {
             background-color: #e6e6e6;
         }
+
         .cell:nth-child(3n+1) {
             border-left: 2px solid #000;
         }
+
         .cell:nth-child(n+1):nth-of-type(-n+9) {
             border-top: 2px solid #000;
         }
+
         .cell:nth-child(3n) {
             border-right: 2px solid #000;
         }
+
         .cell:nth-child(n+19):nth-of-type(-n+27),
         .cell:nth-child(n+46):nth-of-type(-n+54),
         .cell:nth-child(n+73):nth-of-type(-n+81) {
             border-bottom: 3px solid #000;
         }
+
         .controls {
             margin-top: 10px;
             margin-bottom: 20px;
             text-align: center;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
-            text-align: center; /* Center the text */
+            text-align: center;
+            /* Center the text */
             padding: 8px;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
         .deleteButton {
             background-color: red;
             color: white;
@@ -108,16 +132,19 @@
             padding: 2px 5px;
             margin-left: 10px;
         }
+
         .deleteButton:hover {
             background-color: darkred;
         }
+
         /* Style for grey input numbers */
         .grey-input {
-            color: lightgrey; /* Light grey text color */
+            color: lightgrey;
+            /* Light grey text color */
         }
 
-               /* General button styling */
-               .styled-button {
+        /* General button styling */
+        .styled-button {
             padding: 12px 24px;
             font-size: 16px;
             font-weight: bold;
@@ -143,25 +170,30 @@
 
         /* Specific styles for the Generate Puzzle button */
         #generateButton {
-            background-color: #28a745; /* Green */
+            background-color: #28a745;
+            /* Green */
         }
 
         #generateButton:hover {
-            background-color: #218838; /* Darker green */
+            background-color: #218838;
+            /* Darker green */
         }
 
         /* Specific styles for the Validate Puzzle button */
         #validateButton {
-            background-color: #dc3545; /* Red */
+            background-color: #dc3545;
+            /* Red */
         }
 
         #validateButton:hover {
-            background-color: #c82333; /* Darker red */
+            background-color: #c82333;
+            /* Darker red */
         }
     </style>
 </head>
+
 <body>
-    
+
 
     <!-- Sudoku grid -->
     <div class="grid" id="sudokuGrid"></div>
@@ -169,7 +201,7 @@
     <!-- Controls and statistics -->
     <div class="controls">
         <!-- Checkbox and label -->
-         <br>
+        <br>
         <div id="draftCheckboxContainer" style="display: none;">
             <label for="draftCheckbox">
                 <input type="checkbox" id="draftCheckbox"> Check for draft
@@ -180,8 +212,10 @@
             <input type="number" id="filledCells" min="25" max="80" value="30">
         </div>
         <br><br>
-        <button id="generateButton" class="styled-button" onclick="generatePuzzle(); startTimer();">Generate Puzzle</button>
-        <button id="validateButton" class="styled-button" onclick="validatePuzzle()" style="display: none;">Validate Puzzle</button>
+        <button id="generateButton" class="styled-button" onclick="generatePuzzle(); startTimer();">Generate
+            Puzzle</button>
+        <button id="validateButton" class="styled-button" onclick="validatePuzzle()" style="display: none;">Validate
+            Puzzle</button>
         <br><br>
         <label for="solutionCount" style="display: none;">Number of possible solutions:</label>
         <span id="solutionCount" style="display: none;">0</span>
@@ -202,47 +236,47 @@
     </div>
 
     <script>
-// Get the checkbox and the grid container
-const draftCheckbox = document.getElementById('draftCheckbox');
-const gridContainer = document.getElementById('sudokuGrid');
+        // Get the checkbox and the grid container
+        const draftCheckbox = document.getElementById('draftCheckbox');
+        const gridContainer = document.getElementById('sudokuGrid');
 
-// Track whether the checkbox is checked
-let isDraftMode = false;
+        // Track whether the checkbox is checked
+        let isDraftMode = false;
 
-// Add an event listener to the checkbox
-draftCheckbox.addEventListener('change', function() {
-    isDraftMode = draftCheckbox.checked;
-});
+        // Add an event listener to the checkbox
+        draftCheckbox.addEventListener('change', function () {
+            isDraftMode = draftCheckbox.checked;
+        });
 
-// Add an event listener to the grid container to handle input events
-gridContainer.addEventListener('input', function(event) {
-    const input = event.target;
+        // Add an event listener to the grid container to handle input events
+        gridContainer.addEventListener('input', function (event) {
+            const input = event.target;
 
-    // Only apply styles to non-readonly inputs
-    if (!input.readOnly) {
-        if (isDraftMode) {
-            // If checkbox is checked, add the grey-input class
-            input.classList.add('grey-input');
-        } else {
-            // If checkbox is unchecked, remove the grey-input class
-            input.classList.remove('grey-input');
-        }
-    }
-});
+            // Only apply styles to non-readonly inputs
+            if (!input.readOnly) {
+                if (isDraftMode) {
+                    // If checkbox is checked, add the grey-input class
+                    input.classList.add('grey-input');
+                } else {
+                    // If checkbox is unchecked, remove the grey-input class
+                    input.classList.remove('grey-input');
+                }
+            }
+        });
         const sudokuPuzzles = [
 
-        [
-            [0, 0, 0, 0, 0, 0, 0, 1, 2],
-            [0, 0, 0, 0, 3, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 4, 0, 9],
-            [1, 0, 0, 0, 0, 0, 6, 0, 0],
-            [0, 0, 0, 5, 0, 0, 0, 0, 8],
-            [0, 0, 0, 0, 0, 8, 0, 0, 7],
-            [9, 0, 4, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 6, 0],
-            [3, 6, 0, 1, 0, 0, 0, 0, 0]
-        ]
-           //can add more puzzles here     
+            [
+                [0, 0, 0, 0, 0, 0, 0, 1, 2],
+                [0, 0, 0, 0, 3, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 4, 0, 9],
+                [1, 0, 0, 0, 0, 0, 6, 0, 0],
+                [0, 0, 0, 5, 0, 0, 0, 0, 8],
+                [0, 0, 0, 0, 0, 8, 0, 0, 7],
+                [9, 0, 4, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 6, 0],
+                [3, 6, 0, 1, 0, 0, 0, 0, 0]
+            ]
+            //can add more puzzles here     
 
         ];
         document.getElementById('solutionCount').textContent = '';
@@ -329,7 +363,7 @@ gridContainer.addEventListener('input', function(event) {
             let fontSize = maxFontSize - (characterCount / maxLength) * (maxFontSize - minFontSize);
             fontSize = Math.max(fontSize, minFontSize); // Ensure font size is not below min
 
-            input.style.fontSize = `calc(${fontSize}rem + ${2*fontSize / maxFontSize}vw)`; // Adjust font size based on viewport
+            input.style.fontSize = `calc(${fontSize}rem + ${2 * fontSize / maxFontSize}vw)`; // Adjust font size based on viewport
         }
 
 
@@ -439,7 +473,7 @@ gridContainer.addEventListener('input', function(event) {
                     time: `${minutes} min, ${seconds} sec`
                 });
                 localStorage.setItem('solvedGames', JSON.stringify(solvedGames));
-                
+
                 // Update statistics display
                 displayStatistics();
             } else {
@@ -483,7 +517,7 @@ gridContainer.addEventListener('input', function(event) {
             const timeDiff = endTime - startTime; // in ms
             const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
             const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60)); // Fixed calculation
-            return {minutes, seconds};
+            return { minutes, seconds };
         }
 
         function displayStatistics() {
@@ -504,7 +538,7 @@ gridContainer.addEventListener('input', function(event) {
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'x';
                 deleteButton.className = 'deleteButton';
-                deleteButton.addEventListener('click', function() {
+                deleteButton.addEventListener('click', function () {
                     deleteStatistic(index);
                 });
 
@@ -517,7 +551,7 @@ gridContainer.addEventListener('input', function(event) {
             });
         }
 
-         // Function to delete a specific statistic
+        // Function to delete a specific statistic
         function deleteStatistic(index) {
             const solvedGames = JSON.parse(localStorage.getItem('solvedGames')) || [];
             solvedGames.splice(index, 1); // Remove the item at the specified index
@@ -531,4 +565,5 @@ gridContainer.addEventListener('input', function(event) {
 
     </script>
 </body>
+
 </html>
