@@ -330,6 +330,12 @@
 
     </header>
 
+    <div id="quoteDisplay"
+        style="width: 100%; text-align: center; font-family: 'Lucida Calligraphy', 'Brush Script MT', cursive; font-size: 20px; margin-top: 40px; opacity: 0; transition: opacity 1s;">
+        <!-- Quote will appear here -->
+    </div>
+
+
     <div class="header-text">
         <p>Marc's website</p>
     </div>
@@ -552,54 +558,19 @@
 
 
     <section>
-        <h2>QUOTES</h2>
-        <p>
-            Every person you meet is fighting a battle you know nothing about. Kindness costs nothing but has the power
-            to change everything.
-            We often underestimate the ripple effect of our actions, both good and bad. The truth is, no one has it all
-            figured out—life is a constant journey of learning, stumbling, and growing.
-            The moments that challenge us the most are often the ones that teach us the most. And in the end, it’s not
-            about being perfect but about being present, authentic, and true to yourself.
 
-        </p>
-        <p>
-            Life is a series of choices, each one shaping the path we walk. Some roads are smooth, others rocky, but
-            every step teaches us something valuable. We often fear failure,
-            yet it is through failure that we grow the most. Success is not the absence of struggle but the courage to
-            keep going despite it. The people who lift you up, the moments that make you smile,
-            and the lessons that make you wiser are the true treasures of existence. And while we cannot control the
-            winds of life, we can always adjust our sails.
-        </p>
-        <p>
-            Life is a fleeting journey, marked by moments of joy and sorrow, triumph and failure. We often seek meaning
-            in the grand gestures, but it is in the quiet, everyday acts of kindness and connection
-            that true purpose is found. Time is our most precious resource, yet we squander it on distractions and
-            regrets. The past cannot be changed, the future remains uncertain, and the present is all we truly possess.
-            In the end, it is not what we accumulate but how we love, grow, and contribute to the world that defines our
-            existence. Embrace imperfection, for it is the essence of being human, and remember that even in darkness,
-            there is always a glimmer of light waiting to be found. <span style="opacity: 0.03;">coral@brrval.com
-                qC6_vAVy5xTYA9Q</span>
-        </p>
-        <p>
-            La perfección del que imparte órdenes es ser pacífico. Del que combate, carecer de cólera. Del que quiere
-            vencer, no luchar. Del que se sirve de los hombres, ponerse por debajo de ellos. Lao-tsé
-        </p>
-        <p>
-            El éxito en la relaciones pasa por ayudar a los otros a sujetarse la careta. León Daudí
-        </p>
+        <h2>Days between dates calculator</h2>
 
+        <label for="start">Start Date:</label>
+        <input type="date" id="start"><br><br>
+
+        <label for="end">End Date:</label>
+        <input type="date" id="end"><br><br>
+
+        <button onclick="calculateDays()">Calculate Days</button>
+
+        <p id="result" style="font-family: 'Courier New', monospace; font-size: 15px; font-weight: bold;"></p>
     </section>
-
-    <label for="start">Start Date:</label>
-    <input type="date" id="start"><br><br>
-
-    <label for="end">End Date:</label>
-    <input type="date" id="end"><br><br>
-
-    <button onclick="calculateDays()">Calculate Days</button>
-
-    <p id="result" style="font-family: 'Courier New', monospace; font-size: 15px; font-weight: bold;"></p>
-
 
     <!-- Footer <p>&copy; 2025 Marc's Website.<br>All rights reserved.</p> -->
     <footer>
@@ -676,6 +647,43 @@
                 indicator.classList.toggle('active', index === activeIndicator);
             });
         });
+
+        const quotes = [
+            `Every person you meet is fighting a battle you know nothing about. Kindness costs nothing but has the power to change everything.`,
+            `No one has it all figured out—life is a constant journey of learning, stumbling, and growing.`,
+            `Life is a constant journey of learning, stumbling, and growing.`,
+            `The moments that challenge us the most are often the ones that teach us the most.`,
+            `We cannot control the winds of life, but we can always adjust our sails.`,
+            `Time is our most precious resource, yet we squander it on distractions and regrets.`,
+            `The past cannot be changed, the future remains uncertain, and the present is all we truly possess.`,
+            `It is not what we accumulate but how we love, grow, and contribute to the world that defines our existence.`,
+            `Even in darkness, there is always a glimmer of light waiting to be found.`,
+
+            `Life is a series of choices, each one shaping the path we walk...`,
+            `Life is a fleeting journey... Embrace imperfection, for it is the essence of being human.`,
+            `We often seek meaning in the grand gestures, but it is in the quiet, everyday acts of kindness and connection that true purpose is found.`,
+
+            `The perfection of one who gives orders is to be peaceful. Lao-tsé`,
+            `Success in relationships lies in helping others hold their mask in place. León Daudí`
+        ];
+
+        let current = 0;
+
+        function showQuote() {
+            const quoteBox = document.getElementById("quoteDisplay");
+            quoteBox.style.opacity = 0;
+
+            setTimeout(() => {
+                quoteBox.textContent = quotes[current];
+                quoteBox.style.opacity = 1;
+                current = (current + 1) % quotes.length;
+            }, 1000);
+        }
+
+        // Start rotating quotes every few seconds
+        setInterval(showQuote, 5000);
+        window.onload = showQuote;
+
 
         //this animates the header images
 
