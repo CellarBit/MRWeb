@@ -313,7 +313,7 @@
                 <img src="indexImages/headerImages/headerImage8.JPG" alt="Image8" />
 
 
-                
+
                 <!-- Duplicate the images for seamless loop -->
                 <img src="indexImages/headerImages/headerImage1.JPG" alt="Image1" />
                 <img src="indexImages/headerImages/headerImage2.jpg" alt="Image2" />
@@ -457,7 +457,7 @@
             <button class="scroll-button left" onclick="scrollSection(this, -1)">‹</button>
             <div class="container">
 
-<!-- Group 4: Sudoku -->
+                <!-- Group 4: Sudoku -->
                 <div class="group">
                     <img src="indexImages/gamesImages/sudoku.png" alt="Sudoku">
                     <h3>Sudoku</h3>
@@ -467,7 +467,7 @@
                     </div>
                 </div>
 
-<!-- Group 5: Dice Game 1 Player and Dice Game 2 Players -->
+                <!-- Group 5: Dice Game 1 Player and Dice Game 2 Players -->
                 <div class="group">
                     <img src="indexImages/gamesImages/DiceGame.png" alt="Dice Game">
                     <h3>Pig (Dice Game)</h3>
@@ -504,7 +504,7 @@
                         <a href="Spot it!/aboutSpotit.html">About</a>
                     </div>
                 </div>
-<!-- Group 7: Spirograph -->
+                <!-- Group 7: Spirograph -->
                 <div class="group">
                     <img src="indexImages/gamesImages/spirograph.PNG" alt="spirograph">
                     <h3>Spirograph</h3>
@@ -537,10 +537,10 @@
                     </div>
                 </div>
 
-                
-                
 
-                
+
+
+
             </div>
             <!-- Right Scroll Button -->
             <button class="scroll-button right" onclick="scrollSection(this, 1)">›</button>
@@ -590,6 +590,17 @@
 
     </section>
 
+    <label for="start">Start Date:</label>
+    <input type="date" id="start"><br><br>
+
+    <label for="end">End Date:</label>
+    <input type="date" id="end"><br><br>
+
+    <button onclick="calculateDays()">Calculate Days</button>
+
+    <p id="result" style="font-family: 'Courier New', monospace; font-size: 15px; font-weight: bold;"></p>
+
+
     <!-- Footer <p>&copy; 2025 Marc's Website.<br>All rights reserved.</p> -->
     <footer>
         <div>
@@ -601,6 +612,21 @@
 
 
     <script>
+
+        function calculateDays() {
+            const startDate = new Date(document.getElementById("start").value);
+            const endDate = new Date(document.getElementById("end").value);
+
+            if (isNaN(startDate) || isNaN(endDate)) {
+                document.getElementById("result").textContent = "Please select both dates.";
+                return;
+            }
+
+            const diffTime = Math.abs(endDate - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            document.getElementById("result").textContent = ` ${diffDays} days.`;
+        }
         //JavaScript for Scroll Functionality
         function scrollSection(button, direction) {
             const wrapper = button.closest('.wrapper');
