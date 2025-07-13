@@ -560,13 +560,13 @@
         <div style="text-align: center; margin: 0 auto; max-width: 80%;">
 
 
-            <label for="start">Start Date:</label>
+            <label id="startLabel" for="start">Start Date:</label>
             <input type="date" id="start"><br><br>
 
-            <label for="end">End Date:</label>
+            <label id="endLabel" for="end">End Date:</label>
             <input type="date" id="end"><br><br>
 
-            <button onclick="calculateDays()">Calculate Days</button>
+            <button id="buttonCalculateDays" onclick="calculateDays()">Calculate Days</button>
 
             <p id="result" style="font-family: 'Courier New', monospace; font-size: 15px; font-weight: bold;"></p>
         </div>
@@ -699,29 +699,29 @@
 
                 // Unique Other items
 
-                document.getElementById('start').textContent = sections.uniqueOtherItems.start;
-                document.getElementById('end').textContent = sections.uniqueOtherItems.end;
-                document.getElementById('result').textContent = sections.uniqueOtherItems.result;
+                document.getElementById('startLabel').textContent = sections.uniqueOtherItems.startLabel;
+                document.getElementById('endLabel').textContent = sections.uniqueOtherItems.endLabel;
+                document.getElementById('buttonCalculateDays').textContent = sections.uniqueOtherItems.buttonCalculateDays;
                 document.getElementById('daysCalculatorTitle').textContent = sections.uniqueOtherItems.daysCalculatorTitle;
 
 
 
-                const common = data[lang].common;
+                const common = data[lang].sections.common;
 
                 document.querySelectorAll('.seeModelLink').forEach(el => {
-                    el.textContent = common.seeModel;
+                    el.textContent = sections.common.seeModel;
                 });
                 document.querySelectorAll('.aboutLink').forEach(el => {
-                    el.textContent = common.about;
+                    el.textContent = sections.common.about;
                 });
                 document.querySelectorAll('.playLink').forEach(el => {
-                    el.textContent = common.play;
+                    el.textContent = sections.common.play;
                 });
                 document.querySelectorAll('.onePlayerLink').forEach(el => {
-                    el.textContent = common.onePlayer;
+                    el.textContent = sections.common.onePlayer;
                 });
                 document.querySelectorAll('.twoPlayerLink').forEach(el => {
-                    el.textContent = common.twoPlayers;
+                    el.textContent = sections.common.twoPlayers;
                 });
 
 

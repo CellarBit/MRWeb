@@ -43,16 +43,16 @@
             },
             "common": {
                 "seeModel": "Veure model",
-                "about": "Referències",
+                "about": "Sobre",
                 "play": "Jugar",
                 "onePlayer": "1 jugador",
                 "twoPlayers": "2 jugadors"
             },
             "uniqueOtherItems": {
                 "daysCalculatorTitle": "Calculadora de dies entre dates",
-                "start": "Data d'inici",
-                "end": "Data final",
-                "result": "Calcula els dies"
+                "startLabel": "Data d'inici",
+                "endLabel": "Data final",
+                "buttonCalculateDays": "Calcula els dies"
             },
             "uniqueGameItems": {
                 "playOriginal": "Juga l'original",
@@ -112,9 +112,9 @@
             },
             "uniqueOtherItems": {
                 "daysCalculatorTitle": "Calculadora de días entre fechas",
-                "start": "Fecha de inicio",
-                "end": "Fecha final",
-                "result": "Calcular días"
+                "startLabel": "Fecha de inicio",
+                "endLabel": "Fecha final",
+                "buttonCalculateDays": "Calcular días"
             },
             "uniqueGameItems": {
                 "playOriginal": "Jugar original",
@@ -174,9 +174,9 @@
             },
             "uniqueOtherItems": {
                 "daysCalculatorTitle": "Days between dates calculator",
-                "start": "Start Date",
-                "end": "End Date",
-                "result": "Calculate Days"
+                "startLabel": "Start Date",
+                "endLabel": "End Date",
+                "buttonCalculateDays": "Calculate Days"
             },
             "uniqueGameItems": {
                 "playOriginal": "Play original",
@@ -236,9 +236,9 @@
             },
             "uniqueOtherItems": {
                 "daysCalculatorTitle": "日期间天数计算器",
-                "start": "开始日期",
-                "end": "结束日期",
-                "result": "计算天数"
+                "startLabel": "开始日期",
+                "endLabel": "结束日期",
+                "buttonCalculateDays": "计算天数"
             },
             "uniqueGameItems": {
                 "playOriginal": "原版游戏",
