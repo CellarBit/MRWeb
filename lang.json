@@ -1,0 +1,106 @@
+{
+    "ca": {
+        "quotes": [
+            "No podem controlar els vents de la vida, però sempre podem ajustar les nostres veles.",
+            "Cada persona que trobes està lluitant una batalla que desconeixes.",
+            "La bondat no costa res però té el poder de canviar-ho tot.",
+            "Ningú ho té tot resolt—la vida és un viatge constant d’aprenentatge, ensopegades i creixement.",
+            "Els moments que més ens desafien sovint són els que més ens ensenyen.",
+            "El temps és el nostre recurs més preuat, però el malgastem en distraccions i penediments.",
+            "El passat no es pot canviar, el futur és incert, i el present és tot el que realment posseïm.",
+            "No és el que acumulem sinó com estimem, creixem i contribuïm al món el que defineix la nostra existència.",
+            "Fins i tot en la foscor, sempre hi ha un raig de llum esperant a ser trobat.",
+            "La vida és una sèrie d’eleccions, cadascuna modelant el camí que recorrem...",
+            "La vida és un viatge fugaç... Abraça la imperfecció, perquè és l’essència de la humanitat.",
+            "Sovint cerquem el significat en els grans gestos, però és en els actes quotidians i silenciosos de bondat i connexió on es troba el veritable propòsit.",
+            "La perfecció de qui dona ordres consisteix a ser pacífic. Lao-tsé",
+            "L’èxit en les relacions rau en ajudar els altres a mantenir la seva màscara en el lloc. León Daudí"
+        ],
+        "menu": {
+            "home": "Home",
+            "about": "About Us",
+            "contact": "Contact"
+        },
+        "footer": {
+            "rights": "All rights reserved."
+        }
+    },
+    "es": {
+        "quotes": [
+            "No podemos controlar los vientos de la vida, pero siempre podemos ajustar nuestras velas.",
+            "Cada persona que encuentras está librando una batalla que desconoces.",
+            "La amabilidad no cuesta nada pero tiene el poder de cambiarlo todo.",
+            "Nadie lo tiene todo resuelto—la vida es un viaje constante de aprendizaje, tropiezos y crecimiento.",
+            "Los momentos que más nos desafían suelen ser los que más nos enseñan.",
+            "El tiempo es nuestro recurso más valioso, y sin embargo lo desperdiciamos en distracciones y arrepentimientos.",
+            "El pasado no se puede cambiar, el futuro es incierto, y el presente es todo lo que realmente poseemos.",
+            "No es lo que acumulamos sino cómo amamos, crecemos y contribuimos al mundo lo que define nuestra existencia.",
+            "Incluso en la oscuridad, siempre hay un destello de luz esperando a ser encontrado.",
+            "La vida es una serie de elecciones, cada una moldeando el camino que recorremos...",
+            "La vida es un viaje fugaz... Abraza la imperfección, porque es la esencia de lo humano.",
+            "A menudo buscamos el significado en los grandes gestos, pero es en los actos silenciosos y cotidianos de bondad y conexión donde se encuentra el verdadero propósito.",
+            "La perfección de quien da órdenes consiste en ser pacífico. Lao-tsé",
+            "El éxito en las relaciones radica en ayudar a los demás a mantener su máscara en su sitio. León Daudí"
+        ],
+        "menu": {
+            "home": "Inicio",
+            "about": "Sobre Nosotros",
+            "contact": "Contacto"
+        },
+        "footer": {
+            "rights": "Todos los derechos reservados."
+        }
+    },
+    "en": {
+        "quotes": [
+            "We cannot control the winds of life, but we can always adjust our sails.",
+            "Every person you meet is fighting a battle you know nothing about.",
+            "Kindness costs nothing but has the power to change everything.",
+            "No one has it all figured out—life is a constant journey of learning, stumbling, and growing.",
+            "The moments that challenge us the most are often the ones that teach us the most.",
+            "Time is our most precious resource, yet we squander it on distractions and regrets.",
+            "The past cannot be changed, the future remains uncertain, and the present is all we truly possess.",
+            "It is not what we accumulate but how we love, grow, and contribute to the world that defines our existence.",
+            "Even in darkness, there is always a glimmer of light waiting to be found.",
+            "Life is a series of choices, each one shaping the path we walk...",
+            "Life is a fleeting journey... Embrace imperfection, for it is the essence of being human.",
+            "We often seek meaning in the grand gestures, but it is in the quiet, everyday acts of kindness and connection that true purpose is found.",
+            "The perfection of one who gives orders is to be peaceful. Lao-tsé",
+            "Success in relationships lies in helping others hold their mask in place. León Daudí"
+        ],
+        "menu": {
+            "home": "Inicio",
+            "about": "Sobre Nosotros",
+            "contact": "Contacto"
+        },
+        "footer": {
+            "rights": "Todos los derechos reservados."
+        }
+    },
+    "zh": {
+        "quotes": [
+            "我们无法控制生活的风向，但我们总能调整自己的风帆。",
+            "你遇到的每一个人都在与你一无所知的战斗抗争。",
+            "善良不花分文，却有改变一切的力量。",
+            "没有人完全搞懂人生——它是一段不断学习、跌倒和成长的旅程。",
+            "最具挑战性的时刻，往往也是我们学到最多的时候。",
+            "时间是我们最宝贵的资源，却常被浪费在分心与悔恨之中。",
+            "过去无法改变，未来仍不确定，而现在是我们真正拥有的一切。",
+            "定义我们存在的不是我们积累了什么，而是我们如何去爱、成长并为世界做出贡献。",
+            "即使在黑暗中，也总有一丝光亮等待被发现。",
+            "人生是一连串的选择，每一个都塑造着我们走过的道路……",
+            "人生是一段短暂的旅程……拥抱不完美，因为那是人性的本质。",
+            "我们常在宏大的举动中寻找意义，但真正的目的往往藏在日常的善意与连接之中。",
+            "下达命令者的完美，在于内心的平和。老子",
+            "人际关系的成功在于帮助他人维持他们的面具。莱昂·达乌迪"
+        ],
+        "menu": {
+            "home": "Inicio",
+            "about": "Sobre Nosotros",
+            "contact": "Contacto"
+        },
+        "footer": {
+            "rights": "Todos los derechos reservados."
+        }
+    }
+}

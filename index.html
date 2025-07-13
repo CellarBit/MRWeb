@@ -82,6 +82,8 @@
             /* Optional: Adds a background color */
             overflow: hidden;
             /* Ensures images don't overflow the header */
+            position: relative;
+            top: 20px;
         }
 
         .header-images {
@@ -298,8 +300,19 @@
 </head>
 
 <body>
+    <div id="language-selector" style="position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; left: 50%;
+            transform: translateX(-25%);
+ ">
+        <img src="indexImages/flagsIcon/cat.png" onclick="setLanguage('ca')" alt="Català"
+            style="width: 20px; cursor: pointer;">
+        <img src="indexImages/flagsIcon/esp.png" onclick="setLanguage('es')" alt="Español"
+            style="width: 20px; cursor: pointer;">
+        <img src="indexImages/flagsIcon/eng.png" onclick="setLanguage('en')" alt="English"
+            style="width: 20px; cursor: pointer;">
+        <img src="indexImages/flagsIcon/zh.png" onclick="setLanguage('zh')" alt="中文"
+            style="width: 20px; cursor: pointer;">
+    </div>
     <header>
-
         <div class="header-images">
             <div class="image-track">
                 <img src="indexImages/headerImages/headerImage1.JPG" alt="Image1" />
@@ -561,19 +574,19 @@
     <section>
 
         <h2>Days between dates calculator</h2>
-<div style="text-align: center; margin: 0 auto; max-width: 80%;">
+        <div style="text-align: center; margin: 0 auto; max-width: 80%;">
 
-   
-        <label for="start">Start Date:</label>
-        <input type="date" id="start"><br><br>
 
-        <label for="end">End Date:</label>
-        <input type="date" id="end"><br><br>
+            <label for="start">Start Date:</label>
+            <input type="date" id="start"><br><br>
 
-        <button onclick="calculateDays()">Calculate Days</button>
+            <label for="end">End Date:</label>
+            <input type="date" id="end"><br><br>
 
-        <p id="result" style="font-family: 'Courier New', monospace; font-size: 15px; font-weight: bold;"></p>
-        </div> 
+            <button onclick="calculateDays()">Calculate Days</button>
+
+            <p id="result" style="font-family: 'Courier New', monospace; font-size: 15px; font-weight: bold;"></p>
+        </div>
     </section>
 
     <!-- Footer <p>&copy; 2025 Marc's Website.<br>All rights reserved.</p> -->
@@ -652,42 +665,28 @@
             });
         });
 
-        const quotes = [
-`We cannot control the winds of life, but we can always adjust our sails.`,
-            `Every person you meet is fighting a battle you know nothing about.`,
-            `Kindness costs nothing but has the power to change everything.`,
-            `No one has it all figured out—life is a constant journey of learning, stumbling, and growing.`,
-            `The moments that challenge us the most are often the ones that teach us the most.`,
-            `Time is our most precious resource, yet we squander it on distractions and regrets.`,
-            `The past cannot be changed, the future remains uncertain, and the present is all we truly possess.`,
-            `It is not what we accumulate but how we love, grow, and contribute to the world that defines our existence.`,
-            `Even in darkness, there is always a glimmer of light waiting to be found.`,
-
-            `Life is a series of choices, each one shaping the path we walk...`,
-            `Life is a fleeting journey... Embrace imperfection, for it is the essence of being human.`,
-            `We often seek meaning in the grand gestures, but it is in the quiet, everyday acts of kindness and connection that true purpose is found.`,
-
-            `The perfection of one who gives orders is to be peaceful. Lao-tsé`,
-            `Success in relationships lies in helping others hold their mask in place. León Daudí`
-        ];
-
         let current = 0;
+let quotes = [];
+let lang = localStorage.getItem('lang') || 'en';
 
-        function showQuote() {
-            const quoteBox = document.getElementById("quoteDisplay");
-            quoteBox.style.opacity = 0;
+fetch('lang.json')
+  .then(res => res.json())
+  .then(data => {
+    quotes = data[lang].quotes;
+    showQuote();
+    setInterval(showQuote, 15000);
+  });
 
-            setTimeout(() => {
-                quoteBox.textContent = quotes[current];
-                quoteBox.style.opacity = 1;
-                current = (current + 1) % quotes.length;
-            }, 1000);
-        }
+function showQuote() {
+  const quoteBox = document.getElementById("quoteDisplay");
+  quoteBox.style.opacity = 0;
 
-        // Start rotating quotes every few seconds
-        setInterval(showQuote, 15000);
-        window.onload = showQuote;
-
+  setTimeout(() => {
+    quoteBox.textContent = quotes[current];
+    quoteBox.style.opacity = 1;
+    current = (current + 1) % quotes.length;
+  }, 1500);
+}
 
         //this animates the header images
 
