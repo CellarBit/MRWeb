@@ -669,6 +669,11 @@
         let quotes = [];
         let lang = localStorage.getItem('lang') || 'en';
 
+        function setLanguage(lang) {
+            localStorage.setItem('lang', lang);
+            location.reload(); // This reloads the page so your language change takes effect
+        }
+
         fetch('lang.json')
             .then(res => res.json())
             .then(data => {
