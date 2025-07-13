@@ -666,27 +666,27 @@
         });
 
         let current = 0;
-let quotes = [];
-let lang = localStorage.getItem('lang') || 'en';
+        let quotes = [];
+        let lang = localStorage.getItem('lang') || 'en';
 
-fetch('lang.json')
-  .then(res => res.json())
-  .then(data => {
-    quotes = data[lang].quotes;
-    showQuote();
-    setInterval(showQuote, 15000);
-  });
+        fetch('lang.json')
+            .then(res => res.json())
+            .then(data => {
+                quotes = data[lang].quotes;
+                showQuote();
+                setInterval(showQuote, 15000);
+            });
 
-function showQuote() {
-  const quoteBox = document.getElementById("quoteDisplay");
-  quoteBox.style.opacity = 0;
+        function showQuote() {
+            const quoteBox = document.getElementById("quoteDisplay");
+            quoteBox.style.opacity = 0;
 
-  setTimeout(() => {
-    quoteBox.textContent = quotes[current];
-    quoteBox.style.opacity = 1;
-    current = (current + 1) % quotes.length;
-  }, 1500);
-}
+            setTimeout(() => {
+                quoteBox.textContent = quotes[current];
+                quoteBox.style.opacity = 1;
+                current = (current + 1) % quotes.length;
+            }, 1500);
+        }
 
         //this animates the header images
 
