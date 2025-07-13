@@ -347,29 +347,13 @@
         <!-- Quote will appear here -->
     </div>
 
-
-
-    <p>
-        I'm Marc, a mechanical engineering graduate with a multidisciplinary background spanning AI data operations, IT
-        support, and advanced materials research. Over the past decade, I’ve led international teams across Europe and
-        Asia, managed large-scale data projects for machine learning algorithms, and supported enterprise-level Google
-        Workspace infrastructures.
-        My experience includes coordinating cross-cultural teams, designing CAD solutions, developing browser-based
-        games, and conducting nanotechnology research at Peking University. I'm passionate about solving technical
-        challenges with creativity and precision—whether through scripting automation, developing interactive tools, or
-        managing complex data pipelines.
-        With fluency in four languages and hands-on expertise in Python, JavaScript, CAD modeling, and PLC programming,
-        I enjoy bridging engineering principles with digital innovation. I thrive in dynamic, collaborative environments
-        and continually seek opportunities to create, learn, and contribute.
-
-    </p>
+    <p id="bio"></p>
 
     <!-- CAD section -->
 
     <section>
-        <h2>CAD</h2>
-        <p class=sections-description> These designs showcase my learning journey in Computer-Aided Design, with a focus
-            on SolidWorks. Each model is a milestone in developing my 3D modeling skills.</p>
+        <h2 id="cadTitle"></h2>
+        <p id="cadDesc" class=sections-description></p>
         <div class="wrapper">
             <!-- Left Scroll Button -->
             <button class="scroll-button left" onclick="scrollSection(this, -1)">‹</button>
@@ -380,7 +364,7 @@
                 <!-- Group 1: --- Bike-->
                 <div class="group">
                     <img src="indexImages/CADimages/Bicycle.PNG" alt="Bicycle">
-                    <h3>Bicycle</h3>
+                    <h3 id="cadBike"></h3>
                     <div class="links">
                         <a href="CADmodels/Bike.html">See model</a>
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
@@ -390,7 +374,7 @@
                 <!-- Group 2: --- Mobula7-->
                 <div class="group">
                     <img src="indexImages/CADimages/Mobula7.png" alt="Mobula7">
-                    <h3>HappyModel Mobula7</h3>
+                    <h3 id="cadDrone"></h3>
                     <div class="links">
                         <a href="CADmodels/Mobula7Drone.html">See model</a>
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
@@ -400,7 +384,7 @@
                 <!-- Group 3: --- CVD reactor-->
                 <div class="group">
                     <img src="indexImages/CADimages/reactorCVD.png" alt="reactorCVD">
-                    <h3>CVD reactor</h3>
+                    <h3 id="cadReactor"></h3>
                     <div class="links">
                         <a href="CADmodels/CVDReactor.html">See model</a>
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
@@ -410,7 +394,7 @@
                 <!-- Group 4: --- Gearbox-->
                 <div class="group">
                     <img src="indexImages/CADimages/reductor.png" alt="reductor">
-                    <h3>Gearbox</h3>
+                    <h3 id="cadGearbox"></h3>
                     <div class="links">
                         <a href="CADmodels/ConjuntReductor.html">See model</a>
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
@@ -420,7 +404,7 @@
                 <!-- Group 5: --- Mobula7 Frame-->
                 <div class="group">
                     <img src="indexImages/CADimages/Mobula7Frame.png" alt="Mobula7Frame">
-                    <h3>Mobula 7 Frame</h3>
+                    <h3 id="cadMobulaFrame"></h3>
                     <div class="links">
                         <a href="CADmodels/Mobula7Frame.html">See model</a>
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
@@ -430,7 +414,7 @@
                 <!-- Group 6: --- Toroidal prop-->
                 <div class="group">
                     <img src="indexImages/CADimages/toroidalprop.png" alt="toroidalprop">
-                    <h3>Toroidal prop</h3>
+                    <h3 id="cadToroidalProp"></h3>
                     <div class="links">
                         <a href="">See model</a>
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
@@ -440,7 +424,7 @@
                 <!-- Group 7: --- Custom frame-->
                 <div class="group">
                     <img src="indexImages/CADimages/CustomFrame.png" alt="CustomFrame">
-                    <h3>Custom Frame</h3>
+                    <h3 id="cadCustomFrame"></h3>
                     <div class="links">
                         <a href="">See model</a>
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
@@ -450,7 +434,7 @@
                 <!-- Group 8: --- Propeller-->
                 <div class="group">
                     <img src="indexImages/CADimages/prop.png" alt="Propeller--">
-                    <h3>Propeller</h3>
+                    <h3 id="cadPropeller"></h3>
                     <div class="links">
                         <a href="">See model</a>
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
@@ -469,9 +453,8 @@
     </div>
     <!-- Game Section -->
     <section>
-        <h2>Games</h2>
-        <p class=sections-description> Each game in this section was crafted while I was learning JavaScript — they’re
-            part of my coding adventure, and now yours to play with. Dive in and have fun!</p>
+        <h2 id="gamesTitle"></h2>
+        <p id="gamesDesc" class=sections-description></p>
         <div class="wrapper">
             <!-- Left Scroll Button -->
             <button class="scroll-button left" onclick="scrollSection(this, -1)">‹</button>
@@ -480,7 +463,7 @@
                 <!-- Group 4: Sudoku -->
                 <div class="group">
                     <img src="indexImages/gamesImages/sudoku.png" alt="Sudoku">
-                    <h3>Sudoku</h3>
+                    <h3 id="gameSudoku"></h3>
                     <div class="links">
                         <a href="Sudoku/sudoku.html">Play</a>
                         <a href="Sudoku/aboutSudoku.html">About</a>
@@ -490,7 +473,7 @@
                 <!-- Group 5: Dice Game 1 Player and Dice Game 2 Players -->
                 <div class="group">
                     <img src="indexImages/gamesImages/DiceGame.png" alt="Dice Game">
-                    <h3>Pig (Dice Game)</h3>
+                    <h3 id="gamePigDice"></h3>
                     <div class="links">
                         <div class="play-options">
                             <a href="DiceGame/pigGame1p.html">1 Player</a>
@@ -503,7 +486,7 @@
                 <!-- Group 6: Magic Ruler -->
                 <div class="group">
                     <img src="indexImages/gamesImages/magicruler.jpg" alt="Dice Game">
-                    <h3>Magic ruler</h3>
+                    <h3 id="gameMagicRuler"></h3>
                     <div class="links">
                         <a href="Magic Ruler/MagicRulerV4.html">Play original</a>
                         <a href="Magic Ruler/RotatingNsegments.html">Crazy rotations</a>
@@ -514,7 +497,7 @@
                 <!-- Group 1: Spot it! and 2 Players Spot it! -->
                 <div class="group">
                     <img src="indexImages/gamesImages/spotit.PNG" alt="Spot it!">
-                    <h3>Spot it!</h3>
+                    <h3 id="gameSpotIt"></h3>
                     <div class="links">
                         <div class="play-options">
                             <a href="Spot it!/spotit1player.html">1 Player</a>
@@ -527,7 +510,7 @@
                 <!-- Group 7: Spirograph -->
                 <div class="group">
                     <img src="indexImages/gamesImages/spirograph.PNG" alt="spirograph">
-                    <h3>Spirograph</h3>
+                    <h3 id="gameSpirograph"></h3>
                     <div class="links">
                         <a href="Spirograph/SpirographCircle.html">Play</a>
                         <!-- <a href="Spirograph/SpirographCircle.html">About</a> -->
@@ -537,7 +520,7 @@
                 <!-- Group 2: Memory 16 and Memory 32 -->
                 <div class="group">
                     <img src="indexImages/gamesImages/memory.PNG" alt="Memory">
-                    <h3>Memory Cards</h3>
+                    <h3 id="gameMemory"></h3>
                     <div class="links">
                         <div class="play-options">
                             <a href="Memory/memory16.html">Dinos (16 </a>
@@ -550,7 +533,7 @@
                 <!-- Group 3: Oware -->
                 <div class="group">
                     <img src="indexImages/gamesImages/oware.PNG" alt="Oware">
-                    <h3>Oware (Abapa)</h3>
+                    <h3 id="gameOware"></h3>
                     <div class="links">
                         <a href="Oware (Abapa)/oware.html">2 Players</a>
                         <a href="Oware (Abapa)/aboutOware.html">About</a>
@@ -573,7 +556,7 @@
 
     <section>
 
-        <h2>Days between dates calculator</h2>
+        <h2 id="daysCalculatorTitle"></h2>
         <div style="text-align: center; margin: 0 auto; max-width: 80%;">
 
 
@@ -667,7 +650,7 @@
 
         let current = 0;
         let quotes = [];
-        let lang = localStorage.getItem('lang') || 'en';
+        let lang = localStorage.getItem('lang') || 'ca';
 
         function setLanguage(lang) {
             localStorage.setItem('lang', lang);
@@ -678,9 +661,40 @@
             .then(res => res.json())
             .then(data => {
                 quotes = data[lang].quotes;
+                document.getElementById('bio').textContent = data[lang].bio;
+
+                const sections = data[lang].sections;
+
+                // Section titles and descriptions
+                document.getElementById('cadTitle').textContent = sections.cadTitle;
+                document.getElementById('cadDesc').textContent = sections.cadDesc;
+                document.getElementById('gamesTitle').textContent = sections.gamesTitle;
+                document.getElementById('gamesDesc').textContent = sections.gamesDesc;
+                document.getElementById('daysCalculatorTitle').textContent = sections.daysCalculatorTitle;
+
+                // CAD items
+                document.getElementById('cadBike').textContent = sections.cadItems.cadBike;
+                document.getElementById('cadDrone').textContent = sections.cadItems.cadDrone;
+                document.getElementById('cadReactor').textContent = sections.cadItems.cadReactor;
+                document.getElementById('cadGearbox').textContent = sections.cadItems.cadGearbox;
+                document.getElementById('cadMobulaFrame').textContent = sections.cadItems.cadMobulaFrame;
+                document.getElementById('cadToroidalProp').textContent = sections.cadItems.cadToroidalProp;
+                document.getElementById('cadCustomFrame').textContent = sections.cadItems.cadCustomFrame;
+                document.getElementById('cadPropeller').textContent = sections.cadItems.cadPropeller;
+
+                // Game items
+                document.getElementById('gameSudoku').textContent = sections.gameItems.gameSudoku;
+                document.getElementById('gamePigDice').textContent = sections.gameItems.gamePigDice;
+                document.getElementById('gameMagicRuler').textContent = sections.gameItems.gameMagicRuler;
+                document.getElementById('gameSpotIt').textContent = sections.gameItems.gameSpotIt;
+                document.getElementById('gameSpirograph').textContent = sections.gameItems.gameSpirograph;
+                document.getElementById('gameMemory').textContent = sections.gameItems.gameMemory;
+                document.getElementById('gameOware').textContent = sections.gameItems.gameOware;
+
                 showQuote();
                 setInterval(showQuote, 15000);
             });
+
 
         function showQuote() {
             const quoteBox = document.getElementById("quoteDisplay");

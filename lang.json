@@ -16,14 +16,33 @@
             "La perfecció de qui dona ordres consisteix a ser pacífic. Lao-tsé",
             "L’èxit en les relacions rau en ajudar els altres a mantenir la seva màscara en el lloc. León Daudí"
         ],
-        "menu": {
-            "home": "Home",
-            "about": "About Us",
-            "contact": "Contact"
-        },
-        "footer": {
-            "rights": "All rights reserved."
-        }
+        "bio": "Soc en Marc, graduat en enginyeria mecànica amb una formació multidisciplinària que abarca operacions 0 dades d’IA, suport informàtic i investigació de materials avançats. Durant l'última dècada he liderat equips internacionals per Europa i Àsia, gestionat projectes de dades a gran escala per a algoritmes d’aprenentatge automàtic i donat suport a infraestructures empresarials de Google Workspace. La meva experiència inclou la coordinació d’equips interculturals, el disseny de solucions CAD, el desenvolupament de jocs basats en navegador i la investigació en nanotecnologia a la Universitat de Pequín. M’apassiona resoldre reptes tècnics amb creativitat i precisió—ja sigui mitjançant l’automatització amb scripts, el desenvolupament d’eines interactives o la gestió de complexes canalitzacions de dades. Amb domini de quatre idiomes i experiència pràctica en Python, JavaScript, modelatge CAD i programació de PLCs, gaudeixo en vincular principis d’enginyeria amb innovació digital. M'entusiasmen els entorns dinàmics i col·laboratius, i sempre busco oportunitats per crear, aprendre i contribuir.",
+        "sections": {
+  "cadTitle": "Dissenys CAD",
+  "cadDesc": "Aquests dissenys mostren el meu procés d’aprenentatge en Disseny Assistit per Ordinador, amb un enfocament en SolidWorks. Cada model és una fita en el desenvolupament de les meves habilitats de modelatge en 3D.",
+  "cadItems": {
+    "cadBike": "Bicicleta",
+    "cadDrone": "Happymodel Mobula7",
+    "cadReactor": "Reactor CVD",
+    "cadGearbox": "Caixa de canvis",
+    "cadMobulaFrame": "Xassís Mobula 7",
+    "cadToroidalProp": "Hèlix toroidal",
+    "cadCustomFrame": "Xassís personalitzat",
+    "cadPropeller": "Hèlix"
+  },
+  "gamesTitle": "Jocs",
+  "gamesDesc": "Cada joc d’aquesta secció va ser creat mentre aprenia JavaScript — són part de la meva aventura amb el codi, i ara també són per tu. Endinsa’t i gaudeix!",
+  "gameItems": {
+    "gameSudoku": "Sudoku",
+    "gamePigDice": "Pig (Joc de daus)",
+    "gameMagicRuler": "Regle màgic",
+    "gameSpotIt": "Spot it!",
+    "gameSpirograph": "Espirògraf",
+    "gameMemory": "Cartes de memòria",
+    "gameOware": "Oware (Abapa)"
+  },
+  "daysCalculatorTitle": "Calculadora de dies entre dates"
+}
     },
     "es": {
         "quotes": [
@@ -42,14 +61,33 @@
             "La perfección de quien da órdenes consiste en ser pacífico. Lao-tsé",
             "El éxito en las relaciones radica en ayudar a los demás a mantener su máscara en su sitio. León Daudí"
         ],
-        "menu": {
-            "home": "Inicio",
-            "about": "Sobre Nosotros",
-            "contact": "Contacto"
-        },
-        "footer": {
-            "rights": "Todos los derechos reservados."
-        }
+        "bio": "Soy Marc, graduado en ingeniería mecánica con una formación multidisciplinar que abarca operaciones de datos en inteligencia artificial, soporte informático e investigación en materiales avanzados. Durante la última década, he liderado equipos internacionales en Europa y Asia, gestionado proyectos de datos a gran escala para algoritmos de aprendizaje automático y brindado soporte a infraestructuras empresariales de Google Workspace. Mi experiencia incluye la coordinación de equipos interculturales, el diseño de soluciones CAD, el desarrollo de juegos basados en navegador y la investigación en nanotecnología en la Universidad de Pekín. Me apasiona resolver desafíos técnicos con creatividad y precisión—ya sea mediante la automatización por scripting, el desarrollo de herramientas interactivas o la gestión de complejas canalizaciones de datos. Con fluidez en cuatro idiomas y experiencia práctica en Python, JavaScript, modelado CAD y programación de PLC, disfruto conectando los principios de la ingeniería con la innovación digital. Me desenvuelvo bien en entornos dinámicos y colaborativos, y siempre busco oportunidades para crear, aprender y contribuir.",
+        "sections": {
+  "cadTitle": "Diseños CAD",
+  "cadDesc": "Estos diseños reflejan mi proceso de aprendizaje en Diseño Asistido por Computadora, con un enfoque en SolidWorks. Cada modelo representa un hito en el desarrollo de mis habilidades de modelado 3D.",
+  "cadItems": {
+    "cadBike": "Bicicleta",
+    "cadDrone": "Happymodel Mobula7",
+    "cadReactor": "Reactor CVD",
+    "cadGearbox": "Caja de cambios",
+    "cadMobulaFrame": "Chasis Mobula 7",
+    "cadToroidalProp": "Hélice toroidal",
+    "cadCustomFrame": "Chasis personalizado",
+    "cadPropeller": "Hélice"
+  },
+  "gamesTitle": "Juegos",
+  "gamesDesc": "Cada juego de esta sección fue creado mientras aprendía JavaScript — son parte de mi aventura con la programación, y ahora están aquí para que tú también los disfrutes. ¡Sumérgete y diviértete!",
+  "gameItems": {
+    "gameSudoku": "Sudoku",
+    "gamePigDice": "Pig (Juego de dados)",
+    "gameMagicRuler": "Regla mágica",
+    "gameSpotIt": "Spot it!",
+    "gameSpirograph": "Espirógrafo",
+    "gameMemory": "Cartas de memoria",
+    "gameOware": "Oware (Abapa)"
+  },
+  "daysCalculatorTitle": "Calculadora de días entre fechas"
+}
     },
     "en": {
         "quotes": [
@@ -68,13 +106,32 @@
             "The perfection of one who gives orders is to be peaceful. Lao-tsé",
             "Success in relationships lies in helping others hold their mask in place. León Daudí"
         ],
-        "menu": {
-            "home": "Inicio",
-            "about": "Sobre Nosotros",
-            "contact": "Contacto"
-        },
-        "footer": {
-            "rights": "Todos los derechos reservados."
+        "bio": "I'm Marc, a mechanical engineering graduate with a multidisciplinary background spanning AI data operations, IT support, and advanced materials research. Over the past decade, I’ve led international teams across Europe and Asia, managed large-scale data projects for machine learning algorithms, and supported enterprise-level Google Workspace infrastructures. My experience includes coordinating cross-cultural teams, designing CAD solutions, developing browser-based games, and conducting nanotechnology research at Peking University. I'm passionate about solving technical challenges with creativity and precision—whether through scripting automation, developing interactive tools, or managing complex data pipelines. With fluency in four languages and hands-on expertise in Python, JavaScript, CAD modeling, and PLC programming, I enjoy bridging engineering principles with digital innovation. I thrive in dynamic, collaborative environments and continually seek opportunities to create, learn, and contribute.",
+        "sections": {
+            "cadTitle": "CAD designs",
+            "cadDesc": "These designs showcase my learning journey in Computer-Aided Design, with a focus on SolidWorks. Each model is a milestone in developing my 3D modeling skills.",
+            "cadItems": {
+                "cadBike": "Bicycle",
+                "cadDrone": "Happymodel Mobula7",
+                "cadReactor": "CVD reactor",
+                "cadGearbox": "Gearbox",
+                "cadMobulaFrame": "Mobula 7 Frame",
+                "cadToroidalProp": "Toroidal prop",
+                "cadCustomFrame": "Custom Frame",
+                "cadPropeller": "Propeller"
+            },
+            "gamesTitle": "Games",
+            "gamesDesc": "Each game in this section was crafted while I was learning JavaScript — they’re part of my coding adventure, and now yours to play with. Dive in and have fun!",
+            "gameItems": {
+                "gameSudoku": "Sudoku",
+                "gamePigDice": "Pig (Dice Game)",
+                "gameMagicRuler": "Magic ruler",
+                "gameSpotIt": "Spot it!",
+                "gameSpirograph": "Spirograph",
+                "gameMemory": "Memory Cards",
+                "gameOware": "Oware (Abapa)"
+            },
+            "daysCalculatorTitle": "Days between dates calculator"
         }
     },
     "zh": {
@@ -94,13 +151,32 @@
             "下达命令者的完美，在于内心的平和。老子",
             "人际关系的成功在于帮助他人维持他们的面具。莱昂·达乌迪"
         ],
-        "menu": {
-            "home": "Inicio",
-            "about": "Sobre Nosotros",
-            "contact": "Contacto"
-        },
-        "footer": {
-            "rights": "Todos los derechos reservados."
-        }
+        "bio": "我是 Marc，一名机械工程专业毕业生，拥有涵盖人工智能数据运营、IT 支持和先进材料研究的多学科背景。在过去十年中，我曾在欧洲和亚洲领导国际团队，管理用于机器学习算法的大规模数据项目，并支持企业级的 Google Workspace 基础设施。我的经验包括协调跨文化团队、设计 CAD 解决方案、开发基于浏览器的游戏，以及在北京大学进行纳米技术研究。我热衷于以创造力和精准度解决技术挑战——无论是通过脚本自动化、开发交互式工具，还是管理复杂的数据管道。我精通四种语言，具备 Python、JavaScript、CAD 建模和 PLC 编程的实践经验，喜欢将工程原理与数字创新相结合。我在充满活力、协作的环境中如鱼得水，并不断寻求创造、学习和贡献的机会。",
+        "sections": {
+  "cadTitle": "CAD 设计",
+  "cadDesc": "这些设计展示了我在计算机辅助设计方面的学习历程，重点使用 SolidWorks。每个模型都是我 3D 建模技能发展的一个里程碑。",
+  "cadItems": {
+    "cadBike": "自行车",
+    "cadDrone": "Happymodel Mobula7",
+    "cadReactor": "CVD 反应器",
+    "cadGearbox": "齿轮箱",
+    "cadMobulaFrame": "Mobula 7 框架",
+    "cadToroidalProp": "环形螺旋桨",
+    "cadCustomFrame": "定制框架",
+    "cadPropeller": "螺旋桨"
+  },
+  "gamesTitle": "游戏",
+  "gamesDesc": "本节中的每款游戏都是我学习 JavaScript 时制作的——它们是我编程冒险的一部分，现在也与你分享。快来体验，享受乐趣吧！",
+  "gameItems": {
+    "gameSudoku": "数独",
+    "gamePigDice": "Pig（骰子游戏）",
+    "gameMagicRuler": "魔法尺",
+    "gameSpotIt": "Spot it!",
+    "gameSpirograph": "旋转图",
+    "gameMemory": "记忆卡片",
+    "gameOware": "Oware（Abapa）"
+  },
+  "daysCalculatorTitle": "日期间天数计算器"
+}
     }
 }
