@@ -583,7 +583,6 @@
 
 
     <script>
-
         function calculateDays() {
             const startDate = new Date(document.getElementById("start").value);
             const endDate = new Date(document.getElementById("end").value);
@@ -598,7 +597,7 @@
 
             document.getElementById("result").textContent = ` ${diffDays} days.`;
         }
-        //JavaScript for Scroll Functionality
+
         function scrollSection(button, direction) {
             const wrapper = button.closest('.wrapper');
             const container = wrapper.querySelector('.container');
@@ -610,41 +609,20 @@
             });
         }
 
-        const container = document.querySelector('.container');
-        const leftButton = document.querySelector('.scroll-button.left');
-        const rightButton = document.querySelector('.scroll-button.right');
+        function updateScrollButtons(wrapper) {
+            const container = wrapper.querySelector('.container');
+            const leftButton = wrapper.querySelector('.scroll-button.left');
+            const rightButton = wrapper.querySelector('.scroll-button.right');
 
-        container.addEventListener('scroll', () => {
-            // Disable left button if at the start
-            if (container.scrollLeft === 0) {
-                leftButton.disabled = true;
-            } else {
-                leftButton.disabled = false;
-            }
+            leftButton.disabled = container.scrollLeft === 0;
+            rightButton.disabled = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
+        }
 
-            // Disable right button if at the end
-            if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
-                rightButton.disabled = true;
-            } else {
-                rightButton.disabled = false;
-            }
-        });
-
-        // Initial check on page load
         window.addEventListener('load', () => {
-            if (container.scrollLeft === 0) {
-                leftButton.disabled = true;
-            }
-            if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
-                rightButton.disabled = true;
-            }
-        });
-
-        container.addEventListener('scroll', () => {
-            const scrollPosition = container.scrollLeft;
-            const activeIndicator = Math.round(scrollPosition / container.clientWidth);
-            indicators.forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === activeIndicator);
+            document.querySelectorAll('.wrapper').forEach(wrapper => {
+                const container = wrapper.querySelector('.container');
+                container.addEventListener('scroll', () => updateScrollButtons(wrapper));
+                updateScrollButtons(wrapper); // Initial check
             });
         });
 
@@ -654,7 +632,7 @@
 
         function setLanguage(lang) {
             localStorage.setItem('lang', lang);
-            location.reload(); // This reloads the page so your language change takes effect
+            location.reload();
         }
 
         fetch('lang.json')
@@ -692,43 +670,26 @@
                 document.getElementById('gameOware').textContent = sections.gameItems.gameOware;
 
                 // Unique Game items
-
                 document.getElementById('playOriginal').textContent = sections.uniqueGameItems.playOriginal;
                 document.getElementById('crazyRotations').textContent = sections.uniqueGameItems.crazyRotations;
                 document.getElementById('dinos').textContent = sections.uniqueGameItems.dinos;
 
                 // Unique Other items
-
                 document.getElementById('startLabel').textContent = sections.uniqueOtherItems.startLabel;
                 document.getElementById('endLabel').textContent = sections.uniqueOtherItems.endLabel;
                 document.getElementById('buttonCalculateDays').textContent = sections.uniqueOtherItems.buttonCalculateDays;
                 document.getElementById('daysCalculatorTitle').textContent = sections.uniqueOtherItems.daysCalculatorTitle;
 
-
-
                 const common = data[lang].sections.common;
-
-                document.querySelectorAll('.seeModelLink').forEach(el => {
-                    el.textContent = sections.common.seeModel;
-                });
-                document.querySelectorAll('.aboutLink').forEach(el => {
-                    el.textContent = sections.common.about;
-                });
-                document.querySelectorAll('.playLink').forEach(el => {
-                    el.textContent = sections.common.play;
-                });
-                document.querySelectorAll('.onePlayerLink').forEach(el => {
-                    el.textContent = sections.common.onePlayer;
-                });
-                document.querySelectorAll('.twoPlayerLink').forEach(el => {
-                    el.textContent = sections.common.twoPlayers;
-                });
-
+                document.querySelectorAll('.seeModelLink').forEach(el => el.textContent = sections.common.seeModel);
+                document.querySelectorAll('.aboutLink').forEach(el => el.textContent = sections.common.about);
+                document.querySelectorAll('.playLink').forEach(el => el.textContent = sections.common.play);
+                document.querySelectorAll('.onePlayerLink').forEach(el => el.textContent = sections.common.onePlayer);
+                document.querySelectorAll('.twoPlayerLink').forEach(el => el.textContent = sections.common.twoPlayers);
 
                 showQuote();
                 setInterval(showQuote, 15000);
             });
-
 
         function showQuote() {
             const quoteBox = document.getElementById("quoteDisplay");
@@ -741,29 +702,20 @@
             }, 1500);
         }
 
-        //this animates the header images
-
-
+        // Header image animation
         const track = document.querySelector('.image-track');
         let scrollX = 0;
 
         function animate() {
-            scrollX -= 1; // speed in pixels per frame
+            scrollX -= 1;
             if (Math.abs(scrollX) >= track.scrollWidth / 2) {
-                scrollX = 0; // reset to start of loop
+                scrollX = 0;
             }
             track.style.transform = `translateX(${scrollX}px)`;
             requestAnimationFrame(animate);
         }
 
         animate();
-
-        // //JavaScript to check screen size
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     let screenWidth = window.screen.width;
-        //     let screenHeight = window.screen.height;
-        //     document.getElementById('screen-size').textContent = `Width: ${screenWidth}px, Height: ${screenHeight}px`;
-        // });
     </script>
 </body>
 
