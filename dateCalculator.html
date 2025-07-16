@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Dies</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/cat.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        input,
+        button {
+            margin: 10px 0;
+        }
+
+        .mode-options {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Calculadora de Dies</h1>
+
+    <!-- Mode selector -->
+    <div class="mode-options">
+        <label>
+            <input type="radio" name="mode" value="date" checked onchange="initPickers()"> Només data
+        </label>
+        <label>
+            <input type="radio" name="mode" value="datetime" onchange="initPickers()"> Data i hora
+        </label>
+    </div>
+
+    <label for="start">Data d'inici:</label>
+    <input type="text" id="start" placeholder="Selecciona la data d'inici">
+
+    <br>
+
+    <label for="end">Data de fi:</label>
+    <input type="text" id="end" placeholder="Selecciona la data de fi">
+
+    <br>
+
+    <button onclick="calculateDays()">Calcula</button>
+
+    <p id="result"></p>
+
+    <script>
+
+        // Localized strings (simulate lang.json)
+const localizedText = {
+  timeResult: "{days} dies.",
+  timeResultSingular: "{days} dia.",
+  hourResult: "{hours} hores.",
+  hourResultSingular: "{hours} hora.",
+  minuteResult: "{minutes} minuts.",
+  minuteResultSingular: "{minutes} minut.",
+  dateError: "Si us plau, seleccioneu les dues dates."
+};
+
+
+        let startPicker;
+        let endPicker;
+
+        function initPickers() {
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+
+            const options = {
+                locale: flatpickr.l10ns.cat,
+                enableTime: mode === "datetime",
+                dateFormat: mode === "datetime" ? "d/m/Y H:i" : "d/m/Y",
+                time_24hr: true
+            };
+
+            startPicker = flatpickr("#start", options);
+            endPicker = flatpickr("#end", options);
+        }
+
+        // Call it once at startup
+        initPickers();
+
+        function calculateDays() {
+            const startDate = startPicker.selectedDates[0];
+            const endDate = endPicker.selectedDates[0];
+
+            if (!startDate || !endDate) {
+                document.getElementById("result").textContent = localizedText.dateError;
+                return;
+            }
+
+            const diffTime = Math.abs(endDate - startDate);
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+
+            if (mode === "datetime") {
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const remainingHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const remainingMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+
+                let resultParts = [];
+
+                if (diffDays > 0) {
+                    const dayText = diffDays === 1
+                        ? localizedText.timeResultSingular.replace("{days}", diffDays)
+                        : localizedText.timeResult.replace("{days}", diffDays);
+                    resultParts.push(dayText);
+                }
+
+                if (remainingHours > 0) {
+                    const hourText = remainingHours === 1
+                        ? localizedText.hourResultSingular.replace("{hours}", remainingHours)
+                        : localizedText.hourResult.replace("{hours}", remainingHours);
+                    resultParts.push(hourText);
+                }
+
+                if (remainingMinutes > 0) {
+                    const minuteText = remainingMinutes === 1
+                        ? localizedText.minuteResultSingular.replace("{minutes}", remainingMinutes)
+                        : localizedText.minuteResult.replace("{minutes}", remainingMinutes);
+                    resultParts.push(minuteText);
+                }
+
+                document.getElementById("result").textContent = resultParts.join(" ");
+            } else {
+                const fullDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const templateKey = fullDays === 1 ? "timeResultSingular" : "timeResult";
+                const resultText = localizedText[templateKey].replace("{days}", fullDays);
+                document.getElementById("result").textContent = resultText;
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
