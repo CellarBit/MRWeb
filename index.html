@@ -588,16 +588,16 @@
             const endDate = new Date(document.getElementById("end").value);
 
             if (isNaN(startDate) || isNaN(endDate)) {
-                document.getElementById("result").textContent = "Please select both dates.";
+                document.getElementById("result").textContent = sections.uniqueOtherItems.dateError;
                 return;
             }
 
             const diffTime = Math.abs(endDate - startDate);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            document.getElementById("result").textContent = ` ${diffDays} days.`;
+            const localizedString = sections.uniqueOtherItems.timeResult.replace("{days}", diffDays);
+            document.getElementById("result").textContent = localizedString;
         }
-
         function scrollSection(button, direction) {
             const wrapper = button.closest('.wrapper');
             const container = wrapper.querySelector('.container');
@@ -629,6 +629,7 @@
         let current = 0;
         let quotes = [];
         let lang = localStorage.getItem('lang') || 'ca';
+        let sections;
 
         function setLanguage(lang) {
             localStorage.setItem('lang', lang);
@@ -641,7 +642,7 @@
                 quotes = data[lang].quotes;
                 document.getElementById('bio').textContent = data[lang].bio;
 
-                const sections = data[lang].sections;
+                sections = data[lang].sections;
 
                 // Section titles and descriptions
                 document.getElementById('cadTitle').textContent = sections.cadTitle;
@@ -679,6 +680,9 @@
                 document.getElementById('endLabel').textContent = sections.uniqueOtherItems.endLabel;
                 document.getElementById('buttonCalculateDays').textContent = sections.uniqueOtherItems.buttonCalculateDays;
                 document.getElementById('daysCalculatorTitle').textContent = sections.uniqueOtherItems.daysCalculatorTitle;
+
+
+                //Common other items
 
                 const common = data[lang].sections.common;
                 document.querySelectorAll('.seeModelLink').forEach(el => el.textContent = sections.common.seeModel);

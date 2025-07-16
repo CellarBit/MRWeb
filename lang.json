@@ -52,7 +52,9 @@
                 "daysCalculatorTitle": "Calculadora de dies entre dates",
                 "startLabel": "Data d'inici",
                 "endLabel": "Data final",
-                "buttonCalculateDays": "Calcula els dies"
+                "buttonCalculateDays": "Calcula els dies",
+                "timeResult": "{days} dies.",
+                "dateError": "Si us plau, seleccioneu les dates."
             },
             "uniqueGameItems": {
                 "playOriginal": "Juga l'original",
@@ -114,7 +116,9 @@
                 "daysCalculatorTitle": "Calculadora de días entre fechas",
                 "startLabel": "Fecha de inicio",
                 "endLabel": "Fecha final",
-                "buttonCalculateDays": "Calcular días"
+                "buttonCalculateDays": "Calcular días",
+                "timeResult": "{days} días.",
+                "dateError": "Por favor, seleccione las fechas."
             },
             "uniqueGameItems": {
                 "playOriginal": "Jugar original",
@@ -176,7 +180,9 @@
                 "daysCalculatorTitle": "Days between dates calculator",
                 "startLabel": "Start Date",
                 "endLabel": "End Date",
-                "buttonCalculateDays": "Calculate Days"
+                "buttonCalculateDays": "Calculate Days",
+                "timeResult": "{days} days.",
+                "dateError": "Please select dates."
             },
             "uniqueGameItems": {
                 "playOriginal": "Play original",
@@ -238,7 +244,9 @@
                 "daysCalculatorTitle": "日期间天数计算器",
                 "startLabel": "开始日期",
                 "endLabel": "结束日期",
-                "buttonCalculateDays": "计算天数"
+                "buttonCalculateDays": "计算天数",
+                "timeResult": "{days}天。",
+                "dateError": "请选择日期。"
             },
             "uniqueGameItems": {
                 "playOriginal": "原版游戏",
