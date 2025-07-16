@@ -296,22 +296,32 @@
         footer div {
             display: block;
         }
+
+        .flag-selected {
+            border: 3.5px solid #500af1;
+            /* Blue border */
+            border-radius: 4px;
+        }
+
+        #language-selector img {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            box-sizing: border-box;
+            /* Ensures border doesn't affect image size */
+        }
     </style>
 </head>
 
 <body>
-    <div id="language-selector" style="position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; left: 50%;
-            transform: translateX(-25%);
- ">
-        <img src="indexImages/flagsIcon/cat.png" onclick="setLanguage('ca')" alt="Català"
-            style="width: 20px; cursor: pointer;">
-        <img src="indexImages/flagsIcon/esp.png" onclick="setLanguage('es')" alt="Español"
-            style="width: 20px; cursor: pointer;">
-        <img src="indexImages/flagsIcon/eng.png" onclick="setLanguage('en')" alt="English"
-            style="width: 20px; cursor: pointer;">
-        <img src="indexImages/flagsIcon/zh.png" onclick="setLanguage('zh')" alt="中文"
-            style="width: 20px; cursor: pointer;">
+    <div id="language-selector"
+        style="position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; left: 50%; transform: translateX(-25%);">
+        <img src="indexImages/flagsIcon/cat.png" onclick="setLanguage('ca')" alt="Català">
+        <img src="indexImages/flagsIcon/esp.png" onclick="setLanguage('es')" alt="Español">
+        <img src="indexImages/flagsIcon/eng.png" onclick="setLanguage('en')" alt="English">
+        <img src="indexImages/flagsIcon/zh.png" onclick="setLanguage('zh')" alt="中文">
     </div>
+
     <header>
         <div class="header-images">
             <div class="image-track">
@@ -535,8 +545,8 @@
                     <img src="indexImages/gamesImages/oware.PNG" alt="Oware">
                     <h3 id="gameOware"></h3>
                     <div class="links">
-                        <a class="twoPlayerLink" href="Oware (Abapa)/oware.html">2 Players</a>
-                        <a class="aboutLink" href="Oware (Abapa)/aboutOware.html">About</a>
+                        <a class="seeModelLink" href="dateCalculator.html">See model</a>
+                        <!-- <a class="aboutLink" href="Oware (Abapa)/aboutOware.html">About</a> -->
                     </div>
                 </div>
 
@@ -556,20 +566,21 @@
 
     <section>
 
-        <h2 id="daysCalculatorTitle"></h2>
+        <h2 id="utilsTitle"></h2>
+        <p id="utilsDesc" class=sections-description></p>
         <div style="text-align: center; margin: 0 auto; max-width: 80%;">
+            <!-- Group 1: Dates Calculator -->
+            <div class="group">
+                <img src="indexImages/utilsImages/datesCalculator.png" alt="datesCalculator">
+                <h3 id="utilDateCalculator"></h3>
+                <div class="links">
+                    <a class="enterLink" href="dateCalculator.html">Entrar</a>
+                    
+                </div>
+            </div>
 
-
-            <label id="startLabel" for="start">Start Date:</label>
-            <input type="date" id="start"><br><br>
-
-            <label id="endLabel" for="end">End Date:</label>
-            <input type="date" id="end"><br><br>
-
-            <button id="buttonCalculateDays" onclick="calculateDays()">Calculate Days</button>
-
-            <p id="result" style="font-family: 'Courier New', monospace; font-size: 15px; font-weight: bold;"></p>
         </div>
+
     </section>
 
     <!-- Footer <p>&copy; 2025 Marc's Website.<br>All rights reserved.</p> -->
@@ -649,7 +660,8 @@
                 document.getElementById('cadDesc').textContent = sections.cadDesc;
                 document.getElementById('gamesTitle').textContent = sections.gamesTitle;
                 document.getElementById('gamesDesc').textContent = sections.gamesDesc;
-                document.getElementById('daysCalculatorTitle').textContent = sections.daysCalculatorTitle;
+                document.getElementById('utilsTitle').textContent = sections.utilsTitle;
+                document.getElementById('utilsDesc').textContent = sections.utilsDesc;
 
                 // CAD items
                 document.getElementById('cadBike').textContent = sections.cadItems.cadBike;
@@ -669,6 +681,10 @@
                 document.getElementById('gameSpirograph').textContent = sections.gameItems.gameSpirograph;
                 document.getElementById('gameMemory').textContent = sections.gameItems.gameMemory;
                 document.getElementById('gameOware').textContent = sections.gameItems.gameOware;
+
+                // Utils items
+
+                document.getElementById('utilDateCalculator').textContent = sections.utilsItems.utilDateCalculator;
 
                 // Unique Game items
                 document.getElementById('playOriginal').textContent = sections.uniqueGameItems.playOriginal;
@@ -720,6 +736,25 @@
         }
 
         animate();
+
+        //to add a border to the selected language flag
+
+        document.addEventListener('DOMContentLoaded', () => {
+            highlightSelectedFlag();
+        });
+
+        function highlightSelectedFlag() {
+            const flags = document.querySelectorAll('#language-selector img');
+
+            flags.forEach(flag => {
+                flag.classList.remove('flag-selected'); // Clear previous selection
+
+                const langCode = flag.getAttribute('onclick').match(/setLanguage\('(\w+)'\)/)[1];
+                if (langCode === lang) {
+                    flag.classList.add('flag-selected');
+                }
+            });
+        }
     </script>
 </body>
 

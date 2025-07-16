@@ -21,10 +21,30 @@
         .mode-options {
             margin-bottom: 20px;
         }
+
+     .flag-selected {
+            border: 3.5px solid #500af1;
+            /* Blue border */
+            border-radius: 4px;
+        }
+
+        #language-selector img {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            box-sizing: border-box;
+            /* Ensures border doesn't affect image size */
+        }
     </style>
 </head>
 
 <body>
+   <div id="language-selector" style="position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; left: 50%; transform: translateX(-25%);">
+    <img src="indexImages/flagsIcon/cat.png" onclick="setLanguage('ca')" alt="Català">
+    <img src="indexImages/flagsIcon/esp.png" onclick="setLanguage('es')" alt="Español">
+    <img src="indexImages/flagsIcon/eng.png" onclick="setLanguage('en')" alt="English">
+    <img src="indexImages/flagsIcon/zh.png" onclick="setLanguage('zh')" alt="中文">
+</div>
 
     <h1>Calculadora de Dies</h1>
 
@@ -54,17 +74,21 @@
 
     <script>
 
-        // Localized strings (simulate lang.json)
-const localizedText = {
-  timeResult: "{days} dies.",
-  timeResultSingular: "{days} dia.",
-  hourResult: "{hours} hores.",
-  hourResultSingular: "{hours} hora.",
-  minuteResult: "{minutes} minuts.",
-  minuteResultSingular: "{minutes} minut.",
-  dateError: "Si us plau, seleccioneu les dues dates."
-};
+        // Fetch the localized strings in the json
+        let daysCalculatorItems;
+        let lang = localStorage.getItem('lang') || 'ca';
 
+        fetch('lang.json')
+            .then(res => res.json())
+            .then(json => {
+                daysCalculatorItems = json[lang].daysCalculatorItems;
+                initPickers(); // Only run after data is ready
+            });
+
+        function setLanguage(lang) {
+            localStorage.setItem('lang', lang);
+            location.reload();
+        }
 
         let startPicker;
         let endPicker;
@@ -83,15 +107,19 @@ const localizedText = {
             endPicker = flatpickr("#end", options);
         }
 
-        // Call it once at startup
-        initPickers();
+
 
         function calculateDays() {
+            if (!daysCalculatorItems) {
+                console.warn("Translation data not loaded yet.");
+                return;
+            }
+
             const startDate = startPicker.selectedDates[0];
             const endDate = endPicker.selectedDates[0];
 
             if (!startDate || !endDate) {
-                document.getElementById("result").textContent = localizedText.dateError;
+                document.getElementById("result").textContent = daysCalculatorItems.dateError;
                 return;
             }
 
@@ -107,22 +135,22 @@ const localizedText = {
 
                 if (diffDays > 0) {
                     const dayText = diffDays === 1
-                        ? localizedText.timeResultSingular.replace("{days}", diffDays)
-                        : localizedText.timeResult.replace("{days}", diffDays);
+                        ? daysCalculatorItems.timeResultSingular.replace("{days}", diffDays)
+                        : daysCalculatorItems.timeResult.replace("{days}", diffDays);
                     resultParts.push(dayText);
                 }
 
                 if (remainingHours > 0) {
                     const hourText = remainingHours === 1
-                        ? localizedText.hourResultSingular.replace("{hours}", remainingHours)
-                        : localizedText.hourResult.replace("{hours}", remainingHours);
+                        ? daysCalculatorItems.hourResultSingular.replace("{hours}", remainingHours)
+                        : daysCalculatorItems.hourResult.replace("{hours}", remainingHours);
                     resultParts.push(hourText);
                 }
 
                 if (remainingMinutes > 0) {
                     const minuteText = remainingMinutes === 1
-                        ? localizedText.minuteResultSingular.replace("{minutes}", remainingMinutes)
-                        : localizedText.minuteResult.replace("{minutes}", remainingMinutes);
+                        ? daysCalculatorItems.minuteResultSingular.replace("{minutes}", remainingMinutes)
+                        : daysCalculatorItems.minuteResult.replace("{minutes}", remainingMinutes);
                     resultParts.push(minuteText);
                 }
 
@@ -130,11 +158,29 @@ const localizedText = {
             } else {
                 const fullDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 const templateKey = fullDays === 1 ? "timeResultSingular" : "timeResult";
-                const resultText = localizedText[templateKey].replace("{days}", fullDays);
+                const resultText = daysCalculatorItems[templateKey].replace("{days}", fullDays);
                 document.getElementById("result").textContent = resultText;
             }
         }
 
+        //to add a border to the selected language flag
+
+        document.addEventListener('DOMContentLoaded', () => {
+            highlightSelectedFlag();
+        });
+
+        function highlightSelectedFlag() {
+            const flags = document.querySelectorAll('#language-selector img');
+
+            flags.forEach(flag => {
+                flag.classList.remove('flag-selected'); // Clear previous selection
+
+                const langCode = flag.getAttribute('onclick').match(/setLanguage\('(\w+)'\)/)[1];
+                if (langCode === lang) {
+                    flag.classList.add('flag-selected');
+                }
+            });
+        }
     </script>
 
 </body>

@@ -41,6 +41,11 @@
                 "gameMemory": "Cartes de memòria",
                 "gameOware": "Oware (Abapa)"
             },
+            "utilsTitle": "Eines",
+            "utilsDesc": "Diferent eines que m'han fet falta alguna vegada y he programat amb JavaScript per comoditat, ja que sovint es troben en pàgines amb anuncis.",
+            "utilsItems": {
+                "utilDateCalculator": "Calculadora de temps entre dates"
+            },
             "common": {
                 "seeModel": "Veure model",
                 "about": "Sobre",
@@ -61,6 +66,15 @@
                 "crazyRotations": "Rotacions boges",
                 "dinos": "Dinos (16 "
             }
+        },
+        "daysCalculatorItems": {
+            "timeResult": "{days} dies.",
+            "timeResultSingular": "{days} dia.",
+            "hourResult": "{hours} hores.",
+            "hourResultSingular": "{hours} hora.",
+            "minuteResult": "{minutes} minuts.",
+            "minuteResultSingular": "{minutes} minut.",
+            "dateError": "Si us plau, seleccioneu les dues dates."
         }
     },
     "es": {
