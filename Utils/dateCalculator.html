@@ -22,7 +22,7 @@
             margin-bottom: 20px;
         }
 
-     .flag-selected {
+        .flag-selected {
             border: 3.5px solid #500af1;
             /* Blue border */
             border-radius: 4px;
@@ -39,12 +39,13 @@
 </head>
 
 <body>
-   <div id="language-selector" style="position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; left: 50%; transform: translateX(-25%);">
-    <img src="indexImages/flagsIcon/cat.png" onclick="setLanguage('ca')" alt="Català">
-    <img src="indexImages/flagsIcon/esp.png" onclick="setLanguage('es')" alt="Español">
-    <img src="indexImages/flagsIcon/eng.png" onclick="setLanguage('en')" alt="English">
-    <img src="indexImages/flagsIcon/zh.png" onclick="setLanguage('zh')" alt="中文">
-</div>
+    <div id="language-selector"
+        style="position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; left: 50%; transform: translateX(-25%);">
+        <img src="../indexImages/flagsIcon/cat.png" onclick="setLanguage('ca')" alt="Català">
+        <img src="../indexImages/flagsIcon/esp.png" onclick="setLanguage('es')" alt="Español">
+        <img src="../indexImages/flagsIcon/eng.png" onclick="setLanguage('en')" alt="English">
+        <img src="../indexImages/flagsIcon/zh.png" onclick="setLanguage('zh')" alt="中文">
+    </div>
 
     <h1>Calculadora de Dies</h1>
 
@@ -60,11 +61,16 @@
 
     <label for="start">Data d'inici:</label>
     <input type="text" id="start" placeholder="Selecciona la data d'inici">
+    <input type="checkbox" id="start-now" onchange="setNow('start')">
+    <label for="start-now">Ara</label>
 
     <br>
 
     <label for="end">Data de fi:</label>
     <input type="text" id="end" placeholder="Selecciona la data de fi">
+    <input type="checkbox" id="end-now" onchange="setNow('end')">
+    <label for="end-now">Ara</label>
+
 
     <br>
 
@@ -72,13 +78,30 @@
 
     <p id="result"></p>
 
+    <button id="save-btn" style="display: none;" onclick="openSaveDialog()">Desa</button>
+
+    <div id="save-dialog" style="display: none; border: 1px solid #ccc; padding: 10px; margin-top: 20px;">
+        <p>Mode:</p>
+        <label><input type="radio" name="save-mode" value="timeTo" checked> Temps fins a la data</label><br>
+        <label><input type="radio" name="save-mode" value="timeSince"> Temps des de la data</label>
+
+        <p>Descripció:</p>
+        <input type="text" id="description" placeholder="Escriu una descripció">
+
+        <br><br>
+        <button onclick="saveCalculation()">Confirma</button>
+        <button onclick="closeSaveDialog()">Cancel·la</button>
+    </div>
+
+    <div id="saved-results"></div>
+
     <script>
 
         // Fetch the localized strings in the json
         let daysCalculatorItems;
         let lang = localStorage.getItem('lang') || 'ca';
 
-        fetch('lang.json')
+        fetch('../lang.json')
             .then(res => res.json())
             .then(json => {
                 daysCalculatorItems = json[lang].daysCalculatorItems;
@@ -105,6 +128,21 @@
 
             startPicker = flatpickr("#start", options);
             endPicker = flatpickr("#end", options);
+        }
+
+        function setNow(inputId) {
+            const input = document.getElementById(inputId);
+            const checkbox = document.getElementById(`${inputId}-now`);
+            const picker = inputId === "start" ? startPicker : endPicker;
+
+            if (checkbox.checked) {
+                const now = new Date();
+                picker.setDate(now, true); // updates picker and input field
+                //input.disabled = true;
+            } else {
+                picker.clear(); // clears input and picker date
+                //input.disabled = false;
+            }
         }
 
 
@@ -161,7 +199,92 @@
                 const resultText = daysCalculatorItems[templateKey].replace("{days}", fullDays);
                 document.getElementById("result").textContent = resultText;
             }
+
+            // ✅ Show "Desa" button after result
+            document.getElementById("save-btn").style.display = "inline-block";
         }
+
+
+        function openSaveDialog() {
+            document.getElementById("save-dialog").style.display = "block";
+        }
+
+        function closeSaveDialog() {
+            document.getElementById("save-dialog").style.display = "none";
+        }
+
+        function saveCalculation() {
+            const startDate = startPicker.selectedDates[0];
+            const endDate = endPicker.selectedDates[0];
+            if (!startDate || !endDate) return;
+
+            const mode = document.querySelector('input[name="save-mode"]:checked').value;
+            const description = document.getElementById("description").value.trim();
+            if (!description) return;
+
+            const data = {
+                mode,
+                description,
+                target: mode === 'timeTo' ? endDate : startDate
+            };
+
+            const savedItems = JSON.parse(localStorage.getItem('savedCalculations') || "[]");
+            savedItems.push(data);
+            localStorage.setItem('savedCalculations', JSON.stringify(savedItems));
+
+            closeSaveDialog();
+            updateSavedResults();
+        }
+
+        function updateSavedResults() {
+            const container = document.getElementById("saved-results");
+            container.innerHTML = "";
+
+            const now = new Date();
+            const items = JSON.parse(localStorage.getItem('savedCalculations') || "[]");
+
+            items.forEach((item, index) => {
+                const targetDate = new Date(item.target);
+                const diffTime = Math.abs(now - targetDate);
+
+                const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+                let text = item.mode === 'timeTo'
+                    ? `${days} dies${hours ? ` ${hours} hores` : ""} fins a "${item.description}"`
+                    : `${days} dies${hours ? ` ${hours} hores` : ""} des de "${item.description}"`;
+
+                const entry = document.createElement("div");
+                entry.style.display = "flex";
+                entry.style.justifyContent = "space-between";
+                entry.style.alignItems = "center";
+                entry.style.borderBottom = "1px solid #ddd";
+                entry.style.padding = "5px 0";
+
+                const description = document.createElement("span");
+                description.textContent = text;
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "✖";
+                deleteBtn.style.color = "red";
+                deleteBtn.style.border = "none";
+                deleteBtn.style.background = "transparent";
+                deleteBtn.style.cursor = "pointer";
+                deleteBtn.title = "Elimina aquest registre";
+
+                deleteBtn.onclick = () => {
+                    const updatedItems = items.filter((_, i) => i !== index);
+                    localStorage.setItem('savedCalculations', JSON.stringify(updatedItems));
+                    updateSavedResults();
+                };
+
+                entry.appendChild(description);
+                entry.appendChild(deleteBtn);
+                container.appendChild(entry);
+            });
+        }
+
+        window.addEventListener('load', updateSavedResults);
 
         //to add a border to the selected language flag
 
