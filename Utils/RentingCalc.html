@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Renting Calculator</title>
+  <style>
+    :root{
+      --gap:12px;
+      --pad:12px;
+      --bg:#f8f9fb;
+      --box:#fff;
+      --border:#d6dde6;
+      --accent:#0b69ff;
+    }
+
+    body{
+      font-family:Segoe UI, Roboto, Arial, sans-serif;
+      margin:18px;
+      background:var(--bg);
+      color:#0b1720;
+    }
+
+    .card{
+      background:var(--box);
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:16px;
+      box-shadow:0 1px 2px rgba(0,0,0,.03);
+      max-width:900px;
+      margin:auto;
+    }
+
+    .outputs{
+      display:flex;
+      gap:var(--gap);
+      flex-wrap:wrap;
+    }
+
+    .output-box{
+      flex:1 1 320px;
+      min-height:120px;
+      background:linear-gradient(180deg,#fff,#fbfdff);
+      border:1px solid var(--border);
+      border-radius:6px;
+      padding:var(--pad);
+      box-sizing:border-box;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .output-title{
+      font-weight:600;
+      color:#233546;
+      font-size:0.95rem;
+    }
+
+    .output-value{
+      margin-top:auto;
+      font-family:monospace;
+      font-size:1.05rem;
+      color:#0b2740;
+      white-space:pre-wrap;
+    }
+
+    details{
+      margin-top:14px;
+    }
+
+    summary{
+      cursor:pointer;
+      outline:none;
+      padding:8px 10px;
+      border-radius:6px;
+      display:inline-block;
+      background:transparent;
+      color:var(--accent);
+      font-weight:600;
+    }
+
+    .inputs{
+      margin-top:10px;
+      display:block;
+    }
+
+    .inputs-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:var(--gap);
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    label{font-size:0.85rem;color:#263238}
+    input[type="text"], input[type="number"], select{
+      padding:8px;
+      border:1px solid var(--border);
+      border-radius:6px;
+      background:#fff;
+      font-size:0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width:720px){
+      .inputs-grid{ grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:480px){
+      .outputs{ flex-direction:column; }
+      .inputs-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="region" aria-label="Renting calculator">
+    <div class="outputs" aria-hidden="false">
+      <div class="output-box" id="outA">
+        <div class="output-title">Monthly Cost</div>
+        <div class="output-value" id="output1">--</div>
+      </div>
+
+      <div class="output-box" id="outB">
+        <div class="output-title">Upfront & Notes</div>
+        <div class="output-value" id="output2">--</div>
+      </div>
+    </div>
+
+    <details id="inputsFold" open>
+      <summary id="inputsSummary">Show inputs</summary>
+
+      <div class="inputs">
+        <div class="inputs-grid">
+          <div class="field">
+            <label for="rent">Monthly Rent</label>
+            <input id="rent" type="number" step="0.01" placeholder="0.00" />
+          </div>
+
+          <div class="field">
+            <label for="utilities">Utilities (monthly)</label>
+            <input id="utilities" type="number" step="0.01" placeholder="0.00" />
+          </div>
+
+          <div class="field">
+            <label for="parking">Parking / Fees</label>
+            <input id="parking" type="number" step="0.01" placeholder="0.00" />
+          </div>
+
+          <div class="field">
+            <label for="deposit">Security Deposit</label>
+            <input id="deposit" type="number" step="0.01" placeholder="0.00" />
+          </div>
+
+          <div class="field">
+            <label for="term">Lease Term (months)</label>
+            <input id="term" type="number" min="1" placeholder="12" />
+          </div>
+
+          <div class="field">
+            <label for="notes">Notes / Extras</label>
+            <input id="notes" type="text" placeholder="e.g., pets, maintenance" />
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <script>
+    // minimal wiring so the two output boxes update live (optional)
+    const out1 = document.getElementById('output1');
+    const out2 = document.getElementById('output2');
+
+    function fmt(v){ return Number(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+    function update(){
+      const rent = Number(document.getElementById('rent').value || 0);
+      const util = Number(document.getElementById('utilities').value || 0);
+      const park = Number(document.getElementById('parking').value || 0);
+      const dep  = Number(document.getElementById('deposit').value || 0);
+      const term = Number(document.getElementById('term').value || 1);
+      const notes = document.getElementById('notes').value || '';
+
+      const monthlyTotal = rent + util + park;
+      out1.textContent = '$' + fmt(monthlyTotal) + ' / month';
+
+      out2.textContent = 'Upfront: $' + fmt(dep) + (term ? ` — ${term} mo` : '') + (notes ? '\nNotes: ' + notes : '');
+    }
+
+    document.querySelectorAll('#rent,#utilities,#parking,#deposit,#term,#notes').forEach(el=>{
+      el.addEventListener('input', update);
+    });
+
+    // initial populate
+    update();
+  </script>
+</body>
+</html>
