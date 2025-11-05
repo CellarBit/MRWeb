@@ -211,6 +211,28 @@
   // Project future kilometers based on current daily rate and remaining days
   const projectedKms = avgDayKM * remainingDays;
   const totalProjectedKms = totalKms + projectedKms;
+
+  // 6-month projection: use half of the contract duration (midpoint of contract)
+  let remainingDaysSix = 0;
+  let totalProjectedKms6 = totalKms;
+  let kmExceso6 = 0;
+  let costeExceso6 = 0;
+  if (dataInicial && duracioRenting > 0) {
+    // compute contract end and total contract days
+    const endDate = new Date(dataInicial);
+    endDate.setMonth(endDate.getMonth() + duracioRenting);
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const totalContractDays = Math.max(0, Math.floor((endDate - dataInicial) / msPerDay));
+
+    // midpoint date = start + half of contract days
+    const midDate = new Date(dataInicial.getTime() + Math.floor(totalContractDays / 2) * msPerDay);
+    remainingDaysSix = Math.max(0, Math.floor((midDate - hoy) / msPerDay));
+
+    const projectedKms6 = avgDayKM * remainingDaysSix;
+    totalProjectedKms6 = totalKms + projectedKms6;
+    kmExceso6 = Math.max(0, totalProjectedKms6 - kmsLimit/2);
+    costeExceso6 = kmExceso6 * eurosKm;
+  }
   
   // Calculate monthly average and excess
   const kmsPorMes = diasDesdeInicio ? (avgDayKM * 30) : (totalKms / avgMonths);
@@ -224,7 +246,7 @@
         out1.textContent = totalKms > 0 ? `${fmt(kmsPorMes)} km / mes (promedio)\n${fmt(totalKms)} km totales` : '--';
       }
 
-      out2.textContent = `Projecció: ${fmt(totalProjectedKms)} km totals\nExcés: ${fmt(kmExceso)} km → ${fmt(costeExceso)} €\nDies restants: ${remainingDays}`;
+  out2.textContent = `Projecció (fi contracte): ${fmt(totalProjectedKms)} km totals\nExcés: ${fmt(kmExceso)} km → ${fmt(costeExceso)} €\nDies restants: ${remainingDays}\n\nProjecció 6 mesos: ${fmt(totalProjectedKms6)} km totals\nExcés 6m: ${fmt(kmExceso6)} km → ${fmt(costeExceso6)} €\nDies restants: ${remainingDaysSix}`;
     }
 
     // Listen to all relevant inputs (including kmsActuals and the date)
