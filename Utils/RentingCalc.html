@@ -175,7 +175,7 @@
     const out1 = document.getElementById('output1');
     const out2 = document.getElementById('output2');
 
-    function fmt(v){ return Number(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    function fmt(v){ return Number(v||0).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0}); }
 
     function update(){
       // Read inputs (use the raw date string for safe parsing)
