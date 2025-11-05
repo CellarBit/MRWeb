@@ -119,12 +119,12 @@
   <div class="card" role="region" aria-label="Renting calculator">
     <div class="outputs" aria-hidden="false">
       <div class="output-box" id="outA">
-        <div class="output-title">Monthly Cost</div>
+        <div class="output-title">Valors</div>
         <div class="output-value" id="output1">--</div>
       </div>
 
       <div class="output-box" id="outB">
-        <div class="output-title">Upfront & Notes</div>
+        <div class="output-title">Costos</div>
         <div class="output-value" id="output2">--</div>
       </div>
     </div>
@@ -137,32 +137,32 @@
 
           <div class="field">
             <label for="dataInicial">DataInicial</label>
-            <input id="dataInicial" type="date" />
+            <input id="dataInicial" type="date" value="2025-09-04"/>
           </div>
 
           <div class="field">
             <label for="kmsActuals">Kms Actuals</label>
-            <input id="kmsActuals" type="number" />
+            <input id="kmsActuals" type="number" value="87000"/>
           </div>
 
           <div class="field">
             <label for="duracioRenting">Duració contracte (mesos)</label>
-            <input id="duracioRenting" type="number" min="1" placeholder="12" />
+            <input id="duracioRenting" type="number" min="1" placeholder="12" value="12"/>
           </div>
 
           <div class="field">
             <label for="kmsInici">Kms Inicials</label>
-            <input id="kmsInici" type="number" />
+            <input id="kmsInici" type="number" value="83240"/>
           </div>
 
           <div class="field">
             <label for="kmsLimit">Kms Limit</label>
-            <input id="kmsLimit" type="number" />
+            <input id="kmsLimit" type="number" value="10000"/>
           </div>
 
           <div class="field">
             <label for="eurosKm">Euros per Km</label>
-            <input id="eurosKm" type="number" step="0.0001" placeholder="0.0001" />
+            <input id="eurosKm" type="number" step="0.0001" placeholder="0.0001" value="0.0393" />
           </div>
 
         </div>
@@ -171,39 +171,64 @@
   </div>
 
   <script>
-    // minimal wiring so the two output boxes update live (optional)
+    // minimal wiring so the two output boxes update live
     const out1 = document.getElementById('output1');
     const out2 = document.getElementById('output2');
 
     function fmt(v){ return Number(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
 
     function update(){
-      const dataInicial = Number(document.getElementById('DataInicial').value || 0);
-      const duracioRenting = Number(document.getElementById('DuracioRenting').value || 0);
-      const kmsActuals = Number(document.getElementById('KmsActuals').value || 0);
-      const kmsInici = Number(document.getElementById('KmsInici').value || 0);
-      const kmsLimit = Number(document.getElementById('KmsLimit').value || 0);
-      const eurosKm = Number(document.getElementById('EurosKm').value || 1);
+      // Read inputs (use the raw date string for safe parsing)
+      const dataInicialStr = document.getElementById('dataInicial').value;
+      const dataInicial = dataInicialStr ? new Date(dataInicialStr) : null;
+      const duracioRenting = Number(document.getElementById('duracioRenting').value || 0);
+      const kmsActuals = Number(document.getElementById('kmsActuals').value || 0);
+      const kmsInici = Number(document.getElementById('kmsInici').value || 0);
+      const kmsLimit = Number(document.getElementById('kmsLimit').value || 0);
+      const eurosKm = Number(document.getElementById('eurosKm').value || 0);
 
-      
-    // Convertim la cadena a un objecte Date
-      dataInicial = new Date(dataIniciStr);
-      const dataActual = new Date();
+      const hoy = new Date();
+      let diasDesdeInicio = null;
+      if (dataInicial){
+        diasDesdeInicio = Math.floor((hoy - dataInicial) / (1000 * 60 * 60 * 24));
+      }
 
-      // Calculem la diferència en mil·lisegons
-      const diferenciaMs = dataActual - dataInicial;
+  // Derived values
+  const totalKms = Math.max(0, kmsActuals - kmsInici);
+  // Average kilometers per day when start date available
+  const avgDayKM = diasDesdeInicio ? (totalKms / diasDesdeInicio) : totalKms;
+  // average kms per month: if contract duration provided use that, otherwise derive from days or from daily avg
+  const avgMonths = duracioRenting > 0 ? duracioRenting : (diasDesdeInicio ? Math.max(1, diasDesdeInicio / 30) : 1);
+  
+  // Calculate contract end date and remaining days
+  let remainingDays = 0;
+  if (dataInicial && duracioRenting > 0) {
+    const endDate = new Date(dataInicial);
+    endDate.setMonth(endDate.getMonth() + duracioRenting);
+    remainingDays = Math.max(0, Math.floor((endDate - hoy) / (1000 * 60 * 60 * 24)));
+  }
+  
+  // Project future kilometers based on current daily rate and remaining days
+  const projectedKms = avgDayKM * remainingDays;
+  const totalProjectedKms = totalKms + projectedKms;
+  
+  // Calculate monthly average and excess
+  const kmsPorMes = diasDesdeInicio ? (avgDayKM * 30) : (totalKms / avgMonths);
+  const kmExceso = Math.max(0, totalProjectedKms - kmsLimit);
+  const costeExceso = kmExceso * eurosKm;
 
-      // Convertim la diferència a dies
-      const dies = Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
+      // Populate outputs with friendly, readable text
+      if (diasDesdeInicio){
+        out1.textContent = `${fmt(avgDayKM)} km / dia \n${fmt(kmsPorMes)} km / mes \n${fmt(totalKms)} km totals en ${diasDesdeInicio} dies`;
+      } else {
+        out1.textContent = totalKms > 0 ? `${fmt(kmsPorMes)} km / mes (promedio)\n${fmt(totalKms)} km totales` : '--';
+      }
 
-
-      const monthlyTotal = (KmsActuals + KmsInici)/dies;
-      out1.textContent = fmt(monthlyTotal);
-
-      out2.textContent = 'Upfront: $' + fmt(kmsLimit) + (eurosKm ? ` — ${eurosKm} mo` : '');
+      out2.textContent = `Projecció: ${fmt(totalProjectedKms)} km totals\nExcés: ${fmt(kmExceso)} km → ${fmt(costeExceso)} €\nDies restants: ${remainingDays}`;
     }
 
-    document.querySelectorAll('#dataInicial,#duracioRenting,#kmsInici,#kmsLimit,#eurosKm').forEach(el=>{
+    // Listen to all relevant inputs (including kmsActuals and the date)
+    document.querySelectorAll('#dataInicial,#duracioRenting,#kmsActuals,#kmsInici,#kmsLimit,#eurosKm').forEach(el=>{
       el.addEventListener('input', update);
     });
 
