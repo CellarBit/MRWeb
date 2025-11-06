@@ -104,12 +104,46 @@
 
     input[type="text"],
     input[type="number"],
+    input[type="date"],
     select {
       padding: 8px;
       border: 1px solid var(--border);
       border-radius: 6px;
       background: #fff;
       font-size: 0.95rem;
+      width: 140px;
+    }
+
+    .output-box {
+      flex: 1 1 320px;
+      min-height: 20px;
+      background: linear-gradient(180deg, #fff, #fbfdff);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: var(--pad);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .output-title {
+      font-weight: 600;
+      color: #233546;
+      font-size: 0.95rem;
+      text-align: left;
+    }
+
+    .output-value {
+      margin-top: auto;
+      font-family: monospace;
+      font-size: 1.05rem;
+      color: #0b2740;
+      white-space: pre-wrap;
+      text-align: left;
+      width: 100%;
+      padding: 8px;
     }
 
     /* Responsive */
@@ -122,10 +156,27 @@
     @media (max-width:480px) {
       .outputs {
         flex-direction: column;
+        width: 100%;
       }
 
       .inputs-grid {
         grid-template-columns: 1fr;
+      }
+
+      .output-box {
+        width: calc(100% - 32px);  /* Account for padding */
+      }
+
+      .output-value {
+        font-size: 0.95rem;  /* Slightly smaller font on mobile */
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="date"],
+      select {
+        width: 100%;
+        max-width: 140px;
       }
     }
   </style>
