@@ -7,189 +7,182 @@
   <title>Renting Calculator</title>
   <style>
     :root {
-  --gap: 12px;
-  --pad: 12px;
-  --bg: #f8f9fb;
-  --box: #fff;
-  --border: #d6dde6;
-  --accent: #0b69ff;
-}
+      --gap: 12px;
+      --pad: 12px;
+      --bg: #f8f9fb;
+      --box: #fff;
+      --border: #d6dde6;
+      --accent: #0b69ff;
+    }
 
-body {
-  font-family: Segoe UI, Roboto, Arial, sans-serif;
-  margin: 18px;
-  background: var(--bg);
-  color: #0b1720;
-}
+    body {
+      font-family: Segoe UI, Roboto, Arial, sans-serif;
+      margin: 18px;
+      background: var(--bg);
+      color: #0b1720;
+    }
 
-.card {
-  background: var(--box);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 0px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
-  max-width: 900px;
-  margin: auto;
-}
+    .card {
+      background: var(--box);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+      max-width: 900px;
+      margin: auto;
+    }
 
-.outputs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gap);
-}
+    .outputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gap);
+    }
 
-.output-box {
-  flex: 1 1 320px;
-  min-height: 120px;
-  background: linear-gradient(180deg, #fff, #fbfdff);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: var(--pad);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+    .output-box {
+      flex: 1 1 320px;
+      min-height: 120px;
+      background: linear-gradient(180deg, #fff, #fbfdff);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: var(--pad);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
 
-  justify-content: space-between;
-}
+      justify-content: space-between;
+    }
 
-.output-title {
-  font-weight: 600;
-  color: #233546;
-  font-size: 0.95rem;
-}
+    .output-text {
+      font-family: monospace;
+      /* or match your original font */
+      white-space: pre-wrap;
+      /* preserves line breaks */
+      line-height: 1.4;
+      /* adjust to match original spacing */
+    }
 
-.output-value {
-  font-family: monospace;
-  font-size: 1.05rem;
-  color: #0b2740;
-  white-space: pre-wrap;
-  padding: 8px;
-text-align: left;
-justify-content: flex-start;
-}
+    details {
+      margin-top: 14px;
+    }
 
-details {
-  margin-top: 14px;
-}
+    summary {
+      cursor: pointer;
+      outline: none;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--accent);
+      font-weight: 600;
+    }
 
-summary {
-  cursor: pointer;
-  outline: none;
-  padding: 8px 10px;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--accent);
-  font-weight: 600;
-}
+    .inputs {
+      margin-top: 10px;
+    }
 
-.inputs {
-  margin-top: 10px;
-}
+    .inputs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--gap);
+    }
 
-.inputs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--gap);
-}
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+    label {
+      font-size: 0.85rem;
+      color: #263238;
+    }
 
-label {
-  font-size: 0.85rem;
-  color: #263238;
-}
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      font-size: 0.95rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-input[type="text"],
-input[type="number"],
-input[type="date"],
-select {
-  padding: 8px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: #fff;
-  font-size: 0.95rem;
-  width: 100%;
-  box-sizing: border-box;
-}
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      .output-box {
+        width: 100%;
+      }
 
-/* Responsive tweaks */
-@media (max-width: 480px) {
-  .output-box {
-    width: 100%;
-  }
-
-  .output-value {
-    font-size: 0.95rem;
-  }
-}
+      .output-value {
+        font-size: 0.95rem;
+      }
+    }
   </style>
-<div class="card" role="region" aria-label="Renting calculator">
-  <div class="outputs" aria-hidden="false">
-    <div class="output-box" id="outA">
-      <div class="output-title">Result</div>
-      <div class="output-value" id="output1">--</div>
+  <div class="card" role="region" aria-label="Renting calculator">
+    <div class="outputs" aria-hidden="false">
+      <div class="output-box" id="outA">
+        <div class="output-text" id="output1">--</div>
+      </div>
     </div>
   </div>
-</div>
 
-<details id="inputsFold" open>
-  <summary id="inputsSummary">Show inputs</summary>
+  <details id="inputsFold" open>
+    <summary id="inputsSummary">Show inputs</summary>
 
-  <div class="inputs">
-    <div class="inputs-grid">
+    <div class="inputs">
+      <div class="inputs-grid">
 
-      <div class="field">
-        <label for="dataInicial">DataInicial</label>
-        <input id="dataInicial" type="date" value="2025-09-04" />
+        <div class="field">
+          <label for="dataInicial">DataInicial</label>
+          <input id="dataInicial" type="date" value="2025-09-04" />
+        </div>
+
+        <div class="field">
+          <label for="kmsActuals">Kms Actuals</label>
+          <input id="kmsActuals" type="number" value="87000" />
+        </div>
+
+        <div class="field">
+          <label for="duracioRenting">Duració contracte (mesos)</label>
+          <input id="duracioRenting" type="number" min="1" placeholder="12" value="12" />
+        </div>
+
+        <div class="field">
+          <label for="permanencia">Compromís de permanència (mesos)</label>
+          <input id="permanencia" type="number" min="1" placeholder="12" value="6" />
+        </div>
+
+        <div class="field">
+          <label for="kmsInici">Kms Inicials</label>
+          <input id="kmsInici" type="number" value="83240" />
+        </div>
+
+        <div class="field">
+          <label for="kmsLimit">Kms Limit</label>
+          <input id="kmsLimit" type="number" value="10000" />
+        </div>
+
+        <div class="field">
+          <label for="eurosKm">Euros per Km</label>
+          <input id="eurosKm" type="number" step="0.0001" placeholder="0.0001" value="0.0393" />
+        </div>
+
+        <div class="field">
+          <label for="quotaMensual">Quota Mensual</label>
+          <input id="quotaMensual" type="number" step="0.01" value="344.61" />
+        </div>
+
       </div>
-
-      <div class="field">
-        <label for="kmsActuals">Kms Actuals</label>
-        <input id="kmsActuals" type="number" value="87000" />
-      </div>
-
-      <div class="field">
-        <label for="duracioRenting">Duració contracte (mesos)</label>
-        <input id="duracioRenting" type="number" min="1" placeholder="12" value="12" />
-      </div>
-
-      <div class="field">
-        <label for="permanencia">Compromís de permanència (mesos)</label>
-        <input id="permanencia" type="number" min="1" placeholder="12" value="6" />
-      </div>
-
-      <div class="field">
-        <label for="kmsInici">Kms Inicials</label>
-        <input id="kmsInici" type="number" value="83240" />
-      </div>
-
-      <div class="field">
-        <label for="kmsLimit">Kms Limit</label>
-        <input id="kmsLimit" type="number" value="10000" />
-      </div>
-
-      <div class="field">
-        <label for="eurosKm">Euros per Km</label>
-        <input id="eurosKm" type="number" step="0.0001" placeholder="0.0001" value="0.0393" />
-      </div>
-
-      <div class="field">
-        <label for="quotaMensual">Quota Mensual</label>
-        <input id="quotaMensual" type="number" step="0.01" value="344.61" />
-      </div>
-
     </div>
-  </div>
-</details>
+  </details>
   <script>
     // minimal wiring so the two output boxes update live
     const out1 = document.getElementById('output1');
 
-    function fmt(v) { return Number(v || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    function formatDiner(v) { return Number(v || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    function formatKm(v) { return Number(v || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
 
     function update() {
       // Read inputs (use the raw date string for safe parsing)
@@ -257,7 +250,7 @@ select {
       // pel calcul de dies entre fi de contracte o permanencia i data inicial
       dataFinal1.setMonth(dataFinal1.getMonth() + duracioRenting);
       dataFinal2.setMonth(dataFinal2.getMonth() + permanencia);
-      
+
       // Calcular la diferència en mil·lisegons
       const diferenciaDies1 = dataFinal1 - dataInicial;
       const diferenciaDies2 = dataFinal2 - dataInicial;
@@ -274,22 +267,22 @@ select {
 
 
       // Format all information in a single output
-      out1.textContent = 
-      `
-      ${fmt(avgDayKM)} km/dia
-      ${fmt(kmsPorMes)} km/mes
-      ${fmt(totalKms)} km totals en ${diasDesdeInicio} dies
-      ${fmt(totalPaid)} € Pagat en quotes → ${fmt(quotaPerKm)} €/km
+      out1.innerHTML =
+        out1.textContent =
+        `${formatKm(avgDayKM)} km/dia\n` +
+        `${formatKm(kmsPorMes)} km/mes\n` +
+        `${formatKm(totalKms)} km totals en ${diasDesdeInicio} dies\n` +
+        `${formatDiner(totalPaid)} € Total Pagat → ${formatDiner(quotaPerKm)} €/km\n\n` +
 
-      Projecció mig contracte (${remainingDaysSix} dies):
-      ${fmt(totalProjectedKms6)} km totals
-      ${fmt(kmExceso6)} km excedits amb cost de ${fmt(costeExceso6)} €
-      Cost Total: ${fmt(totalToPay6M)} € → ${fmt(totalToPay6M / permanencia)} €/mes → ${fmt(totalToPay6M / diesFiPermanencia)} €/dia → ${fmt(totalToPay6M / totalProjectedKms6)} €/km
+        `<strong>Projecció mig contracte (${remainingDaysSix} dies):</strong>\n` +
+        `${formatKm(totalProjectedKms6)} km totals\n` +
+        `${formatKm(kmExceso6)} km excedits amb cost de ${formatDiner(costeExceso6)} €\n` +
+        `<strong>Cost Total:</strong> ${formatDiner(totalToPay6M)} € → ${formatDiner(totalToPay6M / permanencia)} €/mes → ${formatDiner(totalToPay6M / diesFiPermanencia)} €/dia → ${formatDiner(totalToPay6M / totalProjectedKms6)} €/km\n\n` +
 
-      Projecció fi contracte (${remainingDays} dies):
-      ${fmt(totalProjectedKms)} km totals
-      ${fmt(kmExceso)} km excedits amb cost de ${fmt(costeExceso)} €
-      Cost Total: ${fmt(totalToPay)} € → ${fmt(totalToPay / duracioRenting)} €/mes → ${fmt(totalToPay / diesFiContracte)} €/dia → → ${fmt(totalToPay / totalProjectedKms)} €/km`;
+        `<strong>Projecció fi contracte (${remainingDays} dies):</strong>\n` +
+        `${formatKm(totalProjectedKms)} km totals\n` +
+        `${formatKm(kmExceso)} km excedits amb cost de ${formatDiner(costeExceso)} €\n` +
+        `<strong>Cost Total:</strong> ${formatDiner(totalToPay)} € → ${formatDiner(totalToPay / duracioRenting)} €/mes → ${formatDiner(totalToPay / diesFiContracte)} €/dia → ${formatDiner(totalToPay / totalProjectedKms)} €/km`;
 
     }
 
@@ -301,6 +294,6 @@ select {
     // initial populate
     update();
   </script>
-</body>
+  </body>
 
 </html>
