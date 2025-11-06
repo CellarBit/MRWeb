@@ -42,16 +42,20 @@
       flex: 1 1 320px;
       min-height: 20px;
       background: linear-gradient(180deg, #fff, #fbfdff);
-      border: 1px solid var(--border);
+      border: none;
       border-radius: 6px;
       padding: var(--pad);
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 1px;
+      gap: 6px;
     }
 
-   
+    .output-title {
+      font-weight: 600;
+      color: #233546;
+      font-size: 0.95rem;
+    }
 
     .output-value {
       margin-top: auto;
@@ -128,13 +132,13 @@
 </head>
 
 <body>
-  
+  <div class="card" role="region" aria-label="Renting calculator">
     <div class="outputs" aria-hidden="false">
       <div class="output-box" id="outA">
         <div class="output-value" id="output1">--</div>
       </div>
     </div>
-  
+  </div>
 
   <details id="inputsFold" open>
     <summary id="inputsSummary">Show inputs</summary>
@@ -292,7 +296,7 @@
       Projecció fi contracte (${remainingDays} dies):
       ${fmt(totalProjectedKms)} km totals
       ${fmt(kmExceso)} km excedits amb cost de ${fmt(costeExceso)} €
-      Cost Total: ${fmt(totalToPay)} € → ${fmt(totalToPay / duracioRenting)} €/mes → ${fmt(totalToPay / diesFiContracte)} €/dia → ${fmt(totalToPay / totalProjectedKms)} €/km`;
+      Cost Total: ${fmt(totalToPay)} € → ${fmt(totalToPay / duracioRenting)} €/mes → ${fmt(totalToPay / diesFiContracte)} €/dia → → ${fmt(totalToPay / totalProjectedKms)} €/km`;
 
     }
 
