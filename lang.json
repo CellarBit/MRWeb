@@ -44,7 +44,8 @@
             "utilsTitle": "Eines",
             "utilsDesc": "Diferent eines que m'han fet falta alguna vegada y he programat amb JavaScript per comoditat, ja que sovint es troben en pàgines amb anuncis.",
             "utilsItems": {
-                "utilDateCalculator": "Calculadora de temps entre dates"
+                "utilDateCalculator": "Calculadora de temps entre dates",
+                "utilCalculAyvens": "Calculadora per Renting"
             },
             "common": {
                 "seeModel": "Veure model",
