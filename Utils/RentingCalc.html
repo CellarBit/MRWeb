@@ -139,8 +139,13 @@
       <div class="inputs-grid">
 
         <div class="field">
-          <label for="kmsActuals">Kms Actuals</label>
-          <input id="kmsActuals" type="number" value="87000" />  
+          <label for="preuCarburant">Preu carburant</label>
+          <input id="preuCarburant" type="number" value="1.304" />  
+        </div>
+        
+        <div class="field">
+          <label for="consumMig">Litres als 100km</label>
+          <input id="consumMig" type="number" value="3.9" />  
         </div>
 
         <div class="field"> 
@@ -200,6 +205,8 @@
       const kmsLimit = Number(document.getElementById('kmsLimit').value || 0);
       const eurosKm = Number(document.getElementById('eurosKm').value || 0);
       const monthlyQuota = Number(document.getElementById('quotaMensual').value || 0);
+      const preuCarburant = Number(document.getElementById('preuCarburant').value || 0);
+      const litresPer100km = Number(document.getElementById('consumMig').value || 0);
 
       const hoy = new Date();
       let diasDesdeInicio = null;
@@ -247,6 +254,13 @@
       const quotaPerKm = totalKms > 0 ? totalPaid / totalKms : 0;
       const totalToPay6M = monthlyQuota * duracioRenting / 2  + costeExceso6;
       const totalToPay = monthlyQuota * duracioRenting  + costeExceso;
+      const totalLiters = totalKms* litresPer100km/100;
+      const totalFuelCost = totalLiters * preuCarburant;
+      const totalLiters6M = totalProjectedKms6* litresPer100km/100;
+      const totalFuelCost6M = totalLiters6M * preuCarburant;
+      const totalFuelLitersFullContract = totalProjectedKms* litresPer100km/100;
+      const totalFuelCostFullContract = totalFuelLitersFullContract * preuCarburant;
+
 
 
       const dataFinal1 = new Date(dataInicial);
@@ -277,17 +291,17 @@
         `${formatKm(avgDayKM)} km/dia\n` +
         `${formatKm(kmsPorMes)} km/mes\n` +
         `${formatKm(totalKms)} km totals en ${diasDesdeInicio} dies\n` +
-        `${formatDiner(totalPaid)} € Total Pagat → ${formatDiner(quotaPerKm)} €/km → ${formatDiner(totalPaid/diasDesdeInicio)} €/dia\n\n` +
+        `${formatDiner(totalPaid)} € Total Pagat → ${formatDiner(quotaPerKm)} €/km → ${formatDiner(totalPaid/diasDesdeInicio)} €/dia → ${formatDiner(totalFuelCost)} € per ${formatKm(totalLiters)} L carburant\n\n` +
 
         `<strong>Projecció mig contracte (${remainingDaysSix} dies):</strong>\n` +
         `${formatKm(totalProjectedKms6)} km totals\n` +
         `${formatKm(kmExceso6)} km excedits amb cost de ${formatDiner(costeExceso6)} €\n` +
-        `<strong>Cost Total:</strong> ${formatDiner(totalToPay6M)} € → ${formatDiner(totalToPay6M / permanencia)} €/mes → ${formatDiner(totalToPay6M / diesFiPermanencia)} €/dia → ${formatDiner(totalToPay6M / totalProjectedKms6)} €/km\n\n` +
+        `<strong>Cost Total:</strong> ${formatDiner(totalToPay6M)} € → ${formatDiner(totalToPay6M / permanencia)} €/mes → ${formatDiner(totalToPay6M / diesFiPermanencia)} €/dia → ${formatDiner(totalToPay6M / totalProjectedKms6)} €/km → ${formatDiner(totalFuelCost6M)} € per ${formatKm(totalLiters6M)} L carburant\n\n` +
 
         `<strong>Projecció fi contracte (${remainingDays} dies):</strong>\n` +
         `${formatKm(totalProjectedKms)} km totals\n` +
         `${formatKm(kmExceso)} km excedits amb cost de ${formatDiner(costeExceso)} €\n` +
-        `<strong>Cost Total:</strong> ${formatDiner(totalToPay)} € → ${formatDiner(totalToPay / duracioRenting)} €/mes → ${formatDiner(totalToPay / diesFiContracte)} €/dia → ${formatDiner(totalToPay / totalProjectedKms)} €/km`;
+        `<strong>Cost Total:</strong> ${formatDiner(totalToPay)} € → ${formatDiner(totalToPay / duracioRenting)} €/mes → ${formatDiner(totalToPay / diesFiContracte)} €/dia → ${formatDiner(totalToPay / totalProjectedKms)} €/km → ${formatDiner(totalFuelCostFullContract)} € per ${formatKm(totalFuelLitersFullContract)} L carburant`;
 
     }
 
