@@ -252,14 +252,14 @@
       const monthsPaid = diasDesdeInicio ? Math.ceil(diasDesdeInicio / 30) : 0;
       const totalPaid = monthlyQuota * monthsPaid + 284.8; //284.8€ is initial deposit fee
       const quotaPerKm = totalKms > 0 ? totalPaid / totalKms : 0;
-      const totalToPay6M = monthlyQuota * duracioRenting / 2  + costeExceso6;
-      const totalToPay = monthlyQuota * duracioRenting  + costeExceso;
       const totalLiters = totalKms* litresPer100km/100;
       const totalFuelCost = totalLiters * preuCarburant;
       const totalLiters6M = totalProjectedKms6* litresPer100km/100;
       const totalFuelCost6M = totalLiters6M * preuCarburant;
       const totalFuelLitersFullContract = totalProjectedKms* litresPer100km/100;
       const totalFuelCostFullContract = totalFuelLitersFullContract * preuCarburant;
+      const totalToPay6M = monthlyQuota * duracioRenting / 2  + costeExceso6 + totalFuelCost6M;
+      const totalToPay = monthlyQuota * duracioRenting  + costeExceso + totalFuelCostFullContract;
 
 
 
