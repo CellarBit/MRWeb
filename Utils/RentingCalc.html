@@ -236,7 +236,6 @@
       // Project future kilometers based on current daily rate and remaining days
       const projectedKms = avgDayKM * remainingDays;
       const totalProjectedKms = totalKms + projectedKms;
-
       const projectedKms6 = avgDayKM * remainingDaysSix;
       const totalProjectedKms6 = totalKms + projectedKms6;
 
@@ -250,8 +249,8 @@
       // Calculate quota-related costs
       const quotaPerDay = monthlyQuota * 12 / 365; // Annual cost divided by days
       const monthsPaid = diasDesdeInicio ? Math.ceil(diasDesdeInicio / 30) : 0;
-      const totalPaid = monthlyQuota * monthsPaid + 284.8; //284.8€ is initial deposit fee
-      const quotaPerKm = totalKms > 0 ? totalPaid / totalKms : 0;
+      
+      
       const totalLiters = totalKms* litresPer100km/100;
       const totalFuelCost = totalLiters * preuCarburant;
       const totalLiters6M = totalProjectedKms6* litresPer100km/100;
@@ -260,7 +259,8 @@
       const totalFuelCostFullContract = totalFuelLitersFullContract * preuCarburant;
       const totalToPay6M = monthlyQuota * duracioRenting / 2  + costeExceso6 + totalFuelCost6M;
       const totalToPay = monthlyQuota * duracioRenting  + costeExceso + totalFuelCostFullContract;
-
+      const totalPaid = monthlyQuota * monthsPaid + totalFuelCost+284.8; //284.8€ is initial deposit fee
+      const quotaPerKm = totalKms > 0 ? totalPaid / totalKms : 0;
 
 
       const dataFinal1 = new Date(dataInicial);
